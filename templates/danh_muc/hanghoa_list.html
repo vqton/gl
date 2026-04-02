@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Hàng hóa{% endblock %}
+{% block breadcrumb %}Danh mục / Hàng hóa{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Hàng hóa</h2>
+    </div>
+    <a href="{% url 'danh_muc:hanghoa_create' %}" class="btn btn-primary">+ Thêm hàng hóa</a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-3">
+            <div class="col-md-4">
+                <input type="text" name="q" value="{{ search }}" class="form-control" placeholder="Tìm mã hoặc tên hàng hóa...">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                <a href="{% url 'danh_muc:hanghoa_list' %}" class="btn btn-outline-secondary">Xóa</a>
+            </div>
+        </form>
+        <table class="table">
+            <thead><tr><th>Mã HH</th><th>Tên hàng hóa</th><th>ĐVT</th><th class="text-end">Giá mua</th><th class="text-end">Giá bán</th><th>Thuế</th><th>Thao tác</th></tr></thead>
+            <tbody>
+                {% for hh in hh_list %}
+                <tr>
+                    <td><strong>{{ hh.ma_hang_hoa }}</strong></td>
+                    <td>{{ hh.ten_hang_hoa }}</td>
+                    <td>{{ hh.don_vi_tinh }}</td>
+                    <td class="text-end">{{ hh.gia_mua|floatformat:0 }}</td>
+                    <td class="text-end">{{ hh.gia_ban|floatformat:0 }}</td>
+                    <td>{{ hh.thue_suat_gtgt }}%</td>
+                    <td>
+                        <a href="{% url 'danh_muc:hanghoa_update' hh.pk %}" class="btn btn-sm btn-outline-primary">Sửa</a>
+                        <a href="{% url 'danh_muc:hanghoa_delete' hh.pk %}" class="btn btn-sm btn-outline-danger">Xóa</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">Chưa có hàng hóa nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+        <nav class="p-3"><ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ search }}">Trước</a></li>{% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ search }}">Sau</a></li>{% endif %}
+        </ul></nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

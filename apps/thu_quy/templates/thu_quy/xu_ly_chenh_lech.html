@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Xử lý chênh lệch quỹ - Thủ quỹ{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Xử lý chênh lệch quỹ</h2>
+        <p class="page-desc">Hồ sơ xử lý thiếu/thừa quỹ</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Kiểm kê</th>
+                    <th>Loại</th>
+                    <th>Số tiền</th>
+                    <th>Nguyên nhân</th>
+                    <th>Xử lý</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for xl in xu_ly_list %}
+                <tr>
+                    <td>{{ xl.kiem_ke.so_kiem_ke }}</td>
+                    <td>{{ xl.get_loai_display }}</td>
+                    <td class="text-end">{{ xl.so_tien|floatformat:0 }}</td>
+                    <td>{{ xl.nguyen_nhan|truncatechars:50 }}</td>
+                    <td>{{ xl.get_xu_ly_display }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center text-muted">Chưa có hồ sơ xử lý nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

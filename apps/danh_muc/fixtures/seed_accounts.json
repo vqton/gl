@@ -1,0 +1,2354 @@
+[
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "111",
+      "ten_tai_khoan": "Tiền mặt",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Tiền Việt Nam đồng tại quỹ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "112",
+      "ten_tai_khoan": "Tiền gửi ngân hàng",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Tiền gửi tại các ngân hàng thương mại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "113",
+      "ten_tai_khoan": "Tiền đang chuyển",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Tiền đang trong quá trình chuyển khoản",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "121",
+      "ten_tai_khoan": "Chứng khoán kinh doanh",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chứng khoán kinh doanh ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "128",
+      "ten_tai_khoan": "Đầu tư nắm giữ đến ngày đáo hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Đầu tư nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "131",
+      "ten_tai_khoan": "Phải thu của khách hàng",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Số tiền phải thu từ khách hàng về hàng hóa, dịch vụ đã giao",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "133",
+      "ten_tai_khoan": "Thuế GTGT được khấu trừ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Thuế giá trị gia tăng đầu vào được khấu trừ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "136",
+      "ten_tai_khoan": "Phải thu nội bộ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu từ các đơn vị nội bộ, chi nhánh",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "138",
+      "ten_tai_khoan": "Phải thu khác",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Các khoản phải thu không thuộc các tài khoản trên",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "141",
+      "ten_tai_khoan": "Tạm ứng",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Số tiền đã tạm ứng cho người lao động",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "151",
+      "ten_tai_khoan": "Hàng mua đang đi trên đường",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hàng đã mua, đã trả tiền nhưng chưa về đến kho",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "152",
+      "ten_tai_khoan": "Nguyên liệu, vật liệu",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Nguyên liệu, vật liệu tồn kho",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "153",
+      "ten_tai_khoan": "Công cụ, dụng cụ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Công cụ, dụng cụ tồn kho",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "154",
+      "ten_tai_khoan": "Chi phí sản xuất, kinh doanh dở dang",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí sản xuất kinh doanh chưa hoàn thành",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "155",
+      "ten_tai_khoan": "Thành phẩm",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Thành phẩm tồn kho",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "157",
+      "ten_tai_khoan": "Hàng hóa",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hàng hóa tồn kho",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "158",
+      "ten_tai_khoan": "Hàng hóa kho bảo thuế",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hàng hóa lưu trữ tại kho bảo thuế",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "171",
+      "ten_tai_khoan": "Chi tiết đầu tư tài chính dài hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi tiết đầu tư tài chính dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "211",
+      "ten_tai_khoan": "Tài sản cố định hữu hình",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Nguyên giá TSCĐ hữu hình",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "212",
+      "ten_tai_khoan": "Tài sản cố định thuê tài chính",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Nguyên giá TSCĐ thuê tài chính",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "213",
+      "ten_tai_khoan": "Tài sản cố định vô hình",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Nguyên giá TSCĐ vô hình",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "214",
+      "ten_tai_khoan": "Hao mòn TSCĐ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Giá trị hao mòn lũy kế của TSCĐ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "215",
+      "ten_tai_khoan": "Tài sản cố định thuê tài chính",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "TSCĐ thuê tài chính chi tiết",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "217",
+      "ten_tai_khoan": "BĐS đầu tư",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Bất động sản đầu tư",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "221",
+      "ten_tai_khoan": "Đầu tư vào công ty con",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Vốn đầu tư vào các công ty con",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "222",
+      "ten_tai_khoan": "Đầu tư vào công ty liên kết",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Vốn đầu tư vào các công ty liên kết, liên doanh",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "228",
+      "ten_tai_khoan": "Đầu tư góp vốn vào đơn vị khác",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Vốn góp vào các đơn vị khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "229",
+      "ten_tai_khoan": "Dự phòng đầu tư tài chính",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng tổn thất đầu tư tài chính",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "241",
+      "ten_tai_khoan": "XDCB dở dang",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí xây dựng cơ bản dở dang",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "242",
+      "ten_tai_khoan": "Chi phí trả trước dài hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí trả trước dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "243",
+      "ten_tai_khoan": "Tài sản thuế thu nhập hoãn lại",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Tài sản thuế TNDN hoãn lại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "244",
+      "ten_tai_khoan": "Ký cược, ký quỹ dài hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Tiền và tài sản ký cược, ký quỹ dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "331",
+      "ten_tai_khoan": "Phải trả người bán",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Số tiền phải trả cho người bán về hàng hóa, dịch vụ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "332",
+      "ten_tai_khoan": "Thuế GTGT phải nộp",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế GTGT đầu ra phải nộp ngân sách nhà nước",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "333",
+      "ten_tai_khoan": "Thuế và các khoản phải nộp Nhà nước",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản thuế và phí phải nộp ngân sách nhà nước",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "334",
+      "ten_tai_khoan": "Phải trả người lao động",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Tiền lương, thưởng và các khoản phải trả người lao động",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "335",
+      "ten_tai_khoan": "Chi phí phải trả",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Chi phí đã ghi nhận nhưng chưa thanh toán",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "336",
+      "ten_tai_khoan": "Phải trả nội bộ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Phải trả cho các đơn vị nội bộ, chi nhánh",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "338",
+      "ten_tai_khoan": "Phải trả, phải nộp khác",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản phải trả, phải nộp khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "341",
+      "ten_tai_khoan": "Vay và nợ thuê tài chính dài hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Số tiền vay và nợ thuê tài chính trên 12 tháng",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "343",
+      "ten_tai_khoan": "Trái phiếu phát hành",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Giá trị trái phiếu đã phát hành",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "344",
+      "ten_tai_khoan": "Nhận ký cược, ký quỹ ngắn hạn",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Tiền nhận ký cược, ký quỹ ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "347",
+      "ten_tai_khoan": "Thuế thu nhập hoãn lại phải trả",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế TNDN hoãn lại phải trả",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "352",
+      "ten_tai_khoan": "Dự phòng phải trả",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản dự phòng phải trả",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "353",
+      "ten_tai_khoan": "Doanh thu chưa thực hiện",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu nhận trước nhưng chưa thực hiện",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "356",
+      "ten_tai_khoan": "Quỹ ổn định giá",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Quỹ ổn định giá",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "411",
+      "ten_tai_khoan": "Vốn đầu tư của chủ sở hữu",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Vốn đầu tư từ các chủ sở hữu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "412",
+      "ten_tai_khoan": "Chênh lệch tỷ giá hối đoái",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Chênh lệch tỷ giá hối đoái do đánh giá lại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "413",
+      "ten_tai_khoan": "Chênh lệch đánh giá lại tài sản",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Chênh lệch do đánh giá lại tài sản",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "414",
+      "ten_tai_khoan": "Quỹ đầu tư phát triển",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Quỹ đầu tư phát triển doanh nghiệp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "418",
+      "ten_tai_khoan": "Các quỹ khác thuộc vốn chủ sở hữu",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Các quỹ khác thuộc nguồn vốn chủ sở hữu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "419",
+      "ten_tai_khoan": "Cổ phiếu quỹ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Giá trị cổ phiếu do công ty mua lại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "421",
+      "ten_tai_khoan": "Lợi nhuận sau thuế chưa phân phối",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Lợi nhuận sau thuế chưa phân phối cho chủ sở hữu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "511",
+      "ten_tai_khoan": "Doanh thu bán hàng và cung cấp dịch vụ",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "doanh_thu",
+      "mo_ta": "Doanh thu từ hoạt động bán hàng và cung cấp dịch vụ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "515",
+      "ten_tai_khoan": "Doanh thu hoạt động tài chính",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "doanh_thu",
+      "mo_ta": "Doanh thu từ hoạt động tài chính",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "521",
+      "ten_tai_khoan": "Các khoản giảm trừ doanh thu",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "doanh_thu",
+      "mo_ta": "Giảm giá, chiết khấu, hàng bán bị trả lại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "621",
+      "ten_tai_khoan": "Chi phí nguyên liệu, vật liệu trực tiếp",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nguyên liệu, vật liệu trực tiếp sản xuất",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "622",
+      "ten_tai_khoan": "Chi phí nhân công trực tiếp",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nhân công trực tiếp sản xuất",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "623",
+      "ten_tai_khoan": "Chi phí sử dụng máy thi công",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí sử dụng máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "627",
+      "ten_tai_khoan": "Chi phí sản xuất chung",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí sản xuất chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "632",
+      "ten_tai_khoan": "Giá vốn hàng bán",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Giá vốn của hàng hóa, dịch vụ đã bán",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "635",
+      "ten_tai_khoan": "Chi phí tài chính",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí hoạt động tài chính (lãi vay, tỷ giá...)",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "641",
+      "ten_tai_khoan": "Chi phí bán hàng",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí phục vụ cho hoạt động bán hàng",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "642",
+      "ten_tai_khoan": "Chi phí quản lý doanh nghiệp",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí quản lý hành chính doanh nghiệp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "711",
+      "ten_tai_khoan": "Thu nhập khác",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "thu_nhap_khac",
+      "mo_ta": "Thu nhập từ hoạt động khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "811",
+      "ten_tai_khoan": "Chi phí khác",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi_khac",
+      "mo_ta": "Chi phí từ hoạt động khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "821",
+      "ten_tai_khoan": "Chi phí thuế TNDN",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "chi_phi_khac",
+      "mo_ta": "Chi phí thuế thu nhập doanh nghiệp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "911",
+      "ten_tai_khoan": "Xác định kết quả kinh doanh",
+      "cap_do": 1,
+      "tai_khoan_me": null,
+      "loai_tai_khoan": "xac_dinh_kq",
+      "mo_ta": "Tài khoản xác định kết quả hoạt động kinh doanh",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1281",
+      "ten_tai_khoan": "Đầu tư ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "128",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Đầu tư ngắn hạn nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1282",
+      "ten_tai_khoan": "Đầu tư dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "128",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Đầu tư dài hạn nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1283",
+      "ten_tai_khoan": "Dự phòng giảm giá đầu tư",
+      "cap_do": 2,
+      "tai_khoan_me": "128",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng giảm giá đầu tư nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1288",
+      "ten_tai_khoan": "Đầu tư khác",
+      "cap_do": 2,
+      "tai_khoan_me": "128",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Đầu tư khác nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1331",
+      "ten_tai_khoan": "Thuế GTGT được khấu trừ",
+      "cap_do": 2,
+      "tai_khoan_me": "133",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Thuế GTGT đầu vào được khấu trừ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1332",
+      "ten_tai_khoan": "Thuế GTGT đầu vào của BĐS đầu tư",
+      "cap_do": 2,
+      "tai_khoan_me": "133",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Thuế GTGT đầu vào của BĐS đầu tư được khấu trừ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1361",
+      "ten_tai_khoan": "Phải thu nội bộ ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "136",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu nội bộ ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1362",
+      "ten_tai_khoan": "Phải thu nội bộ dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "136",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu nội bộ dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1363",
+      "ten_tai_khoan": "Phải thu nội bộ khác",
+      "cap_do": 2,
+      "tai_khoan_me": "136",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu nội bộ khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1368",
+      "ten_tai_khoan": "Phải thu nội bộ chi tiết",
+      "cap_do": 2,
+      "tai_khoan_me": "136",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu nội bộ chi tiết theo đối tượng",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1381",
+      "ten_tai_khoan": "Phải thu về tài sản thiếu",
+      "cap_do": 2,
+      "tai_khoan_me": "138",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu về tài sản thiếu chờ xử lý",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1383",
+      "ten_tai_khoan": "Phải thu về bồi thường",
+      "cap_do": 2,
+      "tai_khoan_me": "138",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu về bồi thường thiệt hại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "1388",
+      "ten_tai_khoan": "Phải thu khác chi tiết",
+      "cap_do": 2,
+      "tai_khoan_me": "138",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Phải thu khác chi tiết theo đối tượng",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2141",
+      "ten_tai_khoan": "Hao mòn TSCĐ hữu hình",
+      "cap_do": 2,
+      "tai_khoan_me": "214",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hao mòn lũy kế TSCĐ hữu hình",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2142",
+      "ten_tai_khoan": "Hao mòn TSCĐ thuê tài chính",
+      "cap_do": 2,
+      "tai_khoan_me": "214",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hao mòn lũy kế TSCĐ thuê tài chính",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2143",
+      "ten_tai_khoan": "Hao mòn TSCĐ vô hình",
+      "cap_do": 2,
+      "tai_khoan_me": "214",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hao mòn lũy kế TSCĐ vô hình",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2147",
+      "ten_tai_khoan": "Hao mòn BĐS đầu tư",
+      "cap_do": 2,
+      "tai_khoan_me": "214",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Hao mòn lũy kế BĐS đầu tư",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2151",
+      "ten_tai_khoan": "TSCĐ thuê tài chính ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "215",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "TSCĐ thuê tài chính ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2152",
+      "ten_tai_khoan": "TSCĐ thuê tài chính dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "215",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "TSCĐ thuê tài chính dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2153",
+      "ten_tai_khoan": "TSCĐ thuê tài chính khác",
+      "cap_do": 2,
+      "tai_khoan_me": "215",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "TSCĐ thuê tài chính khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2291",
+      "ten_tai_khoan": "Dự phòng đầu tư CK kinh doanh",
+      "cap_do": 2,
+      "tai_khoan_me": "229",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng tổn thất đầu tư chứng khoán kinh doanh",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2292",
+      "ten_tai_khoan": "Dự phòng đầu tư đơn vị khác",
+      "cap_do": 2,
+      "tai_khoan_me": "229",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng tổn thất đầu tư vào đơn vị khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2293",
+      "ten_tai_khoan": "Dự phòng đầu tư nắm giữ đến đáo hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "229",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng tổn thất đầu tư nắm giữ đến ngày đáo hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2294",
+      "ten_tai_khoan": "Dự phòng tổn thất đầu tư khác",
+      "cap_do": 2,
+      "tai_khoan_me": "229",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng tổn thất đầu tư khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2295",
+      "ten_tai_khoan": "Dự phòng giảm giá đầu tư dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "229",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Dự phòng giảm giá đầu tư dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2411",
+      "ten_tai_khoan": "Chi phí XDCB dở dang",
+      "cap_do": 2,
+      "tai_khoan_me": "241",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí xây dựng cơ bản dở dang",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2412",
+      "ten_tai_khoan": "Thiết bị đang lắp đặt",
+      "cap_do": 2,
+      "tai_khoan_me": "241",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Giá trị thiết bị đang lắp đặt",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2413",
+      "ten_tai_khoan": "Chi phí khác XDCB",
+      "cap_do": 2,
+      "tai_khoan_me": "241",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí khác liên quan XDCB",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "2414",
+      "ten_tai_khoan": "Chi phí XDCB khác",
+      "cap_do": 2,
+      "tai_khoan_me": "241",
+      "loai_tai_khoan": "tai_san",
+      "mo_ta": "Chi phí XDCB khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3331",
+      "ten_tai_khoan": "Thuế GTGT phải nộp",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế GTGT phải nộp ngân sách nhà nước",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3332",
+      "ten_tai_khoan": "Thuế xuất khẩu",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế xuất khẩu phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3333",
+      "ten_tai_khoan": "Thuế tiêu thụ đặc biệt",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế tiêu thụ đặc biệt phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3334",
+      "ten_tai_khoan": "Thuế thu nhập doanh nghiệp",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế TNDN phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3335",
+      "ten_tai_khoan": "Thuế bảo vệ môi trường",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế bảo vệ môi trường phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3336",
+      "ten_tai_khoan": "Thuế tài nguyên",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế tài nguyên phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3337",
+      "ten_tai_khoan": "Thuế nhà, đất",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Thuế nhà, đất phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3338",
+      "ten_tai_khoan": "Các loại thuế khác",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các loại thuế khác phải nộp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3339",
+      "ten_tai_khoan": "Phí, lệ phí và các khoản phải nộp khác",
+      "cap_do": 2,
+      "tai_khoan_me": "333",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Phí, lệ phí và các khoản phải nộp khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3381",
+      "ten_tai_khoan": "Tài sản thiếu chờ xử lý",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Giá trị tài sản thiếu chờ xử lý",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3382",
+      "ten_tai_khoan": "Doanh thu chưa thực hiện",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu chưa thực hiện ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3383",
+      "ten_tai_khoan": "Doanh thu hoạt động tài chính chưa thực hiện",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu hoạt động tài chính chưa thực hiện",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3384",
+      "ten_tai_khoan": "Nhận ký cược, ký quỹ",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Tiền nhận ký cược, ký quỹ",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3386",
+      "ten_tai_khoan": "Phải trả công đoàn, BHXH",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Phải trả công đoàn, BHXH, BHYT, BHTN",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3387",
+      "ten_tai_khoan": "Phải trả khác",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản phải trả khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3388",
+      "ten_tai_khoan": "Phải nộp khác",
+      "cap_do": 2,
+      "tai_khoan_me": "338",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản phải nộp khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3411",
+      "ten_tai_khoan": "Vay ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "341",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản vay ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3412",
+      "ten_tai_khoan": "Vay dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "341",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Các khoản vay dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3431",
+      "ten_tai_khoan": "Trái phiếu thường",
+      "cap_do": 2,
+      "tai_khoan_me": "343",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Giá trị trái phiếu thường đã phát hành",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3432",
+      "ten_tai_khoan": "Trái phiếu có quyền chọn",
+      "cap_do": 2,
+      "tai_khoan_me": "343",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Giá trị trái phiếu có quyền chọn đã phát hành",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3531",
+      "ten_tai_khoan": "Doanh thu chưa thực hiện ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "353",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu nhận trước ngắn hạn chưa thực hiện",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3532",
+      "ten_tai_khoan": "Doanh thu chưa thực hiện dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "353",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu nhận trước dài hạn chưa thực hiện",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3533",
+      "ten_tai_khoan": "Doanh thu chưa thực hiện khác",
+      "cap_do": 2,
+      "tai_khoan_me": "353",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Doanh thu chưa thực hiện khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3534",
+      "ten_tai_khoan": "Quỹ ổn định giá",
+      "cap_do": 2,
+      "tai_khoan_me": "353",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Quỹ ổn định giá (phân loại theo 353)",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3561",
+      "ten_tai_khoan": "Quỹ ổn định giá ngắn hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "356",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Quỹ ổn định giá ngắn hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "3562",
+      "ten_tai_khoan": "Quỹ ổn định giá dài hạn",
+      "cap_do": 2,
+      "tai_khoan_me": "356",
+      "loai_tai_khoan": "no_phai_tra",
+      "mo_ta": "Quỹ ổn định giá dài hạn",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4111",
+      "ten_tai_khoan": "Vốn góp của chủ sở hữu",
+      "cap_do": 2,
+      "tai_khoan_me": "411",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Vốn góp của chủ sở hữu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4112",
+      "ten_tai_khoan": "Thặng dư vốn cổ phần",
+      "cap_do": 2,
+      "tai_khoan_me": "411",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Thặng dư vốn cổ phần",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4113",
+      "ten_tai_khoan": "Quyền chọn chuyển đổi trái phiếu",
+      "cap_do": 2,
+      "tai_khoan_me": "411",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Quyền chọn chuyển đổi trái phiếu thành cổ phiếu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4118",
+      "ten_tai_khoan": "Vốn khác",
+      "cap_do": 2,
+      "tai_khoan_me": "411",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Vốn khác thuộc vốn chủ sở hữu",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4211",
+      "ten_tai_khoan": "Lợi nhuận năm trước",
+      "cap_do": 2,
+      "tai_khoan_me": "421",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Lợi nhuận sau thuế chưa phân phối năm trước",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "4212",
+      "ten_tai_khoan": "Lợi nhuận năm nay",
+      "cap_do": 2,
+      "tai_khoan_me": "421",
+      "loai_tai_khoan": "von_chu_so_huu",
+      "mo_ta": "Lợi nhuận sau thuế chưa phân phối năm nay",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "5111",
+      "ten_tai_khoan": "Doanh thu bán hàng hóa",
+      "cap_do": 2,
+      "tai_khoan_me": "511",
+      "loai_tai_khoan": "doanh_thu",
+      "mo_ta": "Doanh thu bán hàng hóa",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6211",
+      "ten_tai_khoan": "Chi phí NVLTT",
+      "cap_do": 2,
+      "tai_khoan_me": "621",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nguyên liệu, vật liệu trực tiếp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6221",
+      "ten_tai_khoan": "Chi phí NCTT",
+      "cap_do": 2,
+      "tai_khoan_me": "622",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nhân công trực tiếp",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6231",
+      "ten_tai_khoan": "Chi phí nhân công",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nhân công sử dụng máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6232",
+      "ten_tai_khoan": "Chi phí vật liệu",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí vật liệu sử dụng máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6233",
+      "ten_tai_khoan": "Chi phí dụng cụ",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí dụng cụ sử dụng máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6234",
+      "ten_tai_khoan": "Chi phí khấu hao",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí khấu hao máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6237",
+      "ten_tai_khoan": "Chi phí dịch vụ mua ngoài",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí dịch vụ mua ngoài phục vụ máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6238",
+      "ten_tai_khoan": "Chi phí khác bằng tiền",
+      "cap_do": 2,
+      "tai_khoan_me": "623",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí khác bằng tiền phục vụ máy thi công",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6271",
+      "ten_tai_khoan": "Chi phí nhân viên phân xưởng",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí nhân viên phân xưởng, đội, trại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6272",
+      "ten_tai_khoan": "Chi phí vật liệu",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí vật liệu sản xuất chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6273",
+      "ten_tai_khoan": "Chi phí dụng cụ",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí dụng cụ sản xuất chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6274",
+      "ten_tai_khoan": "Chi phí khấu hao TSCĐ",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí khấu hao TSCĐ dùng chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6275",
+      "ten_tai_khoan": "Chi phí dịch vụ mua ngoài",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí dịch vụ mua ngoài phục vụ sản xuất chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6277",
+      "ten_tai_khoan": "Chi phí khác bằng tiền",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí khác bằng tiền phục vụ sản xuất chung",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "6278",
+      "ten_tai_khoan": "Chi phí khác",
+      "cap_do": 2,
+      "tai_khoan_me": "627",
+      "loai_tai_khoan": "chi_phi",
+      "mo_ta": "Chi phí sản xuất chung khác",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "8211",
+      "ten_tai_khoan": "Chi phí thuế TNDN hiện hành",
+      "cap_do": 2,
+      "tai_khoan_me": "821",
+      "loai_tai_khoan": "chi_phi_khac",
+      "mo_ta": "Chi phí thuế TNDN hiện hành",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  },
+  {
+    "model": "danh_muc.taikhoanketoan",
+    "pk": null,
+    "fields": {
+      "ma_tai_khoan": "8212",
+      "ten_tai_khoan": "Chi phí thuế TNDN hoãn lại",
+      "cap_do": 2,
+      "tai_khoan_me": "821",
+      "loai_tai_khoan": "chi_phi_khac",
+      "mo_ta": "Chi phí thuế TNDN hoãn lại",
+      "is_active": true,
+      "is_immutable": true,
+      "created_by": "system",
+      "updated_by": "system"
+    }
+  }
+]

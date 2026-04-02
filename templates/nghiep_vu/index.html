@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Trang chủ - Kế toán SME{% endblock %}
+{% block breadcrumb %}Trang chủ{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Tổng quan hệ thống</h2>
+        <p class="page-desc">Phần mềm Kế toán SME - Tuân thủ Thông tư 99/2025/TT-BTC</p>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-primary">
+            <div class="card-body">
+                <h5 class="card-title">Danh mục</h5>
+                <p class="card-text text-muted">Tài khoản, khách hàng, nhà cung cấp, hàng hóa</p>
+                <a href="{% url 'danh_muc:dashboard' %}" class="btn btn-outline-primary btn-sm">Quản lý danh mục</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-success">
+            <div class="card-body">
+                <h5 class="card-title">Tiền tệ (M4)</h5>
+                <p class="card-text text-muted">Phiếu thu, phiếu chi, quỹ tiền mặt</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'nghiep_vu:phieu_thu_list' %}" class="btn btn-outline-success btn-sm">Phiếu thu</a>
+                    <a href="{% url 'nghiep_vu:phieu_chi_list' %}" class="btn btn-outline-success btn-sm">Phiếu chi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <h5 class="card-title">Mua/Bán (M1/M8)</h5>
+                <p class="card-text text-muted">Hóa đơn, nhập kho, xuất kho</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'nghiep_vu:hoa_don_list' %}" class="btn btn-outline-info btn-sm">Hóa đơn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-warning">
+            <div class="card-body">
+                <h5 class="card-title">Kho (M2)</h5>
+                <p class="card-text text-muted">Nhập/xuất kho, tồn kho, định giá</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'kho:kho_list' %}" class="btn btn-outline-warning btn-sm">Kho hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-secondary">
+            <div class="card-body">
+                <h5 class="card-title">Tài sản cố định (M3)</h5>
+                <p class="card-text text-muted">Quản lý TSCĐ, khấu hao</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'tai_san:taisan_list' %}" class="btn btn-outline-secondary btn-sm">Tài sản</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-danger">
+            <div class="card-body">
+                <h5 class="card-title">Lương & BHXH (M7)</h5>
+                <p class="card-text text-muted">Bảng lương, BHXH, thuế TNCN</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'luong:nhanvien_list' %}" class="btn btn-outline-danger btn-sm">Nhân viên</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-dark">
+            <div class="card-body">
+                <h5 class="card-title">Báo cáo (M13)</h5>
+                <p class="card-text text-muted">Bảng CĐKT, KQKD, Lưu chuyển tiền tệ</p>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'bao_cao:bang_cdk' %}" class="btn btn-outline-dark btn-sm">Bảng CĐKT</a>
+                    <a href="{% url 'bao_cao:kqkd' %}" class="btn btn-outline-dark btn-sm">KQKD</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">Phím tắt toàn cục</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> - Lưu form</div>
+                    <div class="col-md-3"><kbd>Esc</kbd> - Hủy / Quay lại</div>
+                    <div class="col-md-3"><kbd>Tab</kbd> - Chuyển trường</div>
+                    <div class="col-md-3"><kbd>Alt</kbd>+<kbd>1</kbd> - Phiếu thu</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

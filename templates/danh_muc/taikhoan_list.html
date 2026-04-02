@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Tài khoản kế toán{% endblock %}
+{% block breadcrumb %}Danh mục / Tài khoản{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Tài khoản kế toán</h2>
+        <p class="page-desc">Quản lý tài khoản kế toán theo TT 99</p>
+    </div>
+    <a href="{% url 'danh_muc:taikhoan_create' %}" class="btn btn-primary">+ Thêm tài khoản</a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="get" class="row g-2 mb-0">
+            <div class="col-md-4">
+                <input type="text" name="q" value="{{ search }}" class="form-control" placeholder="Tìm mã hoặc tên tài khoản...">
+            </div>
+            <div class="col-md-2">
+                <select name="loai" class="form-select">
+                    <option value="">-- Loại TK --</option>
+                    <option value="1" {% if loai == '1' %}selected{% endif %}>1 - Tài sản</option>
+                    <option value="2" {% if loai == '2' %}selected{% endif %}>2 - Nguồn vốn</option>
+                    <option value="3" {% if loai == '3' %}selected{% endif %}>3 - Nợ phải trả</option>
+                    <option value="4" {% if loai == '4' %}selected{% endif %}>4 - Nguồn vốn CSH</option>
+                    <option value="5" {% if loai == '5' %}selected{% endif %}>5 - Doanh thu</option>
+                    <option value="6" {% if loai == '6' %}selected{% endif %}>6 - Chi phí SX</option>
+                    <option value="7" {% if loai == '7' %}selected{% endif %}>7 - Thu nhập khác</option>
+                    <option value="8" {% if loai == '8' %}selected{% endif %}>8 - Chi phí khác</option>
+                    <option value="9" {% if loai == '9' %}selected{% endif %}>9 - Xác định KQKD</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                <a href="{% url 'danh_muc:taikhoan_list' %}" class="btn btn-outline-secondary">Xóa</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table mb-0">
+            <thead>
+                <tr><th>Mã TK</th><th>Tên tài khoản</th><th>Loại</th><th>Cấp</th><th>TK mẹ</th><th>Thao tác</th></tr>
+            </thead>
+            <tbody>
+                {% for tk in taikhoan_list %}
+                <tr>
+                    <td><strong>{{ tk.ma_tai_khoan }}</strong></td>
+                    <td>{{ tk.ten_tai_khoan }}</td>
+                    <td>{{ tk.get_loai_tai_khoan_display }}</td>
+                    <td>{{ tk.cap_do }}</td>
+                    <td>{{ tk.tk_me.ma_tai_khoan|default:"-" }}</td>
+                    <td>
+                        <a href="{% url 'danh_muc:taikhoan_update' tk.pk %}" class="btn btn-sm btn-outline-primary">Sửa</a>
+                        <a href="{% url 'danh_muc:taikhoan_delete' tk.pk %}" class="btn btn-sm btn-outline-danger">Xóa</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted">Chưa có tài khoản nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if is_paginated %}
+        <nav class="p-3"><ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ search }}&loai={{ loai }}">Trước</a></li>{% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ search }}&loai={{ loai }}">Sau</a></li>{% endif %}
+        </ul></nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

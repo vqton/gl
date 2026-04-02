@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Chi tiết phiếu thu - {{ phieu.so_chung_tu }}{% endblock %}
+{% block breadcrumb %}Nghiệp vụ / Phiếu thu / {{ phieu.so_chung_tu }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Phiếu thu: {{ phieu.so_chung_tu }}</h2>
+    </div>
+    <a href="{% url 'nghiep_vu:phieu_thu_list' %}" class="btn btn-secondary">Quay lại</a>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-borderless">
+                    <tr><th>Ngày chứng từ</th><td>{{ phieu.ngay_chung_tu|date:"d/m/Y" }}</td></tr>
+                    <tr><th>Hình thức</th><td>{{ phieu.get_hinh_thuc_thanh_toan_display }}</td></tr>
+                    <tr><th>Khách hàng</th><td>{{ phieu.khach_hang|default:"-" }}</td></tr>
+                    <tr><th>Diễn giải</th><td>{{ phieu.dien_giai|default:"-" }}</td></tr>
+                    <tr><th>Trạng thái</th><td>
+                        {% if phieu.trang_thai == 'draft' %}<span class="status-draft">Nháp</span>
+                        {% elif phieu.trang_thai == 'posted' %}<span class="status-posted">Đã ghi sổ</span>
+                        {% else %}<span class="status-cancelled">Đã hủy</span>{% endif %}
+                    </td></tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-borderless">
+                    <tr><th>Số tiền</th><td class="text-end fw-bold">{{ phieu.so_tien|floatformat:0 }}</td></tr>
+                    <tr><th>Tỷ giá</th><td>{{ phieu.ty_gia }}</td></tr>
+                    <tr><th>Số tiền VND</th><td class="text-end fw-bold">{{ phieu.so_tien_vnd|floatformat:0 }}</td></tr>
+                    <tr><th>TK Nợ</th><td>{{ phieu.tk_no }}</td></tr>
+                    <tr><th>TK Có</th><td>{{ phieu.tk_co }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

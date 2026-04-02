@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Danh mục - Kế toán SME{% endblock %}
+{% block breadcrumb %}Danh mục{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Quản lý danh mục</h2>
+        <p class="page-desc">Tài khoản, đối tượng, hàng hóa</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-primary">
+            <div class="card-body">
+                <h5 class="card-title">Tài khoản kế toán</h5>
+                <p class="card-text text-muted">{{ taikhoan_list|length }} tài khoản cấp 1</p>
+                <a href="{% url 'danh_muc:taikhoan_list' %}" class="btn btn-outline-primary btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-success">
+            <div class="card-body">
+                <h5 class="card-title">Khách hàng</h5>
+                <p class="card-text text-muted">{{ kh_count }} khách hàng</p>
+                <a href="{% url 'danh_muc:khachhang_list' %}" class="btn btn-outline-success btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <h5 class="card-title">Nhà cung cấp</h5>
+                <p class="card-text text-muted">{{ ncc_count }} nhà cung cấp</p>
+                <a href="{% url 'danh_muc:nhacungcap_list' %}" class="btn btn-outline-info btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-warning">
+            <div class="card-body">
+                <h5 class="card-title">Hàng hóa</h5>
+                <p class="card-text text-muted">{{ hh_count }} mặt hàng</p>
+                <a href="{% url 'danh_muc:hanghoa_list' %}" class="btn btn-outline-warning btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-secondary">
+            <div class="card-body">
+                <h5 class="card-title">Ngân hàng</h5>
+                <p class="card-text text-muted">{{ nh_count }} ngân hàng</p>
+                <a href="{% url 'danh_muc:nganhang_list' %}" class="btn btn-outline-secondary btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card h-100 border-dark">
+            <div class="card-body">
+                <h5 class="card-title">Đơn vị tính</h5>
+                <p class="card-text text-muted">Quản lý đơn vị tính</p>
+                <a href="{% url 'danh_muc:donvi_list' %}" class="btn btn-outline-dark btn-sm">Quản lý</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

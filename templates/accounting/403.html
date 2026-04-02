@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Không có quyền truy cập</title>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #f8f9fa;
+        }
+        .error-container {
+            text-align: center;
+            padding: 40px;
+        }
+        .error-code {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #ea4335;
+            margin: 0;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            color: #5f6368;
+            margin: 20px 0;
+        }
+        .error-desc {
+            color: #80868b;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1 class="error-code">403</h1>
+        <h2 class="error-message">Không có quyền truy cập</h2>
+        <p class="error-desc">Bạn không có quyền truy cập trang này.</p>
+        <a href="{% url 'accounting:dashboard' %}" class="btn btn-primary">Quay về Dashboard</a>
+    </div>
+</body>
+</html>

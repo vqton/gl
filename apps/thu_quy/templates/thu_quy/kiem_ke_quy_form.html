@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Kiểm kê quỹ - Thủ quỹ{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Kiểm kê quỹ</h2>
+        <p class="page-desc">Biên bản kiểm kê tiền mặt tại quỹ</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Số kiểm kê</th>
+                    <th>Ngày</th>
+                    <th>Kỳ quỹ</th>
+                    <th>Sổ sách</th>
+                    <th>Thực tế</th>
+                    <th>Chênh lệch</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kk in kiem_ke_list %}
+                <tr>
+                    <td>{{ kk.so_kiem_ke }}</td>
+                    <td>{{ kk.ngay_kiem_ke|date:"d/m/Y" }}</td>
+                    <td>{{ kk.ky_quy }}</td>
+                    <td class="text-end">{{ kk.so_du_so_sach|floatformat:0 }}</td>
+                    <td class="text-end">{{ kk.so_thuc_te|floatformat:0 }}</td>
+                    <td class="text-end {% if kk.chen_lech < 0 %}text-danger{% elif kk.chen_lech > 0 %}text-success{% endif %}">
+                        {{ kk.chen_lech|floatformat:0 }}
+                    </td>
+                    <td>
+                        <span class="status-badge status-{{ kk.trang_thai }}">
+                            {{ kk.get_trang_thai_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">Chưa có biên bản kiểm kê nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

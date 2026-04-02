@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Phân tích tài chính{% endblock %}
+{% block extra_css %}
+<style>
+    .ratio-card { border-left: 4px solid var(--primary-color); }
+    .score-circle {
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2rem; font-weight: 700;
+        margin: 0 auto;
+    }
+    .score-tot { background: #e6f4ea; color: #34a853; }
+    .score-kha { background: #e8f0fe; color: #1a73e8; }
+    .score-trung-binh { background: #fef7e0; color: #f9ab00; }
+    .score-yeu { background: #fce8e6; color: #ea4335; }
+</style>
+{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Phân tích tài chính</h2>
+        <p class="page-desc">Chỉ số tài chính & đánh giá sức khỏe doanh nghiệp</p>
+    </div>
+    <form method="get" class="d-flex gap-2">
+        <input type="date" name="tu_ngay" value="{{ tu_ngay }}" class="form-control">
+        <input type="date" name="den_ngay" value="{{ den_ngay }}" class="form-control">
+        <button type="submit" class="btn btn-primary">Xem</button>
+    </form>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card ratio-card">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Điểm sức khỏe</h6>
+                <div class="score-circle score-{{ data.health.rating|lower }}">
+                    {{ data.health.score }}
+                </div>
+                <p class="mt-2 mb-0 fw-bold">{{ data.health.rating }}</p>
+            </div>
+        </div>
+    </div>
+    {% for warning in data.health.warnings %}
+    <div class="col-md-3">
+        <div class="card border-warning">
+            <div class="card-body">
+                <small class="text-warning">⚠ {{ warning }}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-header">Khả năng thanh toán</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr><td>Hệ số thanh toán hiện hành</td><td class="text-end">{{ data.ratios.thanh_toan.hien_hanh }}</td></tr>
+                    <tr><td>Hệ số thanh toán nhanh</td><td class="text-end">{{ data.ratios.thanh_toan.nhanh }}</td></tr>
+                    <tr><td>Hệ số thanh toán tức thời</td><td class="text-end">{{ data.ratios.thanh_toan.tuc_thoi }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-header">Cơ cấu vốn</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr><td>Hệ số nợ</td><td class="text-end">{{ data.ratios.no.he_so_no }}</td></tr>
+                    <tr><td>Hệ số tự tài trợ</td><td class="text-end">{{ data.ratios.no.tu_tai_tro }}</td></tr>
+                    <tr><td>Hệ số cấu trúc vốn</td><td class="text-end">{{ data.ratios.no.cau_truc_von }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-header">Hiệu quả hoạt động</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr><td>Vòng quay hàng tồn kho</td><td class="text-end">{{ data.ratios.hoat_dong.vong_quay_ton_kho }}</td></tr>
+                    <tr><td>Kỳ thu tiền bình quân (ngày)</td><td class="text-end">{{ data.ratios.hoat_dong.ky_thu_tien }}</td></tr>
+                    <tr><td>Vòng quay tổng tài sản</td><td class="text-end">{{ data.ratios.hoat_dong.vong_quay_tai_san }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-header">Khả năng sinh lời</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <tr><td>Biên lợi nhuận gộp</td><td class="text-end">{{ data.ratios.sinh_loi.bien_loi_nhuan_gop }}</td></tr>
+                    <tr><td>Biên lợi nhuận ròng</td><td class="text-end">{{ data.ratios.sinh_loi.bien_loi_nhuan_rong }}</td></tr>
+                    <tr><td>ROA</td><td class="text-end">{{ data.ratios.sinh_loi.roa }}</td></tr>
+                    <tr><td>ROE</td><td class="text-end">{{ data.ratios.sinh_loi.roe }}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

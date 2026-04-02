@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Xác nhận xóa{% endblock %}
+{% block breadcrumb %}Danh mục / Xóa{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h2>Xác nhận xóa</h2>
+</div>
+    <div class="alert alert-danger">
+        <p>Bạn có chắc chắn muốn xóa <strong>{{ object }}</strong>?</p>
+        <p class="mb-0">Hành động này không thể hoàn tác.</p>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Xóa</button>
+        <a href="javascript:history.back()" class="btn btn-secondary ms-2">Hủy</a>
+    </form>
+</div>
+{% endblock %}

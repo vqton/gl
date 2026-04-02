@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Phiếu tập hợp chi phí - Giá thành{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Phiếu tập hợp chi phí</h2>
+        <p class="page-desc">Ghi nhận chi phí phát sinh theo đối tượng và khoản mục</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Số chứng từ</th>
+                    <th>Ngày</th>
+                    <th>Đối tượng</th>
+                    <th>Khoản mục</th>
+                    <th>Số tiền</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for phieu in phieu_list %}
+                <tr>
+                    <td>{{ phieu.so_chung_tu }}</td>
+                    <td>{{ phieu.ngay_chung_tu|date:"d/m/Y" }}</td>
+                    <td>{{ phieu.doi_tuong }}</td>
+                    <td>{{ phieu.khoan_muc }}</td>
+                    <td class="text-end">{{ phieu.so_tien|floatformat:0 }}</td>
+                    <td>
+                        <span class="status-badge status-{{ phieu.trang_thai }}">
+                            {{ phieu.get_trang_thai_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted">Chưa có phiếu nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

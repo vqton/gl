@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Đối tượng tập hợp chi phí - Giá thành{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Đối tượng tập hợp chi phí</h2>
+        <p class="page-desc">Quản lý đối tượng: Sản phẩm, Đơn hàng, Phân xưởng</p>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Mã</th>
+                    <th>Tên đối tượng</th>
+                    <th>Loại</th>
+                    <th>Sản phẩm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dt in doi_tuong_list %}
+                <tr>
+                    <td>{{ dt.ma_doi_tuong }}</td>
+                    <td>{{ dt.ten_doi_tuong }}</td>
+                    <td>{{ dt.get_loai_display }}</td>
+                    <td>{{ dt.san_pham|default:"-" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted">Chưa có đối tượng nào</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Bảng cân đối số phát sinh{% endblock %}
+{% block breadcrumb %}Báo cáo / BCĐSPS{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Bảng cân đối số phát sinh</h2>
+        <p class="page-desc">Từ {{ tu_ngay|date:"d/m/Y" }} đến {{ den_ngay|date:"d/m/Y" }}</p>
+    </div>
+    <div class="d-flex gap-2">
+        <form method="get" class="d-flex gap-2">
+            <input type="date" name="tu" value="{{ tu_ngay|date:'Y-m-d' }}" class="form-control">
+            <span class="align-self-center">đến</span>
+            <input type="date" name="den" value="{{ den_ngay|date:'Y-m-d' }}" class="form-control">
+            <button type="submit" class="btn btn-primary">Xem</button>
+        </form>
+        <button onclick="window.print()" class="btn btn-outline-secondary">In báo cáo</button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Mã TK</th>
+                    <th>Tên tài khoản</th>
+                    <th class="text-end">Số dư đầu Nợ</th>
+                    <th class="text-end">Số dư đầu Có</th>
+                    <th class="text-end">PS Nợ</th>
+                    <th class="text-end">PS Có</th>
+                    <th class="text-end">Số dư cuối Nợ</th>
+                    <th class="text-end">Số dư cuối Có</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for acc in report.accounts %}
+                <tr>
+                    <td><strong>{{ acc.ma_tai_khoan }}</strong></td>
+                    <td>{{ acc.ten_tai_khoan }}</td>
+                    <td class="text-end">{{ acc.so_du_dau_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ acc.so_du_dau_co|floatformat:0 }}</td>
+                    <td class="text-end">{{ acc.phat_sinh_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ acc.phat_sinh_co|floatformat:0 }}</td>
+                    <td class="text-end">{{ acc.so_du_cuoi_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ acc.so_du_cuoi_co|floatformat:0 }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="fw-bold bg-light">
+                    <td colspan="2">TỔNG CỘNG</td>
+                    <td class="text-end">{{ report.tong_so_du_dau_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ report.tong_so_du_dau_co|floatformat:0 }}</td>
+                    <td class="text-end">{{ report.tong_phat_sinh_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ report.tong_phat_sinh_co|floatformat:0 }}</td>
+                    <td class="text-end">{{ report.tong_so_du_cuoi_no|floatformat:0 }}</td>
+                    <td class="text-end">{{ report.tong_so_du_cuoi_co|floatformat:0 }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

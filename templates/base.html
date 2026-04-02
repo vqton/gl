@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống Kế toán SME - Tuân thủ Thông tư 99/2025/TT-BTC">
+    {% block extra_head %}{% endblock %}
+    <title>{% block title %}Kế toán SME - TT 99/2025{% endblock %}</title>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% block extra_css %}{% endblock %}
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --header-height: 60px;
+            --primary-color: #1a73e8;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --bg-light: #f8f9fa;
+            --border-color: #dadce0;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; }
+
+        /* Header */
+        .app-header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            z-index: 1000;
+        }
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        .app-logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .app-logo:hover { color: var(--primary-color); }
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        .breadcrumb-nav a { color: var(--primary-color); text-decoration: none; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-icon {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .header-icon:hover { background: var(--bg-light); }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .user-menu:hover { background: var(--bg-light); }
+        .user-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        .user-info { line-height: 1.3; }
+        .user-name { font-weight: 500; color: var(--text-primary); font-size: 0.875rem; }
+        .user-role { font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* Sidebar */
+        .app-sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0; bottom: 0;
+            width: var(--sidebar-width);
+            background: white;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 16px 0;
+        }
+        .sidebar-section { margin-bottom: 8px; }
+        .sidebar-section-title {
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-item { position: relative; }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .sidebar-link:hover { background: var(--bg-light); }
+        .sidebar-link.active {
+            background: #e8f0fe;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        .sidebar-link .icon {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .sidebar-submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: #fafafa;
+            display: none;
+        }
+        .sidebar-submenu.show { display: block; }
+        .sidebar-submenu .sidebar-link {
+            padding-left: 52px;
+            font-size: 0.8rem;
+        }
+
+        /* Main content */
+        .app-main {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            padding: 24px;
+            min-height: calc(100vh - var(--header-height));
+            background: var(--bg-light);
+        }
+
+        /* Cards */
+        .app-main .card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .app-main .card-header {
+            background: var(--bg-light);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            padding: 14px 20px;
+            border-radius: 12px 12px 0 0;
+        }
+        .app-main .card-body { padding: 20px; }
+        .app-main .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        /* Tables */
+        .app-main table {
+            width: 100%;
+            font-size: 0.875rem;
+        }
+        .app-main .table th {
+            background: var(--bg-light);
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .app-main .table td {
+            padding: 14px 16px;
+            border-top: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+        .app-main .table tbody tr:hover { background: #fafafa; }
+        .app-main .table-striped tbody tr:nth-of-type(odd) { background: transparent; }
+        .app-main .table-striped tbody tr:nth-of-type(odd):hover { background: #fafafa; }
+
+        /* Status badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .status-draft { background: #f1f3f4; color: #5f6368; }
+        .status-posted { background: #e6f4ea; color: #34a853; }
+        .status-cancelled { background: #fce8e6; color: #ea4335; }
+        .status-completed { background: #e6f4ea; color: #34a853; }
+
+        /* Form controls */
+        .app-main .form-control,
+        .app-main .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        .app-main .form-control:focus,
+        .app-main .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+        }
+        .app-main .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        /* Buttons */
+        .app-main .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .app-main .btn-primary:hover {
+            background: #1557b0;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(26,115,232,0.3);
+        }
+        .app-main .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+        .app-main .btn-secondary {
+            background: #5f6368;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 0.875rem;
+        }
+        .app-main .btn-outline-secondary {
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+        .app-main .btn-outline-danger {
+            border-color: #ea4335;
+            color: #ea4335;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+        .app-main .btn-danger {
+            background: #ea4335;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+        .app-main .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* Pagination */
+        .app-main .pagination { margin: 0; }
+        .app-main .page-link {
+            color: var(--primary-color);
+            border-color: var(--border-color);
+            font-size: 0.8rem;
+            padding: 6px 12px;
+        }
+        .app-main .page-item.active .page-link {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Alerts */
+        .app-main .alert { border-radius: 8px; font-size: 0.875rem; }
+
+        /* Page header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .page-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .page-header .page-desc {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin: 4px 0 0;
+        }
+
+        /* Keyboard hints */
+        kbd {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .keyboard-hint {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Inventory colors */
+        .nhap-kho { background-color: #d1e7dd; }
+        .xuat-kho { background-color: #f8d7da; }
+        .dieu-chuyen { background-color: #fff3cd; }
+
+        /* Print */
+        @media print {
+            .app-header, .app-sidebar, .btn, .pagination { display: none !important; }
+            .app-main { margin-left: 0; margin-top: 0; padding: 0; }
+            .card { border: none; box-shadow: none; }
+            body { font-size: 11pt; }
+            table { font-size: 10pt; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <a href="{% url 'accounting:dashboard' %}" class="app-logo">
+                Kế toán SME
+            </a>
+            <nav class="breadcrumb-nav">
+                {% block breadcrumb %}
+                <span>{{ request.resolver_match.url_name|title }}</span>
+                {% endblock %}
+            </nav>
+        </div>
+        <div class="header-right">
+            <div class="user-menu">
+                <div class="user-avatar">{{ user.username|make_list|first|upper|default:"?" }}</div>
+                <div class="user-info">
+                    <div class="user-name">{{ user.username|default:"Khách" }}</div>
+                    <div class="user-role">
+                        {% if user.is_superuser %}Quản trị viên
+                        {% else %}Kế toán viên{% endif %}
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'accounting:logout' %}" class="btn btn-sm btn-outline-secondary">
+                Thoát
+            </a>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="app-sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Nghiệp vụ</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'nghiep_vu:phieu_thu_list' %}" class="sidebar-link">
+                        <span class="icon">📝</span> Phiếu thu
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'nghiep_vu:phieu_chi_list' %}" class="sidebar-link">
+                        <span class="icon">💸</span> Phiếu chi
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'nghiep_vu:hoa_don_list' %}" class="sidebar-link">
+                        <span class="icon">🧾</span> Hóa đơn
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'mua_hang:don_hang_list' %}" class="sidebar-link">
+                        <span class="icon">🛒</span> Mua hàng
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'ngan_hang:giay_bao_no_list' %}" class="sidebar-link">
+                        <span class="icon">🏧</span> Ngân hàng
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Kho</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'kho:kho_list' %}" class="sidebar-link">
+                        <span class="icon">📦</span> Kho hàng
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Báo cáo</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'bao_cao:bang_cdk' %}" class="sidebar-link">
+                        <span class="icon">📊</span> Bảng CĐKT
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'bao_cao:kqkd' %}" class="sidebar-link">
+                        <span class="icon">📈</span> KQKD
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'so_sach:nhat_ky_chung' %}" class="sidebar-link">
+                        <span class="icon">📖</span> Sổ Nhật ký chung
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'so_sach:so_quy' %}" class="sidebar-link">
+                        <span class="icon">💰</span> Sổ Quỹ
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'so_sach:so_ngan_hang' %}" class="sidebar-link">
+                        <span class="icon">🏦</span> Sổ Ngân hàng
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Công nợ</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'cong_no:phai_thu_list' %}" class="sidebar-link">
+                        <span class="icon">💳</span> Phải thu
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'cong_no:phai_tra_list' %}" class="sidebar-link">
+                        <span class="icon">💳</span> Phải trả
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Tài sản</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'tai_san:taisan_list' %}" class="sidebar-link">
+                        <span class="icon">🏗️</span> Tài sản cố định
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'ccdc:ccdc_list' %}" class="sidebar-link">
+                        <span class="icon">🔧</span> CCDC
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Lương</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'luong:nhanvien_list' %}" class="sidebar-link">
+                        <span class="icon">👤</span> Lương & BHXH
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Thuế</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'thue:to_khai_gtgt_list' %}" class="sidebar-link">
+                        <span class="icon">🧮</span> Tờ khai thuế
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Giá thành</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'gia_thanh:doi_tuong_list' %}" class="sidebar-link">
+                        <span class="icon">🏭</span> Đối tượng chi phí
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'gia_thanh:tap_hop_chi_phi_list' %}" class="sidebar-link">
+                        <span class="icon">📋</span> Tập hợp chi phí
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'gia_thanh:phan_bo_chi_phi' %}" class="sidebar-link">
+                        <span class="icon">⚖️</span> Phân bổ chi phí
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'gia_thanh:bang_tinh_gia_thanh_list' %}" class="sidebar-link">
+                        <span class="icon">🧮</span> Bảng tính giá thành
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Thủ quỹ</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'thu_quy:kiem_ke_quy_list' %}" class="sidebar-link">
+                        <span class="icon">🔍</span> Kiểm kê quỹ
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'thu_quy:xu_ly_chenh_lech' %}" class="sidebar-link">
+                        <span class="icon">📝</span> Xử lý chênh lệch
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Phân tích</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'phan_tich:dashboard' %}" class="sidebar-link">
+                        <span class="icon">📊</span> Phân tích tài chính
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        {% if user.is_superuser %}
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Danh mục</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:taikhoan_list' %}" class="sidebar-link">
+                        <span class="icon">📁</span> Tài khoản KT
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:khachhang_list' %}" class="sidebar-link">
+                        <span class="icon">👥</span> Khách hàng
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:nhacungcap_list' %}" class="sidebar-link">
+                        <span class="icon">🏭</span> Nhà cung cấp
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:hanghoa_list' %}" class="sidebar-link">
+                        <span class="icon">📋</span> Hàng hóa
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:nganhang_list' %}" class="sidebar-link">
+                        <span class="icon">🏦</span> Ngân hàng
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="{% url 'danh_muc:donvi_list' %}" class="sidebar-link">
+                        <span class="icon">🏢</span> Đơn vị
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Cấu hình</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="{% url 'admin:index' %}" class="sidebar-link">
+                        <span class="icon">⚙️</span> Quản trị
+                    </a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    </aside>
+
+    <!-- Main content -->
+    <main class="app-main">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+             role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    {% bootstrap_javascript %}
+    {% block extra_js %}{% endblock %}
+
+    <!-- Footer -->
+    <footer style="text-align:center; padding:16px; color:var(--text-secondary); font-size:0.75rem; border-top:1px solid var(--border-color); margin-left:var(--sidebar-width);">
+        &copy; {% now "Y" %} Hệ thống Kế toán SME - Theo Thông tư 99/2025/TT-BTC
+    </footer>
+</body>
+</html>

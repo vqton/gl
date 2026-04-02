@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Chi tiết hóa đơn - {{ hoa_don.so_hoa_don }}{% endblock %}
+{% block breadcrumb %}Nghiệp vụ / Hóa đơn / {{ hoa_don.so_hoa_don }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Hóa đơn: {{ hoa_don.so_hoa_don }}</h2>
+    </div>
+    <a href="{% url 'nghiep_vu:hoa_don_list' %}" class="btn btn-secondary">Quay lại</a>
+</div>
+<div class="card mb-3">
+    <div class="card-header">Thông tin hóa đơn</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-borderless">
+                    <tr><th>Khách hàng</th><td>{{ hoa_don.khach_hang.ten_kh|default:"-" }}</td></tr>
+                    <tr><th>Ngày hóa đơn</th><td>{{ hoa_don.ngay_hoa_don|date:"d/m/Y" }}</td></tr>
+                    <tr><th>Hình thức</th><td>{{ hoa_don.get_hinh_thuc_thanh_toan_display }}</td></tr>
+                    <tr><th>Ký hiệu</th><td>{{ hoa_don.ky_hieu|default:"-" }}</td></tr>
+                    <tr><th>Diễn giải</th><td>{{ hoa_don.dien_giai|default:"-" }}</td></tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-borderless">
+                    <tr><th>Tổng trước thuế</th><td class="text-end">{{ hoa_don.tong_tien_truoc_thue|floatformat:0 }}</td></tr>
+                    <tr><th>Thuế GTGT</th><td class="text-end">{{ hoa_don.tien_thue_gtgt|floatformat:0 }}</td></tr>
+                    <tr><th>Tổng thanh toán</th><td class="text-end fw-bold">{{ hoa_don.tong_cong_thanh_toan|floatformat:0 }}</td></tr>
+                    <tr><th>Trạng thái</th><td>{{ hoa_don.get_trang_thai_display }}</td></tr>
+                    <tr><th>Xuất kho</th><td>{% if hoa_don.da_xuat_kho %}✓{% else %}✗{% endif %}</td></tr>
+                    <tr><th>Thanh toán</th><td>{% if hoa_don.da_thanh_toan %}✓{% else %}✗{% endif %}</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">Chi tiết mặt hàng</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr><th>Hàng hóa</th><th class="text-end">SL</th><th class="text-end">Đơn giá</th><th class="text-end">Thuế</th><th class="text-end">Tổng</th></tr>
+            </thead>
+            <tbody>
+                {% for ct in chi_tiet_list %}
+                <tr>
+                    <td>{{ ct.hang_hoa.ten_hang_hoa }}</td>
+                    <td class="text-end">{{ ct.so_luong|floatformat:2 }}</td>
+                    <td class="text-end">{{ ct.don_gia|floatformat:0 }}</td>
+                    <td class="text-end">{{ ct.tien_thue|floatformat:0 }}</td>
+                    <td class="text-end">{{ ct.tong_tien|floatformat:0 }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center text-muted">Chưa có mặt hàng</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

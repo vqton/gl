@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{{ title|default:"Khách hàng" }}{% endblock %}
+{% block breadcrumb %}Danh mục / {{ title|default:"Khách hàng" }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>{{ title|default:"Khách hàng" }}</h2>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% load django_bootstrap5 %}
+            {% bootstrap_form form layout='horizontal' %}
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary" id="btn_submit">Lưu</button>
+                <a href="javascript:history.back()" class="btn btn-secondary ms-2">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.key === 'Enter') document.getElementById('btn_submit').click();
+    if (e.key === 'Escape') window.history.back();
+});
+</script>
+{% endblock %}
