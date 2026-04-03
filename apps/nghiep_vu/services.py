@@ -23,8 +23,16 @@ from apps.nghiep_vu.constants import (
     NGUONG_DOANH_THU_SME,
 )
 from apps.nghiep_vu.models import (
+    BangPhanBoNVLCCDC,
+    BangPhanBoNVLCCDCChiTiet,
+    BangThanhToanTienLuong,
+    BangThanhToanTienLuongChiTiet,
+    BienBanGiaoNhanTSCD,
+    BienBanThanhLyTSCD,
     ButToan,
     ButToanChiTiet,
+    GiayDeNghiTamUng,
+    GiayThanhToanTamUng,
     HoaDon,
     HoaDonChiTiet,
     NhapKho,
@@ -310,6 +318,41 @@ def tao_hoa_don(
     hoa_don.tong_cong_thanh_toan = tong_cong
     hoa_don.save()
 
+    chi_tiet = []
+    tong_thanh_toan = tong_cong
+    if tong_tien_truoc_thue > decimal.Decimal("0"):
+        chi_tiet.append({
+            "tai_khoan": "131",
+            "loai_no_co": "no",
+            "so_tien": tong_thanh_toan,
+            "ma_doi_tuong": khach_hang.ma_kh,
+            "dien_giai": f"Doanh thu {so_hoa_don}",
+        })
+        chi_tiet.append({
+            "tai_khoan": "511",
+            "loai_no_co": "co",
+            "so_tien": tong_tien_truoc_thue,
+            "ma_doi_tuong": khach_hang.ma_kh,
+            "dien_giai": f"Doanh thu {so_hoa_don}",
+        })
+    if tien_thue_gtgt > decimal.Decimal("0"):
+        chi_tiet.append({
+            "tai_khoan": "3331",
+            "loai_no_co": "co",
+            "so_tien": tien_thue_gtgt,
+            "ma_doi_tuong": "",
+            "dien_giai": f"Thuế GTGT {so_hoa_don}",
+        })
+    if chi_tiet:
+        but_toan = tao_but_toan(
+            ngay=ngay_hoa_don,
+            dien_giai=f"Hóa đơn {so_hoa_don}",
+            chi_tiet=chi_tiet,
+            so_but_toan=f"BT-{so_hoa_don}",
+        )
+        hoa_don.but_toan = but_toan
+        hoa_don.save()
+
     logger.info(
         "Created invoice %s for customer %s",
         so_hoa_don,
@@ -391,6 +434,32 @@ def tao_nhap_kho(
     nhap_kho.tong_tien = tong_tien
     nhap_kho.save()
 
+    chi_tiet = []
+    if tong_tien > decimal.Decimal("0"):
+        chi_tiet.append({
+            "tai_khoan": "156",
+            "loai_no_co": "no",
+            "so_tien": tong_tien,
+            "ma_doi_tuong": nha_cung_cap.ma_ncc,
+            "dien_giai": f"Nhập kho {so_chung_tu}",
+        })
+        chi_tiet.append({
+            "tai_khoan": "331",
+            "loai_no_co": "co",
+            "so_tien": tong_tien,
+            "ma_doi_tuong": nha_cung_cap.ma_ncc,
+            "dien_giai": f"Nhập kho {so_chung_tu}",
+        })
+    if chi_tiet:
+        but_toan = tao_but_toan(
+            ngay=ngay,
+            dien_giai=f"Nhập kho {so_chung_tu}",
+            chi_tiet=chi_tiet,
+            so_but_toan=f"BT-{so_chung_tu}",
+        )
+        nhap_kho.but_toan = but_toan
+        nhap_kho.save()
+
     logger.info(
         "Created goods receipt %s from supplier %s",
         so_chung_tu,
@@ -471,6 +540,32 @@ def tao_xuat_kho(
 
     xuat_kho.tong_tien = tong_tien
     xuat_kho.save()
+
+    chi_tiet = []
+    if tong_tien > decimal.Decimal("0"):
+        chi_tiet.append({
+            "tai_khoan": "632",
+            "loai_no_co": "no",
+            "so_tien": tong_tien,
+            "ma_doi_tuong": khach_hang.ma_kh if khach_hang else "",
+            "dien_giai": f"Xuất kho {so_chung_tu}",
+        })
+        chi_tiet.append({
+            "tai_khoan": "156",
+            "loai_no_co": "co",
+            "so_tien": tong_tien,
+            "ma_doi_tuong": "",
+            "dien_giai": f"Xuất kho {so_chung_tu}",
+        })
+    if chi_tiet:
+        but_toan = tao_but_toan(
+            ngay=ngay,
+            dien_giai=f"Xuất kho {so_chung_tu}",
+            chi_tiet=chi_tiet,
+            so_but_toan=f"BT-{so_chung_tu}",
+        )
+        xuat_kho.but_toan = but_toan
+        xuat_kho.save()
 
     logger.info(
         "Created goods issue %s from warehouse %s",
@@ -606,6 +701,8 @@ def tao_phieu_thu(
         chi_tiet=chi_tiet,
         so_but_toan=f"BT-{so_chung_tu}",
     )
+    phieu.but_toan = but_toan
+    phieu.save()
 
     logger.info(
         "Created receipt %s: Nợ %s / Có %s - %s VND",
@@ -716,6 +813,8 @@ def tao_phieu_chi(
         chi_tiet=chi_tiet,
         so_but_toan=f"BT-{so_chung_tu}",
     )
+    phieu.but_toan = but_toan
+    phieu.save()
 
     logger.info(
         "Created payment %s: Nợ %s / Có %s - %s VND",
@@ -725,3 +824,524 @@ def tao_phieu_chi(
         phieu.so_tien_vnd,
     )
     return phieu
+
+
+@transaction.atomic
+def tao_giay_de_nghi_tam_ung(
+    nguoi_de_nghi,
+    so_tien: decimal.Decimal,
+    noi_dung: str,
+    hinh_thuc_chi: str = "tien_mat",
+    ngay_chung_tu: Optional[date] = None,
+    nguoi_tao: Optional[str] = None,
+    so_chung_tu: Optional[str] = None,
+) -> GiayDeNghiTamUng:
+    """
+    Create advance request voucher (Giấy đề nghị tạm ứng - Mẫu 03-TT).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC Appendix III - Advance request form
+        - Chế độ kế toán doanh nghiệp nhỏ và vừa
+
+    Journal entry (when approved):
+        Nợ 141 (Tạm ứng)
+        Có 111 (Tiền mặt) / Có 112 (Chuyển khoản)
+
+    Args:
+        nguoi_de_nghi: User instance requesting advance
+        so_tien: Advance amount
+        noi_dung: Purpose of advance
+        hinh_thuc_chi: 'tien_mat' or 'chuyen_khoan'
+        ngay_chung_tu: Voucher date (default today)
+        nguoi_tao: Creator username
+        so_chung_tu: Optional voucher number
+
+    Returns:
+        Created GiayDeNghiTamUng instance
+    """
+    from datetime import date as date_cls
+
+    if ngay_chung_tu is None:
+        ngay_chung_tu = date_cls.today()
+
+    validate_ngay_chung_tu(ngay_chung_tu)
+
+    if so_tien <= decimal.Decimal("0"):
+        raise ValidationError({"so_tien": ["Số tiền phải lớn hơn 0"]})
+
+    tk_chi_code = "111" if hinh_thuc_chi == "tien_mat" else "112"
+    tk_chi = TaiKhoanKeToan.objects.get(ma_tai_khoan=tk_chi_code)
+
+    if not so_chung_tu:
+        count = (
+            GiayDeNghiTamUng.objects.filter(
+                ngay_chung_tu__year=ngay_chung_tu.year
+            ).count()
+            + 1
+        )
+        so_chung_tu = f'TU{ngay_chung_tu.strftime("%Y%m%d")}{count:04d}'
+
+    giay = GiayDeNghiTamUng.objects.create(
+        so_chung_tu=so_chung_tu,
+        ngay_chung_tu=ngay_chung_tu,
+        nguoi_de_nghi=nguoi_de_nghi,
+        noi_dung=noi_dung,
+        so_tien=so_tien,
+        hinh_thuc_chi=hinh_thuc_chi,
+        tk_chi=tk_chi,
+        created_by=nguoi_tao or "",
+    )
+
+    chi_tiet = [
+        {
+            "tai_khoan": "141",
+            "loai_no_co": "no",
+            "so_tien": so_tien,
+            "ma_doi_tuong": nguoi_de_nghi.username,
+            "dien_giai": noi_dung,
+        },
+        {
+            "tai_khoan": tk_chi_code,
+            "loai_no_co": "co",
+            "so_tien": so_tien,
+            "ma_doi_tuong": nguoi_de_nghi.username,
+            "dien_giai": noi_dung,
+        },
+    ]
+    but_toan = tao_but_toan(
+        ngay=ngay_chung_tu,
+        dien_giai=f"Tạm ứng {so_chung_tu}",
+        chi_tiet=chi_tiet,
+        so_but_toan=f"BT-{so_chung_tu}",
+    )
+    giay.but_toan = but_toan
+    giay.save()
+
+    logger.info(
+        "Created advance request %s for user %s - %s VND",
+        so_chung_tu,
+        nguoi_de_nghi.username,
+        so_tien,
+    )
+    return giay
+
+
+@transaction.atomic
+def tao_giay_thanh_toan_tam_ung(
+    tam_ung: GiayDeNghiTamUng,
+    so_tien_chi: decimal.Decimal,
+    dien_giai: str = "",
+    ngay_chung_tu: Optional[date] = None,
+    nguoi_tao: Optional[str] = None,
+    so_chung_tu: Optional[str] = None,
+) -> GiayThanhToanTamUng:
+    """
+    Create advance settlement voucher (Giấy thanh toán tiền tạm ứng - Mẫu 04-TT).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC Appendix III - Advance settlement form
+        - Chế độ kế toán doanh nghiệp nhỏ và vừa
+
+    Journal entry:
+        Nợ 331 (Phải trả) / Nợ 641 (Chi phí BH) / Nợ 642 (Chi phí QLDN) / ...
+        Có 141 (Tạm ứng)
+
+    Args:
+        tam_ung: Original GiayDeNghiTamUng instance
+        so_tien_chi: Actual expense amount
+        dien_giai: Description
+        ngay_chung_tu: Voucher date (default today)
+        nguoi_tao: Creator username
+        so_chung_tu: Optional voucher number
+
+    Returns:
+        Created GiayThanhToanTamUng instance
+    """
+    from datetime import date as date_cls
+
+    if ngay_chung_tu is None:
+        ngay_chung_tu = date_cls.today()
+
+    validate_ngay_chung_tu(ngay_chung_tu)
+
+    so_tien_tam_ung = tam_ung.so_tien
+
+    if so_tien_chi <= decimal.Decimal("0"):
+        raise ValidationError({"so_tien_chi": ["Số tiền chi phải lớn hơn 0"]})
+
+    if so_tien_chi > so_tien_tam_ung:
+        raise ValidationError(
+            {
+                "so_tien_chi": [
+                    f"Số tiền chi ({so_tien_chi}) không được vượt quá "
+                    f"số tiền tạm ứng ({so_tien_tam_ung})"
+                ]
+            }
+        )
+
+    if not so_chung_tu:
+        count = (
+            GiayThanhToanTamUng.objects.filter(
+                ngay_chung_tu__year=ngay_chung_tu.year
+            ).count()
+            + 1
+        )
+        so_chung_tu = f'TT{ngay_chung_tu.strftime("%Y%m%d")}{count:04d}'
+
+    thanh_toan = GiayThanhToanTamUng.objects.create(
+        so_chung_tu=so_chung_tu,
+        ngay_chung_tu=ngay_chung_tu,
+        tam_ung=tam_ung,
+        nguoi_tam_ung=tam_ung.nguoi_de_nghi,
+        so_tien_tam_ung=so_tien_tam_ung,
+        so_tien_chi=so_tien_chi,
+        dien_giai=dien_giai,
+        created_by=nguoi_tao or "",
+    )
+
+    tk_co_code = "111" if tam_ung.hinh_thuc_chi == "tien_mat" else "112"
+
+    chi_tiet = [
+        {
+            "tai_khoan": "331",
+            "loai_no_co": "no",
+            "so_tien": so_tien_chi,
+            "ma_doi_tuong": tam_ung.nguoi_de_nghi.username,
+            "dien_giai": dien_giai or f"Thanh toán tạm ứng {tam_ung.so_chung_tu}",
+        },
+        {
+            "tai_khoan": "141",
+            "loai_no_co": "co",
+            "so_tien": so_tien_chi,
+            "ma_doi_tuong": tam_ung.nguoi_de_nghi.username,
+            "dien_giai": dien_giai or f"Thanh toán tạm ứng {tam_ung.so_chung_tu}",
+        },
+    ]
+    but_toan = tao_but_toan(
+        ngay=ngay_chung_tu,
+        dien_giai=f"Thanh toán tạm ứng {so_chung_tu}",
+        chi_tiet=chi_tiet,
+        so_but_toan=f"BT-{so_chung_tu}",
+    )
+    thanh_toan.but_toan = but_toan
+    thanh_toan.save()
+
+    tam_ung.trang_thai = "da_chi"
+    tam_ung.save()
+
+    logger.info(
+        "Created advance settlement %s for advance %s - chi %s VND",
+        so_chung_tu,
+        tam_ung.so_chung_tu,
+        so_tien_chi,
+    )
+    return thanh_toan
+
+
+@transaction.atomic
+def tao_bien_ban_giao_nhan_tscd(
+    tai_san,
+    nguoi_giao: str,
+    nguoi_nhan: str,
+    nguyen_gia: decimal.Decimal,
+    so_luong: decimal.Decimal = decimal.Decimal("1"),
+    bo_phan_su_dung: str = "",
+    dien_giai: str = "",
+    ngay_lap: Optional[date] = None,
+    nguoi_tao: Optional[str] = None,
+    so_chung_tu: Optional[str] = None,
+) -> BienBanGiaoNhanTSCD:
+    from datetime import date as date_cls
+
+    if ngay_lap is None:
+        ngay_lap = date_cls.today()
+
+    validate_ngay_chung_tu(ngay_lap)
+
+    if nguyen_gia <= decimal.Decimal("0"):
+        raise ValidationError({"nguyen_gia": ["Nguyên giá phải lớn hơn 0"]})
+
+    if not so_chung_tu:
+        count = BienBanGiaoNhanTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        so_chung_tu = f'BBGN{ngay_lap.strftime("%Y%m%d")}{count:04d}'
+
+    bien_ban = BienBanGiaoNhanTSCD.objects.create(
+        so_chung_tu=so_chung_tu,
+        ngay_lap=ngay_lap,
+        loai="giao_nhan",
+        tai_san=tai_san,
+        nguoi_giao=nguoi_giao,
+        nguoi_nhan=nguoi_nhan,
+        bo_phan_su_dung=bo_phan_su_dung,
+        nguyen_gia=nguyen_gia,
+        so_luong=so_luong,
+        dien_giai=dien_giai,
+        created_by=nguoi_tao or "",
+    )
+
+    chi_tiet = [
+        {
+            "tai_khoan": "211",
+            "loai_no_co": "no",
+            "so_tien": nguyen_gia * so_luong,
+            "ma_doi_tuong": "",
+            "dien_giai": f"Giao nhận TSCĐ {tai_san.ten_tai_san}",
+        },
+        {
+            "tai_khoan": "411",
+            "loai_no_co": "co",
+            "so_tien": nguyen_gia * so_luong,
+            "ma_doi_tuong": "",
+            "dien_giai": f"Giao nhận TSCĐ {tai_san.ten_tai_san}",
+        },
+    ]
+    but_toan = tao_but_toan(
+        ngay=ngay_lap,
+        dien_giai=f"Giao nhận TSCĐ {so_chung_tu}",
+        chi_tiet=chi_tiet,
+        so_but_toan=f"BT-{so_chung_tu}",
+    )
+    bien_ban.but_toan = but_toan
+    bien_ban.save()
+
+    logger.info("Created fixed asset handover %s for %s", so_chung_tu, tai_san)
+    return bien_ban
+
+
+@transaction.atomic
+def tao_bien_ban_thanh_ly_tscd(
+    tai_san,
+    nguyen_gia: decimal.Decimal,
+    khau_hao_luy_ke: decimal.Decimal,
+    gia_tri_con_lai: decimal.Decimal,
+    loai_xu_ly: str,
+    so_tien_thu: decimal.Decimal = decimal.Decimal("0"),
+    chiet_khau: decimal.Decimal = decimal.Decimal("0"),
+    ly_do: str = "",
+    nguoi_lap: str = "",
+    nguoi_duyet: str = "",
+    ngay_lap: Optional[date] = None,
+    nguoi_tao: Optional[str] = None,
+    so_chung_tu: Optional[str] = None,
+) -> BienBanThanhLyTSCD:
+    """
+    Create fixed asset liquidation record (Biên bản thanh lý TSCĐ).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC Appendix III - Fixed asset liquidation form
+
+    Journal entry (for sale):
+        Nợ 214 (Hao mòn lũy kế)
+        Nợ 811 (Giá trị còn lại)
+        Có 211 (Nguyên giá)
+        Nợ 111/112 (Thu tiền)
+        Có 711 (Doanh thu thanh lý)
+
+    Args:
+        tai_san: TaiSanCoDinh instance
+        nguyen_gia: Original cost
+        khau_hao_luy_ke: Accumulated depreciation
+        gia_tri_con_lai: Net book value
+        loai_xu_ly: 'ban', 'doi', 'tang', 'huy'
+        so_tien_thu: Amount received (if sold)
+        chiet_khau: Discount (if any)
+        ly_do: Reason for liquidation
+        nguoi_lap: Person preparing
+        nguoi_duyet: Person approving
+        ngay_lap: Liquidation date
+        nguoi_tao: Creator username
+        so_chung_tu: Optional voucher number
+
+    Returns:
+        Created BienBanThanhLyTSCD instance
+    """
+    from datetime import date as date_cls
+
+    if ngay_lap is None:
+        ngay_lap = date_cls.today()
+
+    validate_ngay_chung_tu(ngay_lap)
+
+    if loai_xu_ly not in ["ban", "doi", "tang", "huy"]:
+        raise ValidationError({"loai_xu_ly": ["Loại xử lý không hợp lệ"]})
+
+    if not so_chung_tu:
+        count = BienBanThanhLyTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        so_chung_tu = f'BBTL{ngay_lap.strftime("%Y%m%d")}{count:04d}'
+
+    bien_ban = BienBanThanhLyTSCD.objects.create(
+        so_chung_tu=so_chung_tu,
+        ngay_lap=ngay_lap,
+        tai_san=tai_san,
+        nguyen_gia=nguyen_gia,
+        khau_hao_luy_ke=khau_hao_luy_ke,
+        gia_tri_con_lai=gia_tri_con_lai,
+        loai_xu_ly=loai_xu_ly,
+        so_tien_thu=so_tien_thu,
+        chiet_khau=chiet_khau,
+        ly_do=ly_do,
+        nguoi_lap=nguoi_lap,
+        nguoi_duyet=nguoi_duyet,
+        created_by=nguoi_tao or "",
+    )
+
+    if loai_xu_ly == "ban" and so_tien_thu > 0:
+        chi_tiet = [
+            {
+                "tai_khoan": "214",
+                "loai_no_co": "no",
+                "so_tien": khau_hao_luy_ke,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thanh lý TSCĐ {tai_san.ten_tai_san}",
+            },
+            {
+                "tai_khoan": "811",
+                "loai_no_co": "no",
+                "so_tien": gia_tri_con_lai,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Giá trị còn lý TSCĐ {tai_san.ten_tai_san}",
+            },
+            {
+                "tai_khoan": "211",
+                "loai_no_co": "co",
+                "so_tien": nguyen_gia,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thanh lý TSCĐ {tai_san.ten_tai_san}",
+            },
+            {
+                "tai_khoan": "111",
+                "loai_no_co": "no",
+                "so_tien": so_tien_thu - chiet_khau,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thu tiền thanh lý TSCĐ",
+            },
+            {
+                "tai_khoan": "711",
+                "loai_no_co": "co",
+                "so_tien": so_tien_thu - chiet_khau,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Doanh thu thanh lý TSCĐ",
+            },
+        ]
+    elif loai_xu_ly == "huy":
+        chi_tiet = [
+            {
+                "tai_khoan": "214",
+                "loai_no_co": "no",
+                "so_tien": khau_hao_luy_ke,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thanh lý TSCĐ {tai_san.ten_tai_san}",
+            },
+            {
+                "tai_khoan": "811",
+                "loai_no_co": "no",
+                "so_tien": gia_tri_con_lai,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Giá trị còn lại TSCĐ {tai_san.ten_tai_san}",
+            },
+            {
+                "tai_khoan": "211",
+                "loai_no_co": "co",
+                "so_tien": nguyen_gia,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thanh lý TSCĐ {tai_san.ten_tai_san}",
+            },
+        ]
+    else:
+        chi_tiet = []
+
+    if chi_tiet:
+        but_toan = tao_but_toan(
+            ngay=ngay_lap,
+            dien_giai=f"Thanh lý TSCĐ {so_chung_tu}",
+            chi_tiet=chi_tiet,
+            so_but_toan=f"BT-{so_chung_tu}",
+        )
+        bien_ban.but_toan = but_toan
+        bien_ban.save()
+
+    logger.info("Created fixed asset liquidation %s for %s", so_chung_tu, tai_san)
+    return bien_ban
+
+
+@transaction.atomic
+def tao_bang_phan_bo_nvl_ccdc(
+    thang: int,
+    nam: int,
+) -> BangPhanBoNVLCCDC:
+    """
+    Create material and tools allocation schedule (Bảng phân bổ NVL, CCDC).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC Appendix III - Material allocation form
+
+    Journal entry (when allocating):
+        Nợ 621 (Chi phí nguyên vật liệu trực tiếp)
+        Nợ 627 (Chi phí sản xuất chung)
+        Nợ 642 (Chi phí quản lý DN)
+        Có 152 (Nguyên vật liệu)
+        Có 153 (Công cụ dụng cụ)
+
+    Args:
+        thang: Month (1-12)
+        nam: Year
+
+    Returns:
+        Created BangPhanBoNVLCCDC instance
+    """
+    if thang < 1 or thang > 12:
+        raise ValidationError({"thang": ["Tháng phải từ 1-12"]})
+
+    if nam < 2025:
+        raise ValidationError({"nam": ["Năm phải từ 2025 trở đi"]})
+
+    bang_phan_bo, created = BangPhanBoNVLCCDC.objects.get_or_create(
+        thang=thang,
+        nam=nam,
+    )
+
+    if created:
+        logger.info("Created material allocation schedule %s/%s", thang, nam)
+
+    return bang_phan_bo
+
+
+@transaction.atomic
+def tao_bang_thanh_toan_tien_luong(
+    thang: int,
+    nam: int,
+) -> BangThanhToanTienLuong:
+    """
+    Create salary payment schedule (Bảng thanh toán tiền lương).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC Appendix III - Salary payment form
+        - Luật BHXH, Luật Thuế TNCN
+
+    Journal entry:
+        Nợ 334 (Phải trả người lao động)
+        Nợ 338 (Phải trả khác - BHXH, BHYT, BHTN)
+        Có 111 (Tiền mặt) / Có 112 (Chuyển khoản)
+
+    Args:
+        thang: Month (1-12)
+        nam: Year
+
+    Returns:
+        Created BangThanhToanTienLuong instance
+    """
+    if thang < 1 or thang > 12:
+        raise ValidationError({"thang": ["Tháng phải từ 1-12"]})
+
+    if nam < 2025:
+        raise ValidationError({"nam": ["Năm phải từ 2025 trở đi"]})
+
+    bang_luong, created = BangThanhToanTienLuong.objects.get_or_create(
+        thang=thang,
+        nam=nam,
+    )
+
+    if created:
+        logger.info("Created salary payment schedule %s/%s", thang, nam)
+
+    return bang_luong

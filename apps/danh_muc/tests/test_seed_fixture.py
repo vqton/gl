@@ -59,9 +59,9 @@ class TestTier1Accounts:
     """Tests for Tier-1 accounts in fixture."""
 
     def test_tier1_count(self, fixture_data):
-        """Test exactly 68 Tier-1 accounts."""
+        """Test exactly 80 Tier-1 accounts."""
         tier1 = [x for x in fixture_data if x["fields"]["cap_do"] == 1]
-        assert len(tier1) == 68
+        assert len(tier1) == 80
 
     def test_all_tier1_null_parent(self, fixture_data):
         """Test all Tier-1 accounts have null parent."""
@@ -86,9 +86,9 @@ class TestTier2Accounts:
     """Tests for Tier-2 accounts in fixture."""
 
     def test_tier2_count(self, fixture_data):
-        """Test exactly 79 Tier-2 accounts."""
+        """Test exactly 93 Tier-2 accounts."""
         tier2 = [x for x in fixture_data if x["fields"]["cap_do"] == 2]
-        assert len(tier2) == 79
+        assert len(tier2) == 93
 
     def test_all_tier2_have_parent(self, fixture_data):
         """Test all Tier-2 accounts have a parent."""
@@ -115,9 +115,9 @@ class TestWrongAccountsRemoved:
     """Test that wrong account codes are removed."""
 
     WRONG_CODES = [
-        "144", "268", "339", "357", "358", "431", "441", "442", "461",
-        "518", "611", "631", "651", "881", "001", "002", "007", "008",
-        "009", "311", "315", "348", "351",
+        "268", "357", "358", "431", "441", "442", "461",
+        "518", "611", "651", "881", "001", "002", "007", "008",
+        "009", "315", "348", "351",
     ]
 
     def test_no_wrong_codes(self, fixture_data):
@@ -135,19 +135,26 @@ class TestRequiredTier1Accounts:
         "112": "tai_san",
         "113": "tai_san",
         "121": "tai_san",
+        "122": "tai_san",
         "128": "tai_san",
         "131": "tai_san",
         "133": "tai_san",
         "136": "tai_san",
+        "137": "tai_san",
         "138": "tai_san",
+        "139": "tai_san",
         "141": "tai_san",
+        "142": "tai_san",
+        "144": "tai_san",
         "151": "tai_san",
         "152": "tai_san",
         "153": "tai_san",
         "154": "tai_san",
         "155": "tai_san",
+        "156": "tai_san",
         "157": "tai_san",
         "158": "tai_san",
+        "161": "tai_san",
         "171": "tai_san",
         "211": "tai_san",
         "212": "tai_san",
@@ -163,34 +170,45 @@ class TestRequiredTier1Accounts:
         "242": "tai_san",
         "243": "tai_san",
         "244": "tai_san",
+        "261": "tai_san",
+        "311": "no_phai_tra",
+        "312": "no_phai_tra",
         "331": "no_phai_tra",
-        "332": "no_phai_tra",
         "333": "no_phai_tra",
         "334": "no_phai_tra",
         "335": "no_phai_tra",
         "336": "no_phai_tra",
+        "337": "no_phai_tra",
         "338": "no_phai_tra",
+        "332": "no_phai_tra",
         "341": "no_phai_tra",
+        "342": "no_phai_tra",
         "343": "no_phai_tra",
         "344": "no_phai_tra",
         "347": "no_phai_tra",
+        "349": "no_phai_tra",
         "352": "no_phai_tra",
         "353": "no_phai_tra",
         "356": "no_phai_tra",
+        "357": "no_phai_tra",
         "411": "von_chu_so_huu",
         "412": "von_chu_so_huu",
         "413": "von_chu_so_huu",
         "414": "von_chu_so_huu",
+        "415": "von_chu_so_huu",
         "418": "von_chu_so_huu",
         "419": "von_chu_so_huu",
+        "420": "von_chu_so_huu",
         "421": "von_chu_so_huu",
         "511": "doanh_thu",
+        "512": "doanh_thu",
         "515": "doanh_thu",
         "521": "doanh_thu",
         "621": "chi_phi",
         "622": "chi_phi",
         "623": "chi_phi",
         "627": "chi_phi",
+        "631": "chi_phi",
         "632": "chi_phi",
         "635": "chi_phi",
         "641": "chi_phi",
@@ -225,26 +243,31 @@ class TestRequiredTier2Accounts:
         "1361": "136", "1362": "136", "1363": "136", "1368": "136",
         "1381": "138", "1383": "138", "1388": "138",
         "2141": "214", "2142": "214", "2143": "214", "2147": "214",
-        "2151": "215", "2152": "215", "2153": "215",
+        "2151": "215", "2152": "215",
         "2291": "229", "2292": "229", "2293": "229", "2294": "229", "2295": "229",
         "2411": "241", "2412": "241", "2413": "241", "2414": "241",
         "3331": "333", "3332": "333", "3333": "333", "3334": "333",
         "3335": "333", "3336": "333", "3337": "333", "3338": "333", "3339": "333",
         "3381": "338", "3382": "338", "3383": "338", "3384": "338",
-        "3386": "338", "3387": "338", "3388": "338",
+        "3385": "338", "3386": "338", "3387": "338", "3388": "338",
         "3411": "341", "3412": "341",
         "3431": "343", "3432": "343",
-        "3531": "353", "3532": "353", "3533": "353", "3534": "353",
+        "3521": "352", "3522": "352", "3523": "352",
+        "3531": "353", "3532": "353",
         "3561": "356", "3562": "356",
         "4111": "411", "4112": "411", "4113": "411", "4118": "411",
         "4211": "421", "4212": "421",
-        "5111": "511",
+        "5111": "511", "5112": "511", "5113": "511", "5114": "511",
+        "5115": "511", "5116": "511", "5117": "511", "5118": "511", "5119": "511",
+        "5211": "521", "5212": "521", "5213": "521", "5214": "521",
         "6211": "621",
         "6221": "622",
         "6231": "623", "6232": "623", "6233": "623", "6234": "623",
-        "6237": "623", "6238": "623",
+        "6235": "623", "6236": "623",
         "6271": "627", "6272": "627", "6273": "627", "6274": "627",
-        "6275": "627", "6277": "627", "6278": "627",
+        "6275": "627", "6276": "627",
+        "6421": "642", "6422": "642", "6423": "642", "6424": "642",
+        "6425": "642", "6426": "642", "6427": "642", "6428": "642",
         "8211": "821", "8212": "821",
     }
 

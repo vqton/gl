@@ -179,11 +179,13 @@ class TestGetCpTheoKhoanMuc:
         from datetime import date
         from apps.danh_muc.models import TaiKhoanKeToan
 
-        tk622 = TaiKhoanKeToan.objects.create(
+        tk622, _ = TaiKhoanKeToan.objects.get_or_create(
             ma_tai_khoan="622",
-            ten_tai_khoan="Chi phí nhân công",
-            cap_do=1,
-            loai_tai_khoan="chi_phi",
+            defaults={
+                "ten_tai_khoan": "Chi phí nhân công trực tiếp",
+                "cap_do": 1,
+                "loai_tai_khoan": "chi_phi",
+            },
         )
         km_nvl = KhoanMucChiPhi.objects.create(
             ma_khoan_muc="NVL",

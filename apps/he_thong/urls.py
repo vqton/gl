@@ -36,4 +36,10 @@ urlpatterns = [
         views.audit_log_export,
         name="audit_log_export",
     ),
+    path("nguoi-dung/", views.nguoi_dung_list, name="nguoi_dung_list"),
+    path(
+        "nguoi-dung/<int:pk>/vai-tro/",
+        views.nguoi_dung_role_edit,
+        name="nguoi_dung_role_edit",
+    ),
 ]

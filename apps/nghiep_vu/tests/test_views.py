@@ -16,10 +16,17 @@ User = get_user_model()
 
 @pytest.fixture
 def user(db):
-    return User.objects.create_user(
+    from apps.he_thong.management.commands.seed_vai_tro import Command
+    from apps.he_thong.models import VaiTro
+
+    Command().handle()
+    user = User.objects.create_user(
         username="testuser",
         password="testpass123",
     )
+    user.vai_tro = VaiTro.objects.get(ma="ke_toan_truong")
+    user.save()
+    return user
 
 
 @pytest.fixture
@@ -135,5 +142,115 @@ class TestAuthRedirects:
 
 
 @pytest.fixture
+def tk_111(db):
+    return TaiKhoanKeToan.objects.create(
+        ma_tai_khoan="1111",
+        ten_tai_khoan="Tiền mặt",
+        loai_tai_khoan="no",
+        cap_do=1,
+    )
+
+
+@pytest.fixture
 def khach_hang(db):
     return KhachHang.objects.create(ma_kh="KH001", ten_kh="Test Customer")
+
+
+class TestGiayTamUngView:
+    """Test GiayDeNghiTamUng views."""
+
+    def test_giay_tam_ung_list_view_exists(self, client_logged_in):
+        """Test GiayTamUngListView exists."""
+        response = client_logged_in.get(reverse("nghiep_vu:giay_tam_ung_list"))
+        assert response.status_code == 200
+
+    def test_giay_tam_ung_create_view_exists(self, client_logged_in):
+        """Test GiayTamUngCreateView exists."""
+        response = client_logged_in.get(reverse("nghiep_vu:giay_tam_ung_create"))
+        assert response.status_code == 200
+
+    def test_giay_tam_ung_detail_view_exists(self, client_logged_in, user, tk_111):
+        """Test GiayTamUngDetailView exists."""
+        from apps.nghiep_vu.models import GiayDeNghiTamUng
+        giay = GiayDeNghiTamUng.objects.create(
+            so_chung_tu="TU/001",
+            ngay_chung_tu="2026-04-01",
+            nguoi_de_nghi=user,
+            noi_dung="Test tam ung",
+            so_tien=Decimal("1000000"),
+            tk_chi=tk_111,
+        )
+        response = client_logged_in.get(reverse("nghiep_vu:giay_tam_ung_detail", args=[giay.pk]))
+        assert response.status_code == 200
+
+
+class TestTamUngSettlementView:
+    """Test GiayThanhToanTamUng views."""
+
+    def test_tam_ung_settlement_list_view_exists(self, client_logged_in):
+        """Test TamUngSettlementListView exists."""
+        response = client_logged_in.get(reverse("nghiep_vu:tam_ung_settlement_list"))
+        assert response.status_code == 200
+
+    def test_tam_ung_settlement_create_view_exists(self, client_logged_in):
+        """Test TamUngSettlementCreateView exists."""
+        response = client_logged_in.get(reverse("nghiep_vu:tam_ung_settlement_create"))
+        assert response.status_code == 200
+
+
+class TestBienBanGiaoNhanTSCDView:
+    """Test BienBanGiaoNhanTSCD views."""
+
+    def test_bien_ban_giao_nhan_list_view_exists(self, client_logged_in):
+        """Test BienBanGiaoNhanTSCDListView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bien_ban_giao_nhan_list"))
+        assert response.status_code == 200
+
+    def test_bien_ban_giao_nhan_create_view_exists(self, client_logged_in):
+        """Test BienBanGiaoNhanTSCDCreateView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bien_ban_giao_nhan_create"))
+        assert response.status_code == 200
+
+
+class TestBienBanThanhLyTSCDView:
+    """Test BienBanThanhLyTSCD views."""
+
+    def test_bien_ban_thanh_ly_list_view_exists(self, client_logged_in):
+        """Test BienBanThanhLyTSCDListView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bien_ban_thanh_ly_list"))
+        assert response.status_code == 200
+
+    def test_bien_ban_thanh_ly_create_view_exists(self, client_logged_in):
+        """Test BienBanThanhLyTSCDCreateView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bien_ban_thanh_ly_create"))
+        assert response.status_code == 200
+
+
+class TestBangKhauHaoView:
+    """Test BangKhauHao views."""
+
+    def test_bang_khau_hao_list_view_exists(self, client_logged_in):
+        """Test BangKhauHaoListView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bang_khau_hao_list"))
+        assert response.status_code == 200
+
+    def test_bang_khau_hao_create_view_exists(self, client_logged_in):
+        """Test BangKhauHaoCreateView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("tai_san:bang_khau_hao_create"))
+        assert response.status_code == 200
+
+
+class TestBaoCaoBanHangView:
+    """Test BaoCaoBanHang view."""
+
+    def test_bao_cao_ban_hang_view_exists(self, client_logged_in):
+        """Test BaoCaoBanHangView exists."""
+        from django.urls import reverse
+        response = client_logged_in.get(reverse("bao_cao:ban_hang"))
+        assert response.status_code == 200

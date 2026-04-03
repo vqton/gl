@@ -673,3 +673,331 @@ class TestDoiTuNguyenTe:
         """Test negative rate raises error."""
         with pytest.raises(ValidationError):
             doi_tu_nguyen_te(Decimal("1000000"), Decimal("-25000"))
+
+
+class TestGiayDeNghiTamUng:
+    """Tests for advance request voucher service."""
+
+    def test_tao_giay_de_nghi_tam_ung_tien_mat(self, django_user_model):
+        """Test creating advance request in cash."""
+        from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
+
+        user = django_user_model.objects.create_user(username="testuser", password="test123")
+        result = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("5000000"),
+            noi_dung="Đi công tác Hà Nội",
+            hinh_thuc_chi="tien_mat",
+        )
+        assert result.so_tien == Decimal("5000000")
+        assert result.hinh_thuc_chi == "tien_mat"
+        assert result.trang_thai == "draft"
+
+    def test_tao_giay_de_nghi_tam_ung_chuyen_khoan(self, django_user_model):
+        """Test creating advance request by bank transfer."""
+        from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
+
+        user = django_user_model.objects.create_user(username="testuser2", password="test123")
+        result = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("10000000"),
+            noi_dung="Mua vật tư",
+            hinh_thuc_chi="chuyen_khoan",
+        )
+        assert result.so_tien == Decimal("10000000")
+        assert result.hinh_thuc_chi == "chuyen_khoan"
+        assert result.tk_chi.ma_tai_khoan == "112"
+
+    def test_giay_de_nghi_tam_ung_negative_amount(self, django_user_model):
+        """Test negative amount raises error."""
+        from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
+
+        user = django_user_model.objects.create_user(username="testuser3", password="test123")
+        with pytest.raises(ValidationError):
+            tao_giay_de_nghi_tam_ung(
+                nguoi_de_nghi=user,
+                so_tien=Decimal("-1000000"),
+                noi_dung="Test",
+            )
+
+
+class TestGiayThanhToanTamUng:
+    """Tests for advance settlement voucher service."""
+
+    def test_tao_giay_thanh_toan_tam_ung(self, django_user_model):
+        """Test creating advance settlement voucher."""
+        from apps.nghiep_vu.services import (
+            tao_giay_de_nghi_tam_ung,
+            tao_giay_thanh_toan_tam_ung,
+        )
+
+        user = django_user_model.objects.create_user(username="testuser4", password="test123")
+        tam_ung = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("5000000"),
+            noi_dung="Đi công tác",
+        )
+        tam_ung.trang_thai = "approved"
+        tam_ung.save()
+
+        result = tao_giay_thanh_toan_tam_ung(
+            tam_ung=tam_ung,
+            so_tien_chi=Decimal("4500000"),
+            dien_giai="Chi phí công tác",
+        )
+        assert result.so_tien_chi == Decimal("4500000")
+        assert result.so_tien_con_lai == Decimal("500000")
+        assert tam_ung.trang_thai == "da_chi"
+
+    def test_giay_thanh_toan_exceeds_tam_ung(self, django_user_model):
+        """Test expense exceeds advance amount raises error."""
+        from apps.nghiep_vu.services import (
+            tao_giay_de_nghi_tam_ung,
+            tao_giay_thanh_toan_tam_ung,
+        )
+
+        user = django_user_model.objects.create_user(username="testuser5", password="test123")
+        tam_ung = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("5000000"),
+            noi_dung="Test",
+        )
+        tam_ung.trang_thai = "approved"
+        tam_ung.save()
+
+        with pytest.raises(ValidationError):
+            tao_giay_thanh_toan_tam_ung(
+                tam_ung=tam_ung,
+                so_tien_chi=Decimal("6000000"),
+            )
+
+
+class TestTamUngButToan:
+    """Tests for advance voucher auto-journal creation."""
+
+    def test_tao_giay_de_nghi_tam_ung_tao_but_toan_tien_mat(self, django_user_model):
+        """Test that advance request creates ButToan with cash."""
+        from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
+
+        user = django_user_model.objects.create_user(username="testuser_tamung", password="test123")
+        result = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("5000000"),
+            noi_dung="Đi công tác",
+            hinh_thuc_chi="tien_mat",
+        )
+
+        assert result.but_toan is not None
+        assert result.but_toan.so_but_toan.startswith("BT-")
+
+        details = result.but_toan.chi_tiet.all()
+        assert len(details) == 2
+
+        total_no = sum(d.so_tien for d in details if d.loai_no_co == "no")
+        total_co = sum(d.so_tien for d in details if d.loai_no_co == "co")
+        assert total_no == total_co == Decimal("5000000")
+
+        tk_141 = details.filter(tai_khoan__ma_tai_khoan="141").first()
+        assert tk_141 is not None
+        assert tk_141.loai_no_co == "no"
+
+    def test_tao_giay_de_nghi_tam_ung_tao_but_toan_chuyen_khoan(self, django_user_model):
+        """Test that advance request creates ButToan with bank transfer."""
+        from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
+
+        user = django_user_model.objects.create_user(username="testuser_tamung2", password="test123")
+        result = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("10000000"),
+            noi_dung="Mua vật tư",
+            hinh_thuc_chi="chuyen_khoan",
+        )
+
+        assert result.but_toan is not None
+        details = result.but_toan.chi_tiet.all()
+
+        tk_112 = details.filter(tai_khoan__ma_tai_khoan="112").first()
+        assert tk_112 is not None
+        assert tk_112.loai_no_co == "co"
+
+    def test_tao_giay_thanh_toan_tam_ung_tao_but_toan(self, django_user_model):
+        """Test that advance settlement creates ButToan."""
+        from apps.nghiep_vu.services import (
+            tao_giay_de_nghi_tam_ung,
+            tao_giay_thanh_toan_tam_ung,
+        )
+
+        user = django_user_model.objects.create_user(username="testuser_tamung3", password="test123")
+        tam_ung = tao_giay_de_nghi_tam_ung(
+            nguoi_de_nghi=user,
+            so_tien=Decimal("5000000"),
+            noi_dung="Đi công tác",
+        )
+        tam_ung.trang_thai = "approved"
+        tam_ung.save()
+
+        result = tao_giay_thanh_toan_tam_ung(
+            tam_ung=tam_ung,
+            so_tien_chi=Decimal("4500000"),
+            dien_giai="Chi phí công tác",
+        )
+
+        assert result.but_toan is not None
+        details = result.but_toan.chi_tiet.all()
+
+        total_no = sum(d.so_tien for d in details if d.loai_no_co == "no")
+        total_co = sum(d.so_tien for d in details if d.loai_no_co == "co")
+        assert total_no == total_co == Decimal("4500000")
+
+        tk_141 = details.filter(tai_khoan__ma_tai_khoan="141").first()
+        assert tk_141 is not None
+        assert tk_141.loai_no_co == "co"
+
+
+class TestBienBanGiaoNhanTSCD:
+    """Tests for fixed asset handover service."""
+
+    def test_tao_bien_ban_giao_nhan_tscd(self, django_user_model):
+        """Test creating fixed asset handover record."""
+        from apps.nghiep_vu.services import tao_bien_ban_giao_nhan_tscd
+        from apps.tai_san.models import TaiSanCoDinh
+
+        user = django_user_model.objects.create_user(username="testuser_tscd", password="test123")
+        tai_san = TaiSanCoDinh.objects.create(
+            ma_tai_san="TS001",
+            ten_tai_san="Máy tính Dell",
+            nguyen_gia=Decimal("15000000"),
+            thoi_gian_khau_hao_thang=60,
+            ngay_dua_vao_su_dung=date(2025, 1, 1),
+        )
+
+        result = tao_bien_ban_giao_nhan_tscd(
+            tai_san=tai_san,
+            nguoi_giao="Nguyễn Văn A",
+            nguoi_nhan="Trần Văn B",
+            bo_phan_su_dung="Phòng Kế toán",
+            nguyen_gia=Decimal("15000000"),
+            so_luong=Decimal("1"),
+            ngay_lap=date.today(),
+            nguoi_tao="testuser_tscd",
+        )
+
+        result = tao_bien_ban_giao_nhan_tscd(
+            tai_san=tai_san,
+            nguoi_giao="Nguyễn Văn A",
+            nguoi_nhan="Trần Văn B",
+            bo_phan_su_dung="Phòng Kế toán",
+            nguyen_gia=Decimal("15000000"),
+            so_luong=Decimal("1"),
+            ngay_lap=date.today(),
+            nguoi_tao="testuser_tscd",
+        )
+
+        assert result.so_chung_tu.startswith("BBGN")
+        assert result.tai_san == tai_san
+        assert result.but_toan is not None
+        details = result.but_toan.chi_tiet.all()
+
+        total_no = sum(d.so_tien for d in details if d.loai_no_co == "no")
+        total_co = sum(d.so_tien for d in details if d.loai_no_co == "co")
+        assert total_no == total_co == Decimal("15000000")
+
+    def test_tao_bien_ban_giao_nhan_tscd_journal_entries(self, django_user_model):
+        """Test handover has correct journal entries."""
+        from apps.nghiep_vu.services import tao_bien_ban_giao_nhan_tscd
+        from apps.tai_san.models import TaiSanCoDinh
+
+        user = django_user_model.objects.create_user(username="testuser_tscd2", password="test123")
+        tai_san = TaiSanCoDinh.objects.create(
+            ma_tai_san="TS002",
+            ten_tai_san="Máy in HP",
+            nguyen_gia=Decimal("5000000"),
+            thoi_gian_khau_hao_thang=60,
+            ngay_dua_vao_su_dung=date(2025, 1, 1),
+        )
+
+        result = tao_bien_ban_giao_nhan_tscd(
+            tai_san=tai_san,
+            nguoi_giao="Nguyễn Văn A",
+            nguoi_nhan="Lê Văn C",
+            nguyen_gia=Decimal("5000000"),
+            ngay_lap=date.today(),
+        )
+
+        details = result.but_toan.chi_tiet.all()
+        tk_211 = details.filter(tai_khoan__ma_tai_khoan="211").first()
+        assert tk_211 is not None
+        assert tk_211.loai_no_co == "no"
+
+
+class TestBienBanThanhLyTSCD:
+    """Tests for fixed asset liquidation service."""
+
+    def test_tao_bien_ban_thanh_ly_tscd(self, django_user_model):
+        """Test creating fixed asset liquidation record."""
+        from apps.nghiep_vu.services import tao_bien_ban_thanh_ly_tscd
+        from apps.tai_san.models import TaiSanCoDinh
+
+        user = django_user_model.objects.create_user(username="testuser_tl", password="test123")
+        tai_san = TaiSanCoDinh.objects.create(
+            ma_tai_san="TS003",
+            ten_tai_san="Máy photo cũ",
+            nguyen_gia=Decimal("20000000"),
+            thoi_gian_khau_hao_thang=60,
+            ngay_dua_vao_su_dung=date(2023, 1, 1),
+        )
+
+        result = tao_bien_ban_thanh_ly_tscd(
+            tai_san=tai_san,
+            nguyen_gia=Decimal("20000000"),
+            khau_hao_luy_ke=Decimal("18000000"),
+            gia_tri_con_lai=Decimal("2000000"),
+            loai_xu_ly="ban",
+            so_tien_thu=Decimal("2500000"),
+            ly_do="Hỏng không sửa được",
+            nguoi_lap="Nguyễn Văn A",
+            ngay_lap=date.today(),
+            nguoi_tao="testuser_tl",
+        )
+
+        assert result.so_chung_tu.startswith("BBTL")
+        assert result.but_toan is not None
+        details = result.but_toan.chi_tiet.all()
+
+        total_no = sum(d.so_tien for d in details if d.loai_no_co == "no")
+        total_co = sum(d.so_tien for d in details if d.loai_no_co == "co")
+        assert total_no == total_co
+
+
+class TestBangPhanBoNVLCCDC:
+    """Tests for material allocation service."""
+
+    def test_tao_bang_phan_bo_nvl_ccdc(self, django_user_model):
+        """Test creating material allocation schedule."""
+        from apps.nghiep_vu.services import tao_bang_phan_bo_nvl_ccdc
+
+        result = tao_bang_phan_bo_nvl_ccdc(
+            thang=4,
+            nam=2026,
+        )
+
+        assert result.thang == 4
+        assert result.nam == 2026
+        assert result.da_hach_toan is False
+
+
+class TestBangThanhToanTienLuong:
+    """Tests for salary payment service."""
+
+    def test_tao_bang_thanh_toan_tien_luong(self, django_user_model):
+        """Test creating salary payment schedule."""
+        from apps.nghiep_vu.services import tao_bang_thanh_toan_tien_luong
+
+        result = tao_bang_thanh_toan_tien_luong(
+            thang=4,
+            nam=2026,
+        )
+
+        assert result.thang == 4
+        assert result.nam == 2026
+        assert result.da_hach_toan is False

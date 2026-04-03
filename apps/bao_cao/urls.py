@@ -14,4 +14,5 @@ urlpatterns = [
     path("thuyet-minh/", views.ThuyetMinhBCTCView.as_view(), name="thuyet_minh"),
     path("so-cai/<str:ma_tai_khoan>/", views.SoCaiTaiKhoanView.as_view(), name="so_cai_chi_tiet"),
     path("tong-hop-so-cai/", views.TongHopSoCaiView.as_view(), name="tong_hop_so_cai"),
+    path("ban-hang/", views.BaoCaoBanHangView.as_view(), name="ban_hang"),
 ]

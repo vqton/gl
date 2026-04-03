@@ -398,3 +398,43 @@ class AuditLog(models.Model):
 
     def __str__(self):
         return f"{self.user} - {self.action} - {self.timestamp}"
+
+
+class VaiTro(models.Model):
+    """
+    Role model for RBAC system.
+
+    Pre-defined roles: ke_toan_truong, ke_toan_vien, thu_quy, giam_doc.
+    Seeded via management command.
+    """
+
+    ma = models.CharField(
+        max_length=30,
+        unique=True,
+        verbose_name="Mã vai trò",
+    )
+    ten = models.CharField(
+        max_length=100,
+        verbose_name="Tên vai trò",
+    )
+    mo_ta = models.TextField(
+        blank=True,
+        default="",
+        verbose_name="Mô tả",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Ngày tạo",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Ngày cập nhật",
+    )
+
+    class Meta:
+        ordering = ["ma"]
+        verbose_name = "Vai trò"
+        verbose_name_plural = "Vai trò"
+
+    def __str__(self):
+        return self.ten

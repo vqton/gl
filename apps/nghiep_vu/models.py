@@ -977,3 +977,188 @@ class XuatKhoChiTiet(models.Model):
 
     def __str__(self):
         return f"{self.xuat_kho} - {self.hang_hoa}"
+
+
+class BangPhanBoNVLCCDC(models.Model):
+    thang = models.IntegerField(verbose_name="Tháng")
+    nam = models.IntegerField(verbose_name="Năm")
+    tong_nhap_kho = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng nhập kho")
+    tong_xuat_kho = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng xuất kho")
+    tong_chenh_lech = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng chênh lệch")
+    da_hach_toan = models.BooleanField(default=False, verbose_name="Đã hạch toán")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="bang_phan_bo_nvl_ccdc_set", verbose_name="Bút toán")
+
+    class Meta:
+        unique_together = [("thang", "nam")]
+        ordering = ["nam", "thang"]
+        verbose_name = "Bảng phân bổ NVL, CCDC"
+        verbose_name_plural = "Bảng phân bổ NVL, CCDC"
+
+    def __str__(self):
+        return f"Bảng phân bổ {self.thang}/{self.nam}"
+
+
+class BangPhanBoNVLCCDCChiTiet(models.Model):
+    bang_phan_bo = models.ForeignKey(BangPhanBoNVLCCDC, on_delete=models.CASCADE, related_name="chi_tiet", verbose_name="Bảng phân bổ")
+    hang_hoa = models.ForeignKey("danh_muc.HangHoa", on_delete=models.PROTECT, verbose_name="Hàng hóa")
+    ton_dau_ky = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tồn đầu kỳ")
+    nhap_trong_ky = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Nhập trong kỳ")
+    xuat_trong_ky = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Xuất trong kỳ")
+    ton_cuoi_ky = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tồn cuối kỳ")
+    phan_bo_621 = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Phân bổ 621")
+    phan_bo_627 = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Phân bổ 627")
+    phan_bo_642 = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Phân bổ 642")
+
+
+class BangThanhToanTienLuong(models.Model):
+    thang = models.IntegerField(verbose_name="Tháng")
+    nam = models.IntegerField(verbose_name="Năm")
+    so_luong_nhan_vien = models.IntegerField(default=0, verbose_name="Số lượng nhân viên")
+    tong_luong_co_ban = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng lương cơ bản")
+    tong_phu_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng phụ cấp")
+    tong_tong_thu_nhap = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng thu nhập")
+    tong_bhxh_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHXH NLĐ")
+    tong_bhyt_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHYT NLĐ")
+    tong_bhtn_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHTN NLĐ")
+    tong_thue_tncn = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng thuế TNCN")
+    tong_thuc_linh = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng thực lĩnh")
+    tong_bhxh_dn = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHXH DN")
+    tong_bhyt_dn = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHYT DN")
+    tong_bhtn_dn = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng BHTN DN")
+    da_hach_toan = models.BooleanField(default=False, verbose_name="Đã hạch toán")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="bang_thanh_toan_tien_luong_set", verbose_name="Bút toán")
+
+    class Meta:
+        unique_together = [("thang", "nam")]
+        ordering = ["nam", "thang"]
+        verbose_name = "Bảng thanh toán tiền lương"
+        verbose_name_plural = "Bảng thanh toán tiền lương"
+
+    def __str__(self):
+        return f"Bảng lương {self.thang}/{self.nam}"
+
+
+class BangThanhToanTienLuongChiTiet(models.Model):
+    bang_luong = models.ForeignKey(BangThanhToanTienLuong, on_delete=models.CASCADE, related_name="chi_tiet", verbose_name="Bảng lương")
+    luong_co_ban = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Lương cơ bản")
+    phu_cap = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Phụ cấp")
+    tong_thu_nhap = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Tổng thu nhập")
+    bhxh_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="BHXH NLĐ")
+    bhyt_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="BHYT NLĐ")
+    bhtn_nld = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="BHTN NLĐ")
+    thue_tncn = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Thuế TNCN")
+    thuc_linh = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Thực lĩnh")
+
+
+class BienBanGiaoNhanTSCD(models.Model):
+    LOAI_CHOICES = [("giao_nhan", "Giao nhận TSCĐ"), ("ban_giao", "Bàn giao TSCĐ")]
+
+    so_chung_tu = models.CharField(max_length=50, unique=True, verbose_name="Số biên bản")
+    ngay_lap = models.DateField(verbose_name="Ngày lập")
+    loai = models.CharField(max_length=20, choices=LOAI_CHOICES, default="giao_nhan", verbose_name="Loại biên bản")
+    tai_san = models.ForeignKey("tai_san.TaiSanCoDinh", on_delete=models.PROTECT, related_name="bien_ban_giao_nhan", verbose_name="Tài sản")
+    nguoi_giao = models.CharField(max_length=255, verbose_name="Người giao")
+    nguoi_nhan = models.CharField(max_length=255, verbose_name="Người nhận")
+    bo_phan_su_dung = models.CharField(max_length=255, blank=True, default="", verbose_name="Bộ phận sử dụng")
+    nguyen_gia = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Nguyên giá")
+    so_luong = models.DecimalField(max_digits=12, decimal_places=2, default=1, verbose_name="Số lượng")
+    dien_giai = models.TextField(blank=True, default="", verbose_name="Diễn giải")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    created_by = models.CharField(max_length=150, blank=True, default="", verbose_name="Người tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="bien_ban_giao_nhan_tscd_set", verbose_name="Bút toán")
+
+    class Meta:
+        ordering = ["-ngay_lap"]
+        verbose_name = "Biên bản giao nhận TSCĐ"
+        verbose_name_plural = "Biên bản giao nhận TSCĐ"
+
+    def __str__(self):
+        return f"{self.so_chung_tu} - {self.tai_san}"
+
+
+class BienBanThanhLyTSCD(models.Model):
+    LOAI_XU_LY_CHOICES = [("ban", "Bán"), ("doi", "Đổi"), ("tang", "Tặng"), ("huy", "Hủy")]
+
+    so_chung_tu = models.CharField(max_length=50, unique=True, verbose_name="Số biên bản")
+    ngay_lap = models.DateField(verbose_name="Ngày lập")
+    tai_san = models.ForeignKey("tai_san.TaiSanCoDinh", on_delete=models.PROTECT, related_name="bien_ban_thanh_ly", verbose_name="Tài sản")
+    nguyen_gia = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Nguyên giá")
+    khau_hao_luy_ke = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Khấu hao lũy kế")
+    gia_tri_con_lai = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Giá trị còn lại")
+    loai_xu_ly = models.CharField(max_length=20, choices=LOAI_XU_LY_CHOICES, verbose_name="Loại xử lý")
+    so_tien_thu = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Số tiền thu (nếu bán)")
+    chiet_khau = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Chiết khấu (nếu có)")
+    ly_do = models.TextField(verbose_name="Lý do thanh lý")
+    nguoi_lap = models.CharField(max_length=255, verbose_name="Người lập")
+    nguoi_duyet = models.CharField(max_length=255, blank=True, default="", verbose_name="Người duyệt")
+    da_hach_toan = models.BooleanField(default=False, verbose_name="Đã hạch toán")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    created_by = models.CharField(max_length=150, blank=True, default="", verbose_name="Người tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="bien_ban_thanh_ly_tscd_set", verbose_name="Bút toán")
+
+    class Meta:
+        ordering = ["-ngay_lap"]
+        verbose_name = "Biên bản thanh lý TSCĐ"
+        verbose_name_plural = "Biên bản thanh lý TSCĐ"
+
+    def __str__(self):
+        return f"{self.so_chung_tu} - {self.tai_san}"
+
+
+class GiayDeNghiTamUng(models.Model):
+    TRANG_THAI_CHOICES = [("draft", "Nháp"), ("approved", "Đã duyệt"), ("da_chi", "Đã chi"), ("cancelled", "Đã hủy")]
+
+    so_chung_tu = models.CharField(max_length=50, unique=True, verbose_name="Số chứng từ")
+    ngay_chung_tu = models.DateField(verbose_name="Ngày chứng từ")
+    nguoi_de_nghi = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="giay_de_nghi_tam_ung", verbose_name="Người đề nghị")
+    noi_dung = models.TextField(verbose_name="Nội dung tạm ứng")
+    so_tien = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Số tiền")
+    hinh_thuc_chi = models.CharField(max_length=20, choices=[("tien_mat", "Tiền mặt (111)"), ("chuyen_khoan", "Chuyển khoản (112)")], default="tien_mat", verbose_name="Hình thức chi")
+    tk_chi = models.ForeignKey(TaiKhoanKeToan, on_delete=models.PROTECT, related_name="tam_ung_chi", verbose_name="TK chi (111/112)", help_text="Tài khoản ghi Có")
+    tk_duoc_duyet = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="tam_ung_duoc_duyet", null=True, blank=True, verbose_name="Người duyệt")
+    ngay_duyet = models.DateField(null=True, blank=True, verbose_name="Ngày duyệt")
+    trang_thai = models.CharField(max_length=15, choices=TRANG_THAI_CHOICES, default="draft", verbose_name="Trạng thái")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Ngày cập nhật")
+    created_by = models.CharField(max_length=150, blank=True, default="", verbose_name="Người tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="giay_de_nghi_tam_ung_set", verbose_name="Bút toán")
+
+    class Meta:
+        ordering = ["-ngay_chung_tu"]
+        verbose_name = "Giấy đề nghị tạm ứng"
+        verbose_name_plural = "Giấy đề nghị tạm ứng"
+
+    def __str__(self):
+        return f"{self.so_chung_tu} - {self.nguoi_de_nghi} - {self.so_tien}"
+
+
+class GiayThanhToanTamUng(models.Model):
+    TRANG_THAI_CHOICES = [("draft", "Nháp"), ("posted", "Đã ghi sổ"), ("cancelled", "Đã hủy")]
+
+    so_chung_tu = models.CharField(max_length=50, unique=True, verbose_name="Số chứng từ")
+    ngay_chung_tu = models.DateField(verbose_name="Ngày chứng từ")
+    tam_ung = models.ForeignKey(GiayDeNghiTamUng, on_delete=models.PROTECT, related_name="thanh_toan", verbose_name="Giấy tạm ứng gốc")
+    nguoi_tam_ung = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="thanh_toan_tam_ung", verbose_name="Người tạm ứng")
+    so_tien_tam_ung = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Số tiền tạm ứng")
+    so_tien_chi = models.DecimalField(max_digits=20, decimal_places=2, verbose_name="Số tiền chi")
+    so_tien_con_lai = models.DecimalField(max_digits=20, decimal_places=2, default=0, verbose_name="Số tiền còn lại", help_text="Tạm ứng - Chi = Còn lại (nếu âm thì phải thu hồi)")
+    dien_giai = models.TextField(blank=True, default="", verbose_name="Diễn giải")
+    trang_thai = models.CharField(max_length=15, choices=TRANG_THAI_CHOICES, default="draft", verbose_name="Trạng thái")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Ngày tạo")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Ngày cập nhật")
+    created_by = models.CharField(max_length=150, blank=True, default="", verbose_name="Người tạo")
+    but_toan = models.ForeignKey("nghiep_vu.ButToan", on_delete=models.SET_NULL, null=True, blank=True, related_name="giay_thanh_toan_tam_ung_set", verbose_name="Bút toán")
+
+    class Meta:
+        ordering = ["-ngay_chung_tu"]
+        verbose_name = "Giấy thanh toán tạm ứng"
+        verbose_name_plural = "Giấy thanh toán tạm ứng"
+
+    def __str__(self):
+        return f"{self.so_chung_tu} - {self.nguoi_tam_ung}"
+
+    def save(self, *args, **kwargs):
+        self.so_tien_con_lai = self.so_tien_tam_ung - self.so_tien_chi
+        super().save(*args, **kwargs)

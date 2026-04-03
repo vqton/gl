@@ -148,3 +148,40 @@ class TongHopSoCaiView(LoginRequiredMixin, TemplateView):
         context["tu_ngay"] = tu
         context["den_ngay"] = den
         return context
+
+
+# ==================== BÁO CÁO BÁN HÀNG ====================
+
+
+class BaoCaoBanHangView(LoginRequiredMixin, TemplateView):
+    template_name = "bao_cao/ban_hang.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tu = self.request.GET.get("tu")
+        den = self.request.GET.get("den")
+        if tu and den:
+            from datetime import datetime
+            tu = datetime.strptime(tu, "%Y-%m-%d").date()
+            den = datetime.strptime(den, "%Y-%m-%d").date()
+        else:
+            tu = date(date.today().year, 1, 1)
+            den = date.today()
+
+        from apps.nghiep_vu.models import HoaDon
+        hoa_don_list = HoaDon.objects.filter(
+            ngay_hoa_don__gte=tu,
+            ngay_hoa_don__lte=den,
+        ).order_by("-ngay_hoa_don")
+
+        tong_tien = sum(hd.tong_tien for hd in hoa_don_list)
+        tong_thue = sum(hd.tien_thue for hd in hoa_don_list)
+        tong_thanh_toan = sum(hd.thanh_toan for hd in hoa_don_list)
+
+        context["hoa_don_list"] = hoa_don_list
+        context["tu_ngay"] = tu
+        context["den_ngay"] = den
+        context["tong_tien"] = tong_tien
+        context["tong_thue"] = tong_thue
+        context["tong_thanh_toan"] = tong_thanh_toan
+        return context

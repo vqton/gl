@@ -73,7 +73,7 @@ class TestTaiKhoanKeToan:
     def test_auto_detect_account_type(self):
         """Test automatic account type detection from code prefix."""
         tk = TaiKhoanKeToan.objects.create(
-            ma_tai_khoan="981",
+            ma_tai_khoan="681",
             ten_tai_khoan="Test expense account",
             cap_do=1,
         )

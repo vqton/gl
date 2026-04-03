@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Giấy đề nghị tạm ứng (03-TT)</h2>
+        <a href="{% url 'nghiep_vu:giay_tam_ung_create' %}" class="btn btn-primary">+ Tạo mới</a>
+    </div>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <input type="text" name="q" class="form-control" placeholder="Số chứng từ..." value="{{ search }}">
+        </div>
+        <div class="col-md-2">
+            <select name="trang_thai" class="form-select">
+                <option value="">-- Trạng thái --</option>
+                <option value="draft" {% if trang_thai == 'draft' %}selected{% endif %}>Nháp</option>
+                <option value="approved" {% if trang_thai == 'approved' %}selected{% endif %}>Đã duyệt</option>
+                <option value="da_chi" {% if trang_thai == 'da_chi' %}selected{% endif %}>Đã chi</option>
+                <option value="cancelled" {% if trang_thai == 'cancelled' %}selected{% endif %}>Đã hủy</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-outline-primary">Lọc</button>
+        </div>
+    </form>
+
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Số chứng từ</th>
+                <th>Ngày</th>
+                <th>Người đề nghị</th>
+                <th>Nội dung</th>
+                <th>Số tiền</th>
+                <th>Trạng thái</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for giay in giay_tam_ung_list %}
+            <tr>
+                <td><a href="{% url 'nghiep_vu:giay_tam_ung_detail' giay.pk %}">{{ giay.so_chung_tu }}</a></td>
+                <td>{{ giay.ngay_chung_tu }}</td>
+                <td>{{ giay.nguoi_de_nghi }}</td>
+                <td>{{ giay.noi_dung|truncatechars:50 }}</td>
+                <td class="text-end">{{ giay.so_tien|floatformat:0 }} VND</td>
+                <td>
+                    {% if giay.trang_thai == 'draft' %}
+                    <span class="badge bg-secondary">Nháp</span>
+                    {% elif giay.trang_thai == 'approved' %}
+                    <span class="badge bg-success">Đã duyệt</span>
+                    {% elif giay.trang_thai == 'da_chi' %}
+                    <span class="badge bg-primary">Đã chi</span>
+                    {% else %}
+                    <span class="badge bg-danger">Đã hủy</span>
+                    {% endif %}
+                </td>
+                <td><a href="{% url 'nghiep_vu:giay_tam_ung_detail' giay.pk %}" class="btn btn-sm btn-outline-info">Chi tiết</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" class="text-center text-muted">Chưa có giấy tạm ứng nào</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if page_obj.has_other_pages %}
+    <nav>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Trước</a></li>
+            {% endif %}
+            <li class="page-item active"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Sau</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

@@ -15,7 +15,8 @@ class NguoiDung(AbstractUser):
     """
     Custom user model extending Django's AbstractUser.
 
-    Adds user type classification, company association, and system admin flag.
+    Adds user type classification, company association, role-based access,
+    and system admin flag.
     """
 
     user_type = models.CharField(
@@ -49,6 +50,14 @@ class NguoiDung(AbstractUser):
         default="",
         verbose_name=_("Phòng ban"),
     )
+    vai_tro = models.ForeignKey(
+        "he_thong.VaiTro",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="nguoi_dung",
+        verbose_name=_("Vai trò"),
+    )
 
     class Meta:
         verbose_name = _("Người dùng")
@@ -72,3 +81,30 @@ class NguoiDung(AbstractUser):
     def is_viewer_user(self):
         """Check if user is viewer type."""
         return self.user_type == UserType.VIEWER
+
+    @property
+    def is_ke_toan_truong(self):
+        """Check if user has chief accountant role or is system admin."""
+        if self.is_system_admin:
+            return True
+        return self.vai_tro is not None and self.vai_tro.ma == "ke_toan_truong"
+
+    def has_role(self, role_ma: str) -> bool:
+        """
+        Check if user has a specific role.
+
+        System admins and chief accountants implicitly have all roles.
+
+        Args:
+            role_ma: Role code (e.g., 'ke_toan_truong', 'thu_quy').
+
+        Returns:
+            True if user has the role or is system admin/chief accountant.
+        """
+        if self.is_system_admin:
+            return True
+        if self.vai_tro is None:
+            return False
+        if self.vai_tro.ma == "ke_toan_truong":
+            return True
+        return self.vai_tro.ma == role_ma

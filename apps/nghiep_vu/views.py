@@ -3,22 +3,48 @@
 from decimal import Decimal
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, DeleteView
 
-from apps.danh_muc.models import KhachHang, NhaCungCap
+from apps.danh_muc.models import KhachHang, NhaCungCap, TaiKhoanKeToan
 from apps.nghiep_vu.models import (
+    BienBanGiaoNhanTSCD,
+    BienBanThanhLyTSCD,
     ButToan,
+    GiayDeNghiTamUng,
+    GiayThanhToanTamUng,
     HoaDon,
     HoaDonChiTiet,
     PhieuChi,
     PhieuThu,
 )
 from apps.nghiep_vu.services import tao_hoa_don, tao_phieu_chi, tao_phieu_thu
+from apps.tien_ich.permissions import can_delete_posted_voucher
+
+
+class RoleRequiredMixin(UserPassesTestMixin):
+    """Mixin to require a specific role for class-based views."""
+
+    required_role = None
+
+    def test_func(self):
+        """Check if user has the required role."""
+        if self.required_role is None:
+            return True
+        return self.request.user.has_role(self.required_role)
+
+    def handle_no_permission(self):
+        """Return 403 with Vietnamese message."""
+        from django.http import HttpResponseForbidden
+
+        return HttpResponseForbidden(
+            f"Bạn không có quyền truy cập trang này. "
+            f"Yêu cầu vai trò: {self.required_role}"
+        )
 
 
 def index(request):
@@ -29,12 +55,13 @@ def index(request):
 # ==================== PHIEU THU ====================
 
 
-class PhieuThuListView(LoginRequiredMixin, ListView):
+class PhieuThuListView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = PhieuThu
     template_name = "nghiep_vu/phieu_thu_list.html"
     context_object_name = "phieu_thu_list"
     ordering = ["-ngay_chung_tu"]
     paginate_by = 20
+    required_role = "thu_quy"
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -63,7 +90,7 @@ class PhieuThuListView(LoginRequiredMixin, ListView):
         return context
 
 
-class PhieuThuCreateView(LoginRequiredMixin, CreateView):
+class PhieuThuCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = PhieuThu
     template_name = "nghiep_vu/phieu_thu_form.html"
     fields = [
@@ -76,6 +103,7 @@ class PhieuThuCreateView(LoginRequiredMixin, CreateView):
         "dien_giai",
     ]
     success_url = reverse_lazy("nghiep_vu:phieu_thu_list")
+    required_role = "thu_quy"
 
     def form_valid(self, form):
         try:
@@ -109,16 +137,22 @@ class PhieuThuDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "nghiep_vu/phieu_confirm_delete.html"
     success_url = reverse_lazy("nghiep_vu:phieu_thu_list")
 
+    def dispatch(self, request, *args, **kwargs):
+        """Check delete permission before processing."""
+        decorator = can_delete_posted_voucher
+        return decorator(super().dispatch)(request, *args, **kwargs)
+
 
 # ==================== PHIEU CHI ====================
 
 
-class PhieuChiListView(LoginRequiredMixin, ListView):
+class PhieuChiListView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = PhieuChi
     template_name = "nghiep_vu/phieu_chi_list.html"
     context_object_name = "phieu_chi_list"
     ordering = ["-ngay_chung_tu"]
     paginate_by = 20
+    required_role = "thu_quy"
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -147,7 +181,7 @@ class PhieuChiListView(LoginRequiredMixin, ListView):
         return context
 
 
-class PhieuChiCreateView(LoginRequiredMixin, CreateView):
+class PhieuChiCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = PhieuChi
     template_name = "nghiep_vu/phieu_chi_form.html"
     fields = [
@@ -160,6 +194,7 @@ class PhieuChiCreateView(LoginRequiredMixin, CreateView):
         "dien_giai",
     ]
     success_url = reverse_lazy("nghiep_vu:phieu_chi_list")
+    required_role = "thu_quy"
 
     def form_valid(self, form):
         try:
@@ -193,16 +228,22 @@ class PhieuChiDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "nghiep_vu/phieu_confirm_delete.html"
     success_url = reverse_lazy("nghiep_vu:phieu_chi_list")
 
+    def dispatch(self, request, *args, **kwargs):
+        """Check delete permission before processing."""
+        decorator = can_delete_posted_voucher
+        return decorator(super().dispatch)(request, *args, **kwargs)
+
 
 # ==================== HOA DON ====================
 
 
-class HoaDonListView(LoginRequiredMixin, ListView):
+class HoaDonListView(LoginRequiredMixin, RoleRequiredMixin, ListView):
     model = HoaDon
     template_name = "nghiep_vu/hoa_don_list.html"
     context_object_name = "hoa_don_list"
     ordering = ["-ngay_hoa_don"]
     paginate_by = 20
+    required_role = "ke_toan_vien"
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -231,7 +272,7 @@ class HoaDonListView(LoginRequiredMixin, ListView):
         return context
 
 
-class HoaDonCreateView(LoginRequiredMixin, CreateView):
+class HoaDonCreateView(LoginRequiredMixin, RoleRequiredMixin, CreateView):
     model = HoaDon
     template_name = "nghiep_vu/hoa_don_form.html"
     fields = [
@@ -241,6 +282,7 @@ class HoaDonCreateView(LoginRequiredMixin, CreateView):
         "ky_hieu",
     ]
     success_url = reverse_lazy("nghiep_vu:hoa_don_list")
+    required_role = "ke_toan_vien"
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user.username
@@ -263,3 +305,114 @@ class HoaDonDeleteView(LoginRequiredMixin, DeleteView):
     model = HoaDon
     template_name = "nghiep_vu/hoa_don_confirm_delete.html"
     success_url = reverse_lazy("nghiep_vu:hoa_don_list")
+
+
+# ==================== GIẤY ĐỀ NGHỊ TẠM ỨNG (03-TT) ====================
+
+
+class GiayTamUngListView(LoginRequiredMixin, ListView):
+    model = GiayDeNghiTamUng
+    template_name = "nghiep_vu/giay_tam_ung_list.html"
+    context_object_name = "giay_tam_ung_list"
+    ordering = ["-ngay_chung_tu"]
+    paginate_by = 20
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        search = self.request.GET.get("q", "").strip()
+        trang_thai = self.request.GET.get("trang_thai", "")
+        if search:
+            qs = qs.filter(so_chung_tu__icontains=search)
+        if trang_thai:
+            qs = qs.filter(trang_thai=trang_thai)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search"] = self.request.GET.get("q", "")
+        context["trang_thai"] = self.request.GET.get("trang_thai", "")
+        return context
+
+
+class GiayTamUngCreateView(LoginRequiredMixin, CreateView):
+    model = GiayDeNghiTamUng
+    template_name = "nghiep_vu/giay_tam_ung_form.html"
+    fields = [
+        "ngay_chung_tu",
+        "nguoi_de_nghi",
+        "noi_dung",
+        "so_tien",
+        "hinh_thuc_chi",
+        "tk_chi",
+    ]
+    success_url = reverse_lazy("nghiep_vu:giay_tam_ung_list")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user.username
+        form.instance.so_chung_tu = self.generate_so_chung_tu()
+        return super().form_valid(form)
+
+    def generate_so_chung_tu(self):
+        last = GiayDeNghiTamUng.objects.order_by("-so_chung_tu").first()
+        if last:
+            num = int(last.so_chung_tu.split("/")[-1]) + 1
+            return f"TU/{num:03d}"
+        return "TU/001"
+
+
+class GiayTamUngDetailView(LoginRequiredMixin, DetailView):
+    model = GiayDeNghiTamUng
+    template_name = "nghiep_vu/giay_tam_ung_detail.html"
+    context_object_name = "giay"
+
+
+# ==================== GIẤY THANH TOÁN TẠM ỨNG (04-TT) ====================
+
+
+class TamUngSettlementListView(LoginRequiredMixin, ListView):
+    model = GiayThanhToanTamUng
+    template_name = "nghiep_vu/tam_ung_settlement_list.html"
+    context_object_name = "settlement_list"
+    ordering = ["-ngay_chung_tu"]
+    paginate_by = 20
+
+
+class TamUngSettlementCreateView(LoginRequiredMixin, CreateView):
+    model = GiayThanhToanTamUng
+    template_name = "nghiep_vu/tam_ung_settlement_form.html"
+    fields = [
+        "ngay_chung_tu",
+        "tam_ung",
+        "nguoi_tam_ung",
+        "so_tien_tam_ung",
+        "so_tien_chi",
+        "dien_giai",
+    ]
+    success_url = reverse_lazy("nghiep_vu:tam_ung_settlement_list")
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user.username
+        form.instance.so_chung_tu = self.generate_so_chung_tu()
+        return super().form_valid(form)
+
+    def generate_so_chung_tu(self):
+        last = GiayThanhToanTamUng.objects.order_by("-so_chung_tu").first()
+        if last:
+            num = int(last.so_chung_tu.split("/")[-1]) + 1
+            return f"TT/{num:03d}"
+        return "TT/001"
+
+    def get_initial(self):
+        initial = super().get_initial()
+        tam_ung_id = self.request.GET.get("tam_ung")
+        if tam_ung_id:
+            from apps.nghiep_vu.models import GiayDeNghiTamUng
+
+            try:
+                tam_ung = GiayDeNghiTamUng.objects.get(pk=tam_ung_id)
+                initial["tam_ung"] = tam_ung
+                initial["nguoi_tam_ung"] = tam_ung.nguoi_de_nghi
+                initial["so_tien_tam_ung"] = tam_ung.so_tien
+            except GiayDeNghiTamUng.DoesNotExist:
+                pass
+        return initial

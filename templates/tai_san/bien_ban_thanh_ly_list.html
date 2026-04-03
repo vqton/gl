@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Biên bản thanh lý TSCĐ</h2>
+        <a href="{% url 'tai_san:bien_ban_thanh_ly_create' %}" class="btn btn-primary">+ Tạo mới</a>
+    </div>
+
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Số biên bản</th>
+                <th>Ngày</th>
+                <th>Tài sản</th>
+                <th>Nguyên giá</th>
+                <th>KH lũy kế</th>
+                <th>Giá trị còn lại</th>
+                <th>Loại xử lý</th>
+                <th>Đã hạch toán</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bb in bien_ban_list %}
+            <tr>
+                <td>{{ bb.so_chung_tu }}</td>
+                <td>{{ bb.ngay_lap }}</td>
+                <td>{{ bb.tai_san }}</td>
+                <td class="text-end">{{ bb.nguyen_gia|floatformat:0 }} VND</td>
+                <td class="text-end">{{ bb.khau_hao_luy_ke|floatformat:0 }} VND</td>
+                <td class="text-end">{{ bb.gia_tri_con_lai|floatformat:0 }} VND</td>
+                <td>
+                    {% if bb.loai_xu_ly == 'ban' %}<span class="badge bg-success">Bán</span>
+                    {% elif bb.loai_xu_ly == 'doi' %}<span class="badge bg-info">Đổi</span>
+                    {% elif bb.loai_xu_ly == 'tang' %}<span class="badge bg-warning">Tặng</span>
+                    {% else %}<span class="badge bg-danger">Hủy</span>{% endif %}
+                </td>
+                <td>
+                    {% if bb.da_hach_toan %}<span class="badge bg-success">Đã HT</span>
+                    {% else %}<span class="badge bg-secondary">Chưa</span>{% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-center text-muted">Chưa có biên bản nào</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

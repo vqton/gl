@@ -49,4 +49,31 @@ urlpatterns = [
     path(
         "hoa-don/<int:pk>/xoa/", views.HoaDonDeleteView.as_view(), name="hoa_don_delete"
     ),
+    # Giấy tạm ứng (03-TT)
+    path(
+        "giay-tam-ung/",
+        views.GiayTamUngListView.as_view(),
+        name="giay_tam_ung_list",
+    ),
+    path(
+        "giay-tam-ung/tao-moi/",
+        views.GiayTamUngCreateView.as_view(),
+        name="giay_tam_ung_create",
+    ),
+    path(
+        "giay-tam-ung/<int:pk>/",
+        views.GiayTamUngDetailView.as_view(),
+        name="giay_tam_ung_detail",
+    ),
+    # Giấy thanh toán tạm ứng (04-TT)
+    path(
+        "tam-ung-thanh-toan/",
+        views.TamUngSettlementListView.as_view(),
+        name="tam_ung_settlement_list",
+    ),
+    path(
+        "tam-ung-thanh-toan/tao-moi/",
+        views.TamUngSettlementCreateView.as_view(),
+        name="tam_ung_settlement_create",
+    ),
 ]

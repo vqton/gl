@@ -18,34 +18,43 @@ from apps.gia_thanh.models import (
 @pytest.fixture
 def tk621(db):
     from apps.danh_muc.models import TaiKhoanKeToan
-    return TaiKhoanKeToan.objects.create(
+    tk, _ = TaiKhoanKeToan.objects.get_or_create(
         ma_tai_khoan="621",
-        ten_tai_khoan="Chi phí nguyên liệu trực tiếp",
-        cap_do=1,
-        loai_tai_khoan="chi_phi",
+        defaults={
+            "ten_tai_khoan": "Chi phí nguyên liệu, vật liệu trực tiếp",
+            "cap_do": 1,
+            "loai_tai_khoan": "chi_phi",
+        },
     )
+    return tk
 
 
 @pytest.fixture
 def tk622(db):
     from apps.danh_muc.models import TaiKhoanKeToan
-    return TaiKhoanKeToan.objects.create(
+    tk, _ = TaiKhoanKeToan.objects.get_or_create(
         ma_tai_khoan="622",
-        ten_tai_khoan="Chi phí nhân công trực tiếp",
-        cap_do=1,
-        loai_tai_khoan="chi_phi",
+        defaults={
+            "ten_tai_khoan": "Chi phí nhân công trực tiếp",
+            "cap_do": 1,
+            "loai_tai_khoan": "chi_phi",
+        },
     )
+    return tk
 
 
 @pytest.fixture
 def tk627(db):
     from apps.danh_muc.models import TaiKhoanKeToan
-    return TaiKhoanKeToan.objects.create(
+    tk, _ = TaiKhoanKeToan.objects.get_or_create(
         ma_tai_khoan="627",
-        ten_tai_khoan="Chi phí sản xuất chung",
-        cap_do=1,
-        loai_tai_khoan="chi_phi",
+        defaults={
+            "ten_tai_khoan": "Chi phí sản xuất chung",
+            "cap_do": 1,
+            "loai_tai_khoan": "chi_phi",
+        },
     )
+    return tk
 
 
 @pytest.fixture

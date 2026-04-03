@@ -1,5 +1,8 @@
 """Master data models for Vietnamese SME Accounting System."""
 
+import re
+
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -92,8 +95,32 @@ class TaiKhoanKeToan(models.Model):
         return f"{self.ma_tai_khoan} - {self.ten_tai_khoan}"
 
     def clean(self):
-        """Validate account code format and parent-child relationship."""
-        from django.core.exceptions import ValidationError
+        """Validate account code format and parent-child relationship.
+
+        Legal basis:
+            - Thông tư 99/2025/TT-BTC Phụ lục II - Hệ thống tài khoản kế toán
+        """
+        super().clean()
+        if self.pk and self.is_immutable:
+            original = TaiKhoanKeToan.objects.get(pk=self.pk)
+            if (
+                original.ten_tai_khoan != self.ten_tai_khoan
+                or original.loai_tai_khoan != self.loai_tai_khoan
+            ):
+                raise ValidationError(
+                    "Tài khoản bất biến không được sửa đổi. "
+                    "Vui lòng tạo tài khoản mới."
+                )
+
+        if not re.match(r"^\d{3,4}$", self.ma_tai_khoan):
+            raise ValidationError(
+                {"ma_tai_khoan": "Mã tài khoản phải là 3 hoặc 4 chữ số."}
+            )
+
+        if self.cap_do not in (1, 2):
+            raise ValidationError(
+                {"cap_do": "Cấp độ phải là 1 hoặc 2."}
+            )
 
         if self.cap_do == 2 and not self.tai_khoan_me:
             raise ValidationError(
@@ -103,6 +130,12 @@ class TaiKhoanKeToan(models.Model):
         if self.cap_do == 1 and self.tai_khoan_me:
             raise ValidationError(
                 {"tai_khoan_me": "Tài khoản cấp 1 không được có tài khoản mẹ."}
+            )
+
+        valid_types = [c[0] for c in self.LOAI_TAI_KHOAN_CHOICES]
+        if self.loai_tai_khoan and self.loai_tai_khoan not in valid_types:
+            raise ValidationError(
+                {"loai_tai_khoan": f"Loại tài khoản không hợp lệ: {self.loai_tai_khoan}"}
             )
 
     def save(self, *args, **kwargs):
@@ -293,6 +326,22 @@ class NhaCungCap(models.Model):
     def __str__(self):
         return f"{self.ma_ncc} - {self.ten_ncc}"
 
+    def clean(self):
+        """Validate supplier data per accounting requirements.
+
+        Legal basis:
+            - Thông tư 99/2025/TT-BTC on supplier management
+        """
+        super().clean()
+        if self.ma_so_thue and not re.match(r"^\d{10}(\d{3})?$", self.ma_so_thue):
+            raise ValidationError(
+                {"ma_so_thue": "Mã số thuế phải là 10 hoặc 13 chữ số."}
+            )
+        if not self.ten_ncc.strip():
+            raise ValidationError(
+                {"ten_ncc": "Tên nhà cung cấp là bắt buộc."}
+            )
+
 
 class KhachHang(models.Model):
     """
@@ -372,6 +421,23 @@ class KhachHang(models.Model):
 
     def __str__(self):
         return f"{self.ma_kh} - {self.ten_kh}"
+
+    def clean(self):
+        """Validate customer data per e-invoice requirements.
+
+        Legal basis:
+            - Nghị định 320/2025/NĐ-CP on e-invoice requirements
+            - Thông tư 99/2025/TT-BTC on customer management
+        """
+        super().clean()
+        if self.ma_so_thue and not re.match(r"^\d{10}(\d{3})?$", self.ma_so_thue):
+            raise ValidationError(
+                {"ma_so_thue": "Mã số thuế phải là 10 hoặc 13 chữ số."}
+            )
+        if not self.ten_kh.strip():
+            raise ValidationError(
+                {"ten_kh": "Tên khách hàng là bắt buộc."}
+            )
 
 
 class NganHang(models.Model):

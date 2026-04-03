@@ -5,13 +5,24 @@ import logging
 import os
 import shutil
 
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 
-from apps.he_thong.models import AuditLog, CauHinhHeThong, KyKeToan, ThongTinCongTy
+from apps.he_thong.models import (
+    AuditLog,
+    CauHinhHeThong,
+    KyKeToan,
+    ThongTinCongTy,
+    VaiTro,
+)
 
 logger = logging.getLogger(__name__)
+
+NguoiDung = get_user_model()
 
 
 def health_check(request):
@@ -227,3 +238,37 @@ def json_dumps_safe(value):
         return json.dumps(value, ensure_ascii=False)
     except (TypeError, ValueError):
         return str(value)
+
+
+@login_required
+def nguoi_dung_list(request):
+    """List all users with their roles."""
+    users = NguoiDung.objects.select_related("vai_tro").all()
+    return render(
+        request,
+        "he_thong/nguoi_dung_list.html",
+        {"users": users},
+    )
+
+
+@login_required
+def nguoi_dung_role_edit(request, pk):
+    """Edit user role assignment."""
+    user = NguoiDung.objects.get(pk=pk)
+    roles = VaiTro.objects.all()
+
+    if request.method == "POST":
+        role_id = request.POST.get("vai_tro", "")
+        if role_id:
+            user.vai_tro = VaiTro.objects.get(pk=role_id)
+        else:
+            user.vai_tro = None
+        user.save()
+        messages.success(request, "Đã cập nhật vai trò cho người dùng.")
+        return redirect("he_thong:nguoi_dung_list")
+
+    return render(
+        request,
+        "he_thong/user_role_form.html",
+        {"user_obj": user, "roles": roles},
+    )
