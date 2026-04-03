@@ -1,26 +1,27 @@
 """Tests for nghiep_vu models."""
 
-import pytest
 from datetime import date
 from decimal import Decimal
 
+import pytest
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from apps.danh_muc.models import (
     HangHoa,
     KhachHang,
-    NhaCungCap,
     NganHang,
+    NhaCungCap,
     TaiKhoanKeToan,
     TaiKhoanNganHang,
 )
-from apps.nghiep_vu.models import Kho
+from apps.he_thong.models import KyKeToan
 from apps.nghiep_vu.models import (
     ButToan,
     ButToanChiTiet,
     HoaDon,
     HoaDonChiTiet,
+    Kho,
     NhapKho,
     NhapKhoChiTiet,
     PhieuChi,
@@ -28,6 +29,18 @@ from apps.nghiep_vu.models import (
     XuatKho,
     XuatKhoChiTiet,
 )
+
+
+@pytest.fixture
+def ky_ke_toan_2026():
+    return KyKeToan.objects.get_or_create(
+        nam=2026,
+        defaults={
+            "ngay_bat_dau": date(2026, 1, 1),
+            "ngay_ket_thuc": date(2026, 12, 31),
+            "trang_thai": "open",
+        },
+    )[0]
 
 
 @pytest.fixture
@@ -385,6 +398,7 @@ class TestButToan:
 
     def _create_user(self):
         from apps.users.models import NguoiDung
+
         return NguoiDung.objects.create_user(
             username="testuser",
             password="testpass123",
@@ -450,7 +464,7 @@ class TestButToan:
         )
         assert bt.ngay_dua_vao_su_dung is None
 
-    def test_clean_balanced_posted(self, tk_111, tk_131):
+    def test_clean_balanced_posted(self, tk_111, tk_131, ky_ke_toan_2026):
         """Test posted but_toan with balanced Nợ/Có passes."""
         bt = ButToan.objects.create(
             so_but_toan="BT005",
@@ -471,7 +485,7 @@ class TestButToan:
         )
         bt.full_clean()
 
-    def test_clean_no_details_posted_raises(self):
+    def test_clean_no_details_posted_raises(self, ky_ke_toan_2026):
         """Test posted but_toan with no details raises error."""
         bt = ButToan.objects.create(
             so_but_toan="BT006",
@@ -481,7 +495,7 @@ class TestButToan:
         with pytest.raises(ValidationError, match="ít nhất một chi tiết"):
             bt.full_clean()
 
-    def test_clean_unbalanced_posted_raises(self, tk_111, tk_131):
+    def test_clean_unbalanced_posted_raises(self, tk_111, tk_131, ky_ke_toan_2026):
         """Test posted but_toan with unbalanced Nợ/Có raises error."""
         bt = ButToan.objects.create(
             so_but_toan="BT007",
@@ -503,7 +517,7 @@ class TestButToan:
         with pytest.raises(ValidationError, match="không bằng"):
             bt.full_clean()
 
-    def test_clean_balanced_posted_ok(self, tk_111, tk_131):
+    def test_clean_balanced_posted_ok(self, tk_111, tk_131, ky_ke_toan_2026):
         """Test posted but_toan with balanced Nợ/Có passes clean."""
         bt = ButToan.objects.create(
             so_but_toan="BT008",
@@ -524,7 +538,7 @@ class TestButToan:
         )
         bt.full_clean()
 
-    def test_clean_draft_no_validation(self, tk_111, tk_131):
+    def test_clean_draft_no_validation(self, tk_111, tk_131, ky_ke_toan_2026):
         """Test draft but_toan skips balance validation."""
         bt = ButToan.objects.create(
             so_but_toan="BT009",

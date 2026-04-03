@@ -323,6 +323,11 @@ class KhoEntry(models.Model):
         default=False,
         verbose_name="Đã đồng bộ",
     )
+    is_opening = models.BooleanField(
+        default=False,
+        verbose_name="Số dư đầu kỳ",
+        help_text="Đánh dấu đây là số dư đầu kỳ",
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Ngày tạo",

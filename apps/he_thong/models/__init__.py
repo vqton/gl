@@ -438,3 +438,192 @@ class VaiTro(models.Model):
 
     def __str__(self):
         return self.ten
+
+
+class SoDuDauKy(models.Model):
+    """
+    Opening balance model (Số dư đầu kỳ).
+
+    Stores opening balances for each account at the start of a fiscal year.
+    Supports general ledger and sub-ledger entries (customers, suppliers,
+    inventory, fixed assets).
+
+    Legal basis:
+        - Thông tư 99/2025/TT-BTC on opening balance requirements
+        - Chế độ kế toán doanh nghiệp nhỏ và vừa
+    """
+
+    tai_khoan = models.ForeignKey(
+        "danh_muc.TaiKhoanKeToan",
+        on_delete=models.PROTECT,
+        related_name="so_du_dau_ky",
+        verbose_name="Tài khoản",
+    )
+    doi_tuong_ma = models.CharField(
+        max_length=20,
+        blank=True,
+        default="",
+        verbose_name="Mã đối tượng",
+        help_text="Mã khách hàng/nhà cung cấp (cho TK 131, 331)",
+    )
+    kho = models.ForeignKey(
+        "kho.Kho",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="so_du_dau_ky",
+        verbose_name="Kho",
+    )
+    hang_hoa = models.ForeignKey(
+        "kho.VatTuHangHoa",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="so_du_dau_ky",
+        verbose_name="Hàng hóa",
+    )
+    tai_san = models.ForeignKey(
+        "tai_san.TaiSanCoDinh",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="so_du_dau_ky",
+        verbose_name="Tài sản cố định",
+    )
+    so_du_no = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=Decimal("0"),
+        verbose_name="Số dư Nợ",
+    )
+    so_du_co = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=Decimal("0"),
+        verbose_name="Số dư Có",
+    )
+    nam = models.IntegerField(
+        verbose_name="Năm",
+    )
+    da_khoa = models.BooleanField(
+        default=False,
+        verbose_name="Đã khóa",
+        help_text="Không cho phép chỉnh sửa khi đã khóa",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Ngày tạo",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Ngày cập nhật",
+    )
+    created_by = models.CharField(
+        max_length=150,
+        blank=True,
+        default="",
+        verbose_name="Người tạo",
+    )
+    updated_by = models.CharField(
+        max_length=150,
+        blank=True,
+        default="",
+        verbose_name="Người cập nhật",
+    )
+
+    class Meta:
+        ordering = ["tai_khoan__ma_tai_khoan", "doi_tuong_ma"]
+        verbose_name = "Số dư đầu kỳ"
+        verbose_name_plural = "Số dư đầu kỳ"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["tai_khoan", "doi_tuong_ma", "nam"],
+                name="unique_so_du_tai_khoan_doi_tuong_nam",
+            ),
+        ]
+
+    def __str__(self):
+        doi_tuong = f" ({self.doi_tuong_ma})" if self.doi_tuong_ma else ""
+        return f"{self.tai_khoan}{doi_tuong} - {self.nam}"
+
+    def clean(self):
+        """Validate opening balance rules."""
+        super().clean()
+
+        if self.so_du_no < Decimal("0"):
+            raise ValidationError({"so_du_no": "Số dư Nợ không được âm."})
+
+        if self.so_du_co < Decimal("0"):
+            raise ValidationError({"so_du_co": "Số dư Có không được âm."})
+
+        if self.so_du_no > Decimal("0") and self.so_du_co > Decimal("0"):
+            raise ValidationError(
+                "Một tài khoản không được có cả số dư Nợ và số dư Có. "
+                "Vui lòng chỉ nhập một trong hai."
+            )
+
+        if self.da_khoa and self.pk:
+            try:
+                original = SoDuDauKy.objects.get(pk=self.pk)
+                if (
+                    original.so_du_no != self.so_du_no
+                    or original.so_du_co != self.so_du_co
+                    or original.doi_tuong_ma != self.doi_tuong_ma
+                ):
+                    raise ValidationError(
+                        "Số dư đã khóa không được chỉnh sửa. "
+                        "Vui lòng mở khóa trước khi sửa."
+                    )
+            except SoDuDauKy.DoesNotExist:
+                pass
+
+    def save(self, *args, **kwargs):
+        """Auto-create/update KhoEntry for inventory opening balances."""
+        super().save(*args, **kwargs)
+
+        if self.hang_hoa_id and self.kho_id:
+            self._sync_kho_entry()
+
+    def delete(self, *args, **kwargs):
+        """Prevent deletion of locked balances."""
+        if self.da_khoa:
+            raise ValidationError("Không được xóa số dư đã khóa.")
+        if self.hang_hoa_id and self.kho_id:
+            from apps.kho.models import KhoEntry
+
+            KhoEntry.objects.filter(
+                hang_hoa=self.hang_hoa,
+                kho=self.kho,
+                is_opening=True,
+                so_chung_tu=f"SODK-{self.pk}",
+            ).delete()
+        super().delete(*args, **kwargs)
+
+    def finalize(self):
+        """Lock this opening balance record."""
+        self.da_khoa = True
+        self.save(update_fields=["da_khoa", "updated_at"])
+
+    def _sync_kho_entry(self):
+        """Create or update KhoEntry for inventory opening balance."""
+        from apps.kho.models import KhoEntry
+
+        entry, created = KhoEntry.objects.get_or_create(
+            hang_hoa=self.hang_hoa,
+            kho=self.kho,
+            is_opening=True,
+            so_chung_tu=f"SODK-{self.pk}",
+            defaults={
+                "loai": "NHAP",
+                "ngay_chung_tu": f"{self.nam}-01-01",
+                "loai_chung_tu": "NK",
+                "so_luong": Decimal("0"),
+                "don_gia": Decimal("0"),
+                "thanh_tien": self.so_du_no,
+                "dien_giai": f"Số dư đầu kỳ {self.nam} - {self.tai_khoan}",
+            },
+        )
+        if not created:
+            entry.thanh_tien = self.so_du_no
+            entry.dien_giai = f"Số dư đầu kỳ {self.nam} - {self.tai_khoan}"
+            entry.save(update_fields=["thanh_tien", "dien_giai", "updated_at"])
