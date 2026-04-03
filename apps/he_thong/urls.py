@@ -1,0 +1,39 @@
+"""He thong (System) URL configuration."""
+
+from django.urls import path
+
+from apps.he_thong import views
+
+app_name = "he_thong"
+
+urlpatterns = [
+    path("health/", views.health_check, name="health"),
+    path("cong-ty/", views.cong_ty_view, name="cong_ty"),
+    path(
+        "ky-ke-toan/",
+        views.ky_ke_toan_list,
+        name="ky_ke_toan_list",
+    ),
+    path(
+        "ky-ke-toan/them/",
+        views.ky_ke_toan_create,
+        name="ky_ke_toan_create",
+    ),
+    path(
+        "ky-ke-toan/<int:pk>/lock/",
+        views.ky_ke_toan_lock,
+        name="ky_ke_toan_lock",
+    ),
+    path(
+        "ky-ke-toan/<int:pk>/unlock/",
+        views.ky_ke_toan_unlock,
+        name="ky_ke_toan_unlock",
+    ),
+    path("cau-hinh/", views.cau_hinh_view, name="cau_hinh"),
+    path("audit-log/", views.audit_log_list, name="audit_log_list"),
+    path(
+        "audit-log/export/",
+        views.audit_log_export,
+        name="audit_log_export",
+    ),
+]

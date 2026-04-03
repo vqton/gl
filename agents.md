@@ -256,12 +256,18 @@ All inventory-related code must pass 3 test layers:
 - **Trailing Whitespace**: Remove automatically
 - **File Encoding**: UTF-8
 
-### Git Commit Convention
+### Git Commit & Push Convention
 Format: `[Module] - [Action] - [Detailed description]`
 Examples:
 - `[M4-Ketoan] - Seed - Load original 71 Tier-1 accounts from TT 99 Appendix II`
 - `[M1-Banhang] - Fix - Correct invoice date validation for 2026 tax period`
 - `[M2-KHO] - Update - Implement logic bình quân gia quyền liên hoàn`
+
+**Push Policy**: Push to remote immediately when:
+1. A phase is completed and all quality gates pass
+2. A self-contained feature is finished (even mid-phase)
+3. Before switching context to a different task
+4. NEVER push incomplete code that breaks tests or lints
 
 ### Quality Gates
 Before any commit, ensure:

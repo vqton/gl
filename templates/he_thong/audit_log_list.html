@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Nhật ký kiểm tra - Hệ thống{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h2>Nhật ký kiểm tra</h2>
+        <p class="page-desc">Theo dõi hoạt động và thay đổi trong hệ thống</p>
+    </div>
+    <a href="{% url 'he_thong:audit_log_export' %}" class="btn btn-outline-primary">Xuất CSV</a>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Người dùng</label>
+                <input type="text" name="user" class="form-control" value="{{ user_filter }}" placeholder="Tìm theo user">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Hành động</label>
+                <select name="action" class="form-select">
+                    <option value="">Tất cả</option>
+                    <option value="CREATE" {% if action_filter == "CREATE" %}selected{% endif %}>Tạo mới</option>
+                    <option value="UPDATE" {% if action_filter == "UPDATE" %}selected{% endif %}>Cập nhật</option>
+                    <option value="DELETE" {% if action_filter == "DELETE" %}selected{% endif %}>Xóa</option>
+                    <option value="POST" {% if action_filter == "POST" %}selected{% endif %}>POST</option>
+                    <option value="PUT" {% if action_filter == "PUT" %}selected{% endif %}>PUT</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Từ ngày</label>
+                <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">Đến ngày</label>
+                <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Lọc</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if logs %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Thời gian</th>
+                    <th>Người dùng</th>
+                    <th>Hành động</th>
+                    <th>URL</th>
+                    <th>IP</th>
+                    <th>Model</th>
+                    <th>Object ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
+                    <td>{{ log.user }}</td>
+                    <td><span class="status-badge status-draft">{{ log.action }}</span></td>
+                    <td><small>{{ log.url }}</small></td>
+                    <td><small>{{ log.ip_address }}</small></td>
+                    <td>{{ log.model_name }}</td>
+                    <td>{{ log.object_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="text-muted">Không có nhật ký nào.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

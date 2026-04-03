@@ -21,4 +21,5 @@ urlpatterns = [
     path('gia-thanh/', include('apps.gia_thanh.urls')),
     path('thu-quy/', include('apps.thu_quy.urls')),
     path('phan-tich/', include('apps.phan_tich.urls')),
+    path('he-thong/', include('apps.he_thong.urls')),
 ]
