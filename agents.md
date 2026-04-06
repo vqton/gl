@@ -3,7 +3,7 @@
 ## Project Overview
 Greenfield Django 5.x/Python 3.12+ accounting system for Vietnamese SMEs, complying with Thông tư 99/2025/TT-BTC. Uses SQLite with WAL mode for intranet deployment on Windows Server.
 
-## Development Status (Updated 2026-04-02)
+## Development Status (Updated 2026-04-06)
 
 ### Completed Modules
 | Module | Status | Details |
@@ -15,8 +15,14 @@ Greenfield Django 5.x/Python 3.12+ accounting system for Vietnamese SMEs, comply
 | **Accounting Engine** | Done | ButToan with Nợ=Có validation, account type rules |
 | **Kho (Inventory)** | Done | NhapKho/XuatKho models, TonKho/KhoEntry services |
 | **Báo cáo** | Done | B01-DN (Bảng CĐKT), B02-DN (KQKD), B03-DN (LCTT), B09-DN (Thuyết minh), BCĐSPS |
-| **Theme** | Done | Unified Google-style layout, fixed header+sidebar |
+| **Theme** | Done | SB Admin (Start Bootstrap) template with FontAwesome icons |
 | **Tax Constants 2026** | Done | TNDN 15%/20%, TNCN brackets, VAT 0/5/8/10% |
+| **HeThong - P0: Foundation** | Done | ThongTinCongTy, KyKeToan, CauHinhHeThong, AuditLog, AuditQueue, Encryption |
+| **HeThong - P1: RBAC** | Done | VaiTro, User roles, @require_role decorator, salary/delete protection |
+| **HeThong - P2: Opening Balances** | Done | SoDuDauKy, reconcile validator, sub-ledger validation, posting date check |
+| **HeThong - P3: Multi-DB Setup** | Done | db_config.json, Setup Wizard, ConnectionRegistry, CompanyRouter, Template DB |
+| **HeThong - P4: DB Management** | Done | DBManager (backup/restore/health/vacuum/export/import), admin UI |
+| **HeThong - P5: Client Management** | Done | Client, ClientUserMapping, ClientManager (onboard/suspend/archive/batch backup) |
 
 ### In Progress
 | Module | Status | Notes |
@@ -24,9 +30,10 @@ Greenfield Django 5.x/Python 3.12+ accounting system for Vietnamese SMEs, comply
 | **M2 - Kho valuation** | Partial | FIFO/Specific/Average strategies exist, backdating signal skeleton |
 | **M3 - Tài sản** | Partial | Model exists, depreciation service TBD |
 | **M7 - Lương** | Partial | Model exists, TNCN calculation service TBD |
+| **Template Migration** | Partial | base.html updated to SB Admin; app templates need updating |
 
 ### Test Status
-- **495 tests passing** (seed fixture + constants + models + validators + services + phieu thu/chi + financial reports)
+- **~550 tests passing** (includes all HeThong P0-P5 tests)
 - **4 pre-existing failures** (URL routing test, E2E auth swap, account type auto-detect for 9xx)
 - Coverage: ~94% overall
 
@@ -39,13 +46,19 @@ Greenfield Django 5.x/Python 3.12+ accounting system for Vietnamese SMEs, comply
 - `ButToanChiTiet`: Added `so_chung_tu_goc`, account type vs Nợ/Có validation
 - `core/settings.py`: Removed `init_command` from SQLite OPTIONS (incompatible with test DB)
 - `services.py`: Updated `tao_phieu_thu`/`tao_phieu_chi` to use ForeignKey lookups
+- `core/routers.py`: Added `CompanyRouter` for multi-tenant DB routing
+- `core/db_config.json`: Dynamic database configuration with Fernet-encrypted passwords
+- `he_thong/Client`: New model for accounting firm client management
+- `he_thong/ClientUserMapping`: Maps users to clients with per-client roles
 
-### UI Theme (Unified 2026-04-02)
-- All pages use single `base.html` with fixed header + sidebar layout
-- CSS variables: `--primary-color: #1a73e8` (Google-style)
-- Sidebar sections: Nghiệp vụ, Kho, Báo cáo, Danh mục, Cấu hình
-- Status badges: `status-draft` (gray), `status-posted` (green), `status-cancelled` (red)
-- Responsive grid, print media query support
+### UI Theme (SB Admin - 2026-04-06)
+- **Template**: Start Bootstrap SB Admin v7.0.7 (dark sidebar, top navbar)
+- **CSS**: Bootstrap 5.2.3 + FontAwesome 6.3.0 + simple-datatables
+- **Layout**: `sb-nav-fixed` body class, `sb-sidenav-dark` sidebar, `sb-topnav` navbar
+- **Components**: Cards with `card-header`/`card-body`, tables with `datatablesSimple`, breadcrumbs
+- **Sidebar sections**: Nghiệp vụ, Kho, Báo cáo, Công nợ, Tài sản, Lương, Thuế, Giá thành, Thủ quỹ, Quản trị hệ thống, Danh mục
+- **Status badges**: Bootstrap badges (`bg-success`, `bg-warning`, `bg-danger`, `bg-secondary`)
+- **Responsive grid**: Bootstrap grid system (`col-xl-*`, `col-md-*`)
 
 ## Build & Development Commands
 
@@ -301,7 +314,9 @@ apps/
 ├── tai_san/            # Fixed assets management
 ├── luong/              # Payroll & social insurance
 ├── users/              # Custom user model (NguoiDung)
-└── accounting/         # Dashboard, login, main views
+├── accounting/         # Dashboard, login, main views
+├── he_thong/           # Administration system (company info, RBAC, opening balances, client mgmt)
+└── tien_ich/           # Utility helpers (crypto, db_manager, client_manager, validator)
 ```
 
 ### Valuation Engine (Strategy Pattern)
