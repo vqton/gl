@@ -6,11 +6,8 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.test import RequestFactory
 
-from apps.tien_ich.permissions import (
-    can_delete_posted_voucher,
-    require_role,
-    salary_access,
-)
+from apps.tien_ich.permissions import (can_delete_posted_voucher, require_role,
+                                       salary_access)
 
 NguoiDung = get_user_model()
 

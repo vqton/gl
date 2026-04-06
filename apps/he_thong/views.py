@@ -14,13 +14,8 @@ from django.db import connection
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 
-from apps.he_thong.models import (
-    AuditLog,
-    CauHinhHeThong,
-    KyKeToan,
-    ThongTinCongTy,
-    VaiTro,
-)
+from apps.he_thong.models import (AuditLog, CauHinhHeThong, KyKeToan,
+                                  ThongTinCongTy, VaiTro)
 
 logger = logging.getLogger(__name__)
 

@@ -4,8 +4,8 @@ import logging
 import shutil
 from pathlib import Path
 
-from django.core.management.base import BaseCommand
 from django.core.management import call_command
+from django.core.management.base import BaseCommand
 
 logger = logging.getLogger(__name__)
 

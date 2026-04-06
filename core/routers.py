@@ -150,6 +150,12 @@ class CompanyRouter:
                 return True
             if app1 == app2:
                 return True
+            # Allow he_thong models to reference COMPANY_APPS models
+            # (e.g., SoDuDauKy → TaiKhoanKeToan)
+            if app1 == "he_thong" and app2 in COMPANY_APPS:
+                return True
+            if app2 == "he_thong" and app1 in COMPANY_APPS:
+                return True
             if app1 not in SYSTEM_APPS and app1 not in COMPANY_APPS:
                 return True
             if app2 not in SYSTEM_APPS and app2 not in COMPANY_APPS:

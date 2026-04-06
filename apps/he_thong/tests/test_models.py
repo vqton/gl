@@ -6,7 +6,8 @@ from decimal import Decimal
 import pytest
 from django.core.exceptions import ValidationError
 
-from apps.he_thong.models import AuditLog, CauHinhHeThong, KyKeToan, ThongTinCongTy
+from apps.he_thong.models import (AuditLog, CauHinhHeThong, KyKeToan,
+                                  ThongTinCongTy)
 
 
 @pytest.mark.django_db
