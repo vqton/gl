@@ -15,12 +15,11 @@ from apps.danh_muc.models import (
     NhaCungCap,
     TaiKhoanKeToan,
 )
-from apps.nghiep_vu.models import Kho
 from apps.nghiep_vu.constants import (
+    NGUONG_DOANH_THU_SME,
     THUE_SUAT_GTGT,
     THUE_SUAT_TNDN_DEFAULT,
     THUE_SUAT_TNDN_SME,
-    NGUONG_DOANH_THU_SME,
 )
 from apps.nghiep_vu.models import (
     BangPhanBoNVLCCDC,
@@ -35,13 +34,13 @@ from apps.nghiep_vu.models import (
     GiayThanhToanTamUng,
     HoaDon,
     HoaDonChiTiet,
+    Kho,
     NhapKho,
     NhapKhoChiTiet,
-    PhieuThu,
     PhieuChi,
+    PhieuThu,
     XuatKho,
     XuatKhoChiTiet,
-    Kho,
 )
 from apps.nghiep_vu.validators import (
     validate_hoa_don,
@@ -321,28 +320,34 @@ def tao_hoa_don(
     chi_tiet = []
     tong_thanh_toan = tong_cong
     if tong_tien_truoc_thue > decimal.Decimal("0"):
-        chi_tiet.append({
-            "tai_khoan": "131",
-            "loai_no_co": "no",
-            "so_tien": tong_thanh_toan,
-            "ma_doi_tuong": khach_hang.ma_kh,
-            "dien_giai": f"Doanh thu {so_hoa_don}",
-        })
-        chi_tiet.append({
-            "tai_khoan": "511",
-            "loai_no_co": "co",
-            "so_tien": tong_tien_truoc_thue,
-            "ma_doi_tuong": khach_hang.ma_kh,
-            "dien_giai": f"Doanh thu {so_hoa_don}",
-        })
+        chi_tiet.append(
+            {
+                "tai_khoan": "131",
+                "loai_no_co": "no",
+                "so_tien": tong_thanh_toan,
+                "ma_doi_tuong": khach_hang.ma_kh,
+                "dien_giai": f"Doanh thu {so_hoa_don}",
+            }
+        )
+        chi_tiet.append(
+            {
+                "tai_khoan": "511",
+                "loai_no_co": "co",
+                "so_tien": tong_tien_truoc_thue,
+                "ma_doi_tuong": khach_hang.ma_kh,
+                "dien_giai": f"Doanh thu {so_hoa_don}",
+            }
+        )
     if tien_thue_gtgt > decimal.Decimal("0"):
-        chi_tiet.append({
-            "tai_khoan": "3331",
-            "loai_no_co": "co",
-            "so_tien": tien_thue_gtgt,
-            "ma_doi_tuong": "",
-            "dien_giai": f"Thuế GTGT {so_hoa_don}",
-        })
+        chi_tiet.append(
+            {
+                "tai_khoan": "3331",
+                "loai_no_co": "co",
+                "so_tien": tien_thue_gtgt,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Thuế GTGT {so_hoa_don}",
+            }
+        )
     if chi_tiet:
         but_toan = tao_but_toan(
             ngay=ngay_hoa_don,
@@ -436,20 +441,24 @@ def tao_nhap_kho(
 
     chi_tiet = []
     if tong_tien > decimal.Decimal("0"):
-        chi_tiet.append({
-            "tai_khoan": "156",
-            "loai_no_co": "no",
-            "so_tien": tong_tien,
-            "ma_doi_tuong": nha_cung_cap.ma_ncc,
-            "dien_giai": f"Nhập kho {so_chung_tu}",
-        })
-        chi_tiet.append({
-            "tai_khoan": "331",
-            "loai_no_co": "co",
-            "so_tien": tong_tien,
-            "ma_doi_tuong": nha_cung_cap.ma_ncc,
-            "dien_giai": f"Nhập kho {so_chung_tu}",
-        })
+        chi_tiet.append(
+            {
+                "tai_khoan": "156",
+                "loai_no_co": "no",
+                "so_tien": tong_tien,
+                "ma_doi_tuong": nha_cung_cap.ma_ncc,
+                "dien_giai": f"Nhập kho {so_chung_tu}",
+            }
+        )
+        chi_tiet.append(
+            {
+                "tai_khoan": "331",
+                "loai_no_co": "co",
+                "so_tien": tong_tien,
+                "ma_doi_tuong": nha_cung_cap.ma_ncc,
+                "dien_giai": f"Nhập kho {so_chung_tu}",
+            }
+        )
     if chi_tiet:
         but_toan = tao_but_toan(
             ngay=ngay,
@@ -543,20 +552,24 @@ def tao_xuat_kho(
 
     chi_tiet = []
     if tong_tien > decimal.Decimal("0"):
-        chi_tiet.append({
-            "tai_khoan": "632",
-            "loai_no_co": "no",
-            "so_tien": tong_tien,
-            "ma_doi_tuong": khach_hang.ma_kh if khach_hang else "",
-            "dien_giai": f"Xuất kho {so_chung_tu}",
-        })
-        chi_tiet.append({
-            "tai_khoan": "156",
-            "loai_no_co": "co",
-            "so_tien": tong_tien,
-            "ma_doi_tuong": "",
-            "dien_giai": f"Xuất kho {so_chung_tu}",
-        })
+        chi_tiet.append(
+            {
+                "tai_khoan": "632",
+                "loai_no_co": "no",
+                "so_tien": tong_tien,
+                "ma_doi_tuong": khach_hang.ma_kh if khach_hang else "",
+                "dien_giai": f"Xuất kho {so_chung_tu}",
+            }
+        )
+        chi_tiet.append(
+            {
+                "tai_khoan": "156",
+                "loai_no_co": "co",
+                "so_tien": tong_tien,
+                "ma_doi_tuong": "",
+                "dien_giai": f"Xuất kho {so_chung_tu}",
+            }
+        )
     if chi_tiet:
         but_toan = tao_but_toan(
             ngay=ngay,
@@ -1062,7 +1075,9 @@ def tao_bien_ban_giao_nhan_tscd(
         raise ValidationError({"nguyen_gia": ["Nguyên giá phải lớn hơn 0"]})
 
     if not so_chung_tu:
-        count = BienBanGiaoNhanTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        count = (
+            BienBanGiaoNhanTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        )
         so_chung_tu = f'BBGN{ngay_lap.strftime("%Y%m%d")}{count:04d}'
 
     bien_ban = BienBanGiaoNhanTSCD.objects.create(
@@ -1166,7 +1181,9 @@ def tao_bien_ban_thanh_ly_tscd(
         raise ValidationError({"loai_xu_ly": ["Loại xử lý không hợp lệ"]})
 
     if not so_chung_tu:
-        count = BienBanThanhLyTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        count = (
+            BienBanThanhLyTSCD.objects.filter(ngay_lap__year=ngay_lap.year).count() + 1
+        )
         so_chung_tu = f'BBTL{ngay_lap.strftime("%Y%m%d")}{count:04d}'
 
     bien_ban = BienBanThanhLyTSCD.objects.create(

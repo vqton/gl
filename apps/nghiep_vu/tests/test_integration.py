@@ -7,7 +7,8 @@ import pytest
 from django.core.exceptions import ValidationError
 
 from apps.danh_muc.models import HangHoa, KhachHang, NhaCungCap, TaiKhoanKeToan
-from apps.kho.models import Kho as KhoInventory, VatTuHangHoa
+from apps.kho.models import Kho as KhoInventory
+from apps.kho.models import VatTuHangHoa
 from apps.nghiep_vu.integration_services import (
     HoaDonDienTuMock,
     hoan_thanh_nhap_kho,
@@ -18,7 +19,9 @@ from apps.nghiep_vu.models import (
     ButToanChiTiet,
     HoaDon,
     HoaDonChiTiet,
-    Kho as KhoNghiepVu,
+)
+from apps.nghiep_vu.models import Kho as KhoNghiepVu
+from apps.nghiep_vu.models import (
     NhapKho,
     NhapKhoChiTiet,
     XuatKho,

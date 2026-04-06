@@ -173,7 +173,15 @@ class PhieuChiAdmin(admin.ModelAdmin):
 
 @admin.register(GiayDeNghiTamUng)
 class GiayDeNghiTamUngAdmin(admin.ModelAdmin):
-    list_display = ["so_chung_tu", "ngay_chung_tu", "nguoi_de_nghi", "so_tien", "hinh_thuc_chi", "trang_thai", "but_toan"]
+    list_display = [
+        "so_chung_tu",
+        "ngay_chung_tu",
+        "nguoi_de_nghi",
+        "so_tien",
+        "hinh_thuc_chi",
+        "trang_thai",
+        "but_toan",
+    ]
     list_filter = ["trang_thai", "hinh_thuc_chi", "ngay_chung_tu"]
     search_fields = ["so_chung_tu", "nguoi_de_nghi__username", "noi_dung"]
     readonly_fields = ["created_at", "updated_at", "but_toan"]
@@ -182,7 +190,16 @@ class GiayDeNghiTamUngAdmin(admin.ModelAdmin):
 
 @admin.register(GiayThanhToanTamUng)
 class GiayThanhToanTamUngAdmin(admin.ModelAdmin):
-    list_display = ["so_chung_tu", "ngay_chung_tu", "tam_ung", "so_tien_tam_ung", "so_tien_chi", "so_tien_con_lai", "trang_thai", "but_toan"]
+    list_display = [
+        "so_chung_tu",
+        "ngay_chung_tu",
+        "tam_ung",
+        "so_tien_tam_ung",
+        "so_tien_chi",
+        "so_tien_con_lai",
+        "trang_thai",
+        "but_toan",
+    ]
     list_filter = ["trang_thai", "ngay_chung_tu"]
     search_fields = ["so_chung_tu", "tam_ung__so_chung_tu"]
     readonly_fields = ["so_tien_con_lai", "created_at", "updated_at", "but_toan"]
@@ -191,7 +208,15 @@ class GiayThanhToanTamUngAdmin(admin.ModelAdmin):
 
 @admin.register(BienBanGiaoNhanTSCD)
 class BienBanGiaoNhanTSCDAdmin(admin.ModelAdmin):
-    list_display = ["so_chung_tu", "ngay_lap", "tai_san", "nguoi_giao", "nguoi_nhan", "nguyen_gia", "but_toan"]
+    list_display = [
+        "so_chung_tu",
+        "ngay_lap",
+        "tai_san",
+        "nguoi_giao",
+        "nguoi_nhan",
+        "nguyen_gia",
+        "but_toan",
+    ]
     list_filter = ["ngay_lap", "loai"]
     search_fields = ["so_chung_tu", "tai_san__ten_tai_san"]
     readonly_fields = ["created_at", "but_toan"]
@@ -200,7 +225,16 @@ class BienBanGiaoNhanTSCDAdmin(admin.ModelAdmin):
 
 @admin.register(BienBanThanhLyTSCD)
 class BienBanThanhLyTSCDAdmin(admin.ModelAdmin):
-    list_display = ["so_chung_tu", "ngay_lap", "tai_san", "loai_xu_ly", "nguyen_gia", "so_tien_thu", "da_hach_toan", "but_toan"]
+    list_display = [
+        "so_chung_tu",
+        "ngay_lap",
+        "tai_san",
+        "loai_xu_ly",
+        "nguyen_gia",
+        "so_tien_thu",
+        "da_hach_toan",
+        "but_toan",
+    ]
     list_filter = ["loai_xu_ly", "da_hach_toan", "ngay_lap"]
     search_fields = ["so_chung_tu", "tai_san__ten_tai_san"]
     readonly_fields = ["created_at", "but_toan"]
@@ -209,13 +243,30 @@ class BienBanThanhLyTSCDAdmin(admin.ModelAdmin):
 
 @admin.register(BangPhanBoNVLCCDC)
 class BangPhanBoNVLCCDCAdmin(admin.ModelAdmin):
-    list_display = ["thang", "nam", "tong_nhap_kho", "tong_xuat_kho", "tong_chenh_lech", "da_hach_toan", "but_toan"]
+    list_display = [
+        "thang",
+        "nam",
+        "tong_nhap_kho",
+        "tong_xuat_kho",
+        "tong_chenh_lech",
+        "da_hach_toan",
+        "but_toan",
+    ]
     list_filter = ["da_hach_toan", "nam", "thang"]
     readonly_fields = ["created_at", "but_toan"]
 
 
 @admin.register(BangThanhToanTienLuong)
 class BangThanhToanTienLuongAdmin(admin.ModelAdmin):
-    list_display = ["thang", "nam", "so_luong_nhan_vien", "tong_tong_thu_nhap", "tong_thue_tncn", "tong_thuc_linh", "da_hach_toan", "but_toan"]
+    list_display = [
+        "thang",
+        "nam",
+        "so_luong_nhan_vien",
+        "tong_tong_thu_nhap",
+        "tong_thue_tncn",
+        "tong_thuc_linh",
+        "da_hach_toan",
+        "but_toan",
+    ]
     list_filter = ["da_hach_toan", "nam", "thang"]
     readonly_fields = ["created_at", "but_toan"]

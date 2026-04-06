@@ -46,8 +46,8 @@ class Command(BaseCommand):
         if options["dry_run"]:
             self.stdout.write("DRY RUN - Không tạo bút toán")
             from apps.nghiep_vu.ket_chuyen import (
-                DOANH_THU_ACCOUNTS,
                 CHI_PHI_ACCOUNTS,
+                DOANH_THU_ACCOUNTS,
                 get_tong_phatsinh,
             )
 

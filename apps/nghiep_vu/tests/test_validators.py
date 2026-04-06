@@ -1,9 +1,9 @@
 """Tests for nghiep_vu validators."""
 
-import pytest
 from datetime import date
 from decimal import Decimal
 
+import pytest
 from django.core.exceptions import ValidationError
 
 from apps.danh_muc.models import TaiKhoanKeToan

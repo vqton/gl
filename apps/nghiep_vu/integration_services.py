@@ -9,8 +9,9 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 
 from apps.danh_muc.models import HangHoa, KhachHang, NhaCungCap
+from apps.kho.models import Kho as KhoModel
+from apps.kho.models import VatTuHangHoa
 from apps.kho.services import InventoryValuationService
-from apps.kho.models import Kho as KhoModel, VatTuHangHoa
 from apps.nghiep_vu.models import (
     ButToan,
     HoaDon,

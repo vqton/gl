@@ -1,9 +1,9 @@
 """Tests for nghiep_vu services."""
 
-import pytest
 from datetime import date
 from decimal import Decimal
 
+import pytest
 from django.core.exceptions import ValidationError
 
 from apps.danh_muc.models import (
@@ -12,12 +12,12 @@ from apps.danh_muc.models import (
     NhaCungCap,
     TaiKhoanKeToan,
 )
-from apps.nghiep_vu.models import Kho
 from apps.nghiep_vu.models import (
     ButToan,
     ButToanChiTiet,
     HoaDon,
     HoaDonChiTiet,
+    Kho,
     NhapKho,
     NhapKhoChiTiet,
     XuatKho,
@@ -682,7 +682,9 @@ class TestGiayDeNghiTamUng:
         """Test creating advance request in cash."""
         from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
 
-        user = django_user_model.objects.create_user(username="testuser", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser", password="test123"
+        )
         result = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("5000000"),
@@ -697,7 +699,9 @@ class TestGiayDeNghiTamUng:
         """Test creating advance request by bank transfer."""
         from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
 
-        user = django_user_model.objects.create_user(username="testuser2", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser2", password="test123"
+        )
         result = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("10000000"),
@@ -712,7 +716,9 @@ class TestGiayDeNghiTamUng:
         """Test negative amount raises error."""
         from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
 
-        user = django_user_model.objects.create_user(username="testuser3", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser3", password="test123"
+        )
         with pytest.raises(ValidationError):
             tao_giay_de_nghi_tam_ung(
                 nguoi_de_nghi=user,
@@ -731,7 +737,9 @@ class TestGiayThanhToanTamUng:
             tao_giay_thanh_toan_tam_ung,
         )
 
-        user = django_user_model.objects.create_user(username="testuser4", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser4", password="test123"
+        )
         tam_ung = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("5000000"),
@@ -756,7 +764,9 @@ class TestGiayThanhToanTamUng:
             tao_giay_thanh_toan_tam_ung,
         )
 
-        user = django_user_model.objects.create_user(username="testuser5", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser5", password="test123"
+        )
         tam_ung = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("5000000"),
@@ -779,7 +789,9 @@ class TestTamUngButToan:
         """Test that advance request creates ButToan with cash."""
         from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
 
-        user = django_user_model.objects.create_user(username="testuser_tamung", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tamung", password="test123"
+        )
         result = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("5000000"),
@@ -801,11 +813,15 @@ class TestTamUngButToan:
         assert tk_141 is not None
         assert tk_141.loai_no_co == "no"
 
-    def test_tao_giay_de_nghi_tam_ung_tao_but_toan_chuyen_khoan(self, django_user_model):
+    def test_tao_giay_de_nghi_tam_ung_tao_but_toan_chuyen_khoan(
+        self, django_user_model
+    ):
         """Test that advance request creates ButToan with bank transfer."""
         from apps.nghiep_vu.services import tao_giay_de_nghi_tam_ung
 
-        user = django_user_model.objects.create_user(username="testuser_tamung2", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tamung2", password="test123"
+        )
         result = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("10000000"),
@@ -827,7 +843,9 @@ class TestTamUngButToan:
             tao_giay_thanh_toan_tam_ung,
         )
 
-        user = django_user_model.objects.create_user(username="testuser_tamung3", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tamung3", password="test123"
+        )
         tam_ung = tao_giay_de_nghi_tam_ung(
             nguoi_de_nghi=user,
             so_tien=Decimal("5000000"),
@@ -862,7 +880,9 @@ class TestBienBanGiaoNhanTSCD:
         from apps.nghiep_vu.services import tao_bien_ban_giao_nhan_tscd
         from apps.tai_san.models import TaiSanCoDinh
 
-        user = django_user_model.objects.create_user(username="testuser_tscd", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tscd", password="test123"
+        )
         tai_san = TaiSanCoDinh.objects.create(
             ma_tai_san="TS001",
             ten_tai_san="Máy tính Dell",
@@ -907,7 +927,9 @@ class TestBienBanGiaoNhanTSCD:
         from apps.nghiep_vu.services import tao_bien_ban_giao_nhan_tscd
         from apps.tai_san.models import TaiSanCoDinh
 
-        user = django_user_model.objects.create_user(username="testuser_tscd2", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tscd2", password="test123"
+        )
         tai_san = TaiSanCoDinh.objects.create(
             ma_tai_san="TS002",
             ten_tai_san="Máy in HP",
@@ -938,7 +960,9 @@ class TestBienBanThanhLyTSCD:
         from apps.nghiep_vu.services import tao_bien_ban_thanh_ly_tscd
         from apps.tai_san.models import TaiSanCoDinh
 
-        user = django_user_model.objects.create_user(username="testuser_tl", password="test123")
+        user = django_user_model.objects.create_user(
+            username="testuser_tl", password="test123"
+        )
         tai_san = TaiSanCoDinh.objects.create(
             ma_tai_san="TS003",
             ten_tai_san="Máy photo cũ",

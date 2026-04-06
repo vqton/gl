@@ -15,7 +15,11 @@ from apps.nghiep_vu.services import tao_phieu_chi, tao_phieu_thu
 def tk_111():
     return TaiKhoanKeToan.objects.get_or_create(
         ma_tai_khoan="111",
-        defaults={"ten_tai_khoan": "Tiền mặt", "cap_do": 1, "loai_tai_khoan": "tai_san"},
+        defaults={
+            "ten_tai_khoan": "Tiền mặt",
+            "cap_do": 1,
+            "loai_tai_khoan": "tai_san",
+        },
     )[0]
 
 
