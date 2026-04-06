@@ -5,8 +5,10 @@ import json
 import logging
 import os
 import shutil
+from datetime import datetime
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -458,3 +460,127 @@ def setup_test_connection(request):
         return JsonResponse({"success": success, "message": message})
 
     return JsonResponse({"success": False, "message": "Method not allowed"})
+
+
+# ==================== DB Management Views ====================
+
+from apps.tien_ich.db_manager import DBManager
+
+
+@login_required
+def db_management(request):
+    """Database management dashboard.
+
+    Shows health status, backup list, and management actions.
+    """
+    manager = DBManager()
+    health = manager.health_check()
+
+    # Get backup list
+    backup_dir = Path(settings.BASE_DIR) / "data" / "backups"
+    backups = []
+    if backup_dir.exists():
+        for f in sorted(backup_dir.glob("*.zip"), reverse=True):
+            backups.append(
+                {
+                    "name": f.name,
+                    "path": str(f),
+                    "size_mb": round(f.stat().st_size / 1024 / 1024, 2),
+                    "created": datetime.fromtimestamp(f.stat().st_mtime).strftime(
+                        "%Y-%m-%d %H:%M:%S"
+                    ),
+                }
+            )
+
+    context = {
+        "health": health,
+        "backups": backups,
+        "total_backups": len(backups),
+    }
+    return render(request, "he_thong/db_management.html", context)
+
+
+@login_required
+def db_backup(request):
+    """Create database backup.
+
+    POST: Creates backup and returns path.
+    """
+    if request.method == "POST":
+        try:
+            manager = DBManager()
+            prefix = request.POST.get("prefix", "backup")
+            backup_path = manager.backup(prefix=prefix)
+            messages.success(request, f"Sao lưu thành công: {Path(backup_path).name}")
+            return redirect("he_thong:db_management")
+        except Exception as e:
+            messages.error(request, f"Lỗi sao lưu: {e}")
+            return redirect("he_thong:db_management")
+    return redirect("he_thong:db_management")
+
+
+@login_required
+def db_restore(request):
+    """Restore database from backup.
+
+    POST: Restores from specified backup file.
+    """
+    if request.method == "POST":
+        backup_path = request.POST.get("backup_path")
+        confirmation = request.POST.get("confirmation")
+        if not confirmation:
+            messages.error(request, "Vui lòng xác nhận khôi phục dữ liệu")
+            return redirect("he_thong:db_management")
+
+        try:
+            manager = DBManager()
+            result = manager.restore(backup_path)
+            messages.success(request, "Khôi phục dữ liệu thành công")
+            return redirect("he_thong:db_management")
+        except Exception as e:
+            messages.error(request, f"Lỗi khôi phục: {e}")
+            return redirect("he_thong:db_management")
+    return redirect("he_thong:db_management")
+
+
+@login_required
+def db_vacuum(request):
+    """Run VACUUM to reclaim space.
+
+    POST: Runs VACUUM and shows results.
+    """
+    if request.method == "POST":
+        try:
+            manager = DBManager()
+            result = manager.vacuum()
+            messages.success(
+                request,
+                f"Tối ưu CSDL: {result['before_mb']} MB → {result['after_mb']} MB",
+            )
+        except Exception as e:
+            messages.error(request, f"Lỗi tối ưu: {e}")
+        return redirect("he_thong:db_management")
+    return redirect("he_thong:db_management")
+
+
+@login_required
+def db_export(request):
+    """Export database to JSON.
+
+    GET/POST: Exports master data to JSON file for download.
+    """
+    if request.method == "POST":
+        try:
+            manager = DBManager()
+            export_path = manager.export_data(format="json")
+            # Return file for download
+            with open(export_path, "rb") as f:
+                response = HttpResponse(f.read(), content_type="application/json")
+                response["Content-Disposition"] = (
+                    f'attachment; filename="{Path(export_path).name}"'
+                )
+            return response
+        except Exception as e:
+            messages.error(request, f"Lỗi xuất dữ liệu: {e}")
+            return redirect("he_thong:db_management")
+    return redirect("he_thong:db_management")

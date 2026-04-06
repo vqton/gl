@@ -48,4 +48,10 @@ urlpatterns = [
         views.nguoi_dung_role_edit,
         name="nguoi_dung_role_edit",
     ),
+    # DB Management
+    path("quan-ly-csdl/", views.db_management, name="db_management"),
+    path("quan-ly-csdl/backup/", views.db_backup, name="db_backup"),
+    path("quan-ly-csdl/restore/", views.db_restore, name="db_restore"),
+    path("quan-ly-csdl/vacuum/", views.db_vacuum, name="db_vacuum"),
+    path("quan-ly-csdl/export/", views.db_export, name="db_export"),
 ]
