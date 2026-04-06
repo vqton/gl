@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Kế Toán - Circular 99/2025{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{{ url_for('main.index') }}">Kế Toán TT99</a>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('gl.index') }}">Sổ cái</a>
+            <a href="{{ url_for('ar.index') }}">Phải thu</a>
+            <a href="{{ url_for('ap.index') }}">Phải trả</a>
+            <a href="{{ url_for('tax.index') }}">Thuế</a>
+            <a href="{{ url_for('payroll.index') }}">Lương</a>
+            <a href="{{ url_for('fa.index') }}">TSCĐ</a>
+            <a href="{{ url_for('inventory.index') }}">Kho</a>
+            <a href="{{ url_for('reports.index') }}">Báo cáo</a>
+        </div>
+        <div class="nav-user">
+            {% if session.get('user_id') %}
+                <span>{{ session.get('user_name', '') }}</span>
+                <a href="{{ url_for('auth.logout') }}">Đăng xuất</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Đăng nhập</a>
+            {% endif %}
+        </div>
+    </nav>
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+        <p>Phần mềm kế toán - Thông tư 99/2025/TT-BTC &copy; 2026</p>
+    </footer>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
