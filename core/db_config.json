@@ -1,6 +1,0 @@
-{
-    "default": {
-        "engine": "sqlite",
-        "name": "db/accounting_tt99.sqlite3"
-    }
-}
