@@ -627,3 +627,147 @@ class SoDuDauKy(models.Model):
             entry.thanh_tien = self.so_du_no
             entry.dien_giai = f"Số dư đầu kỳ {self.nam} - {self.tai_khoan}"
             entry.save(update_fields=["thanh_tien", "dien_giai", "updated_at"])
+
+
+class Client(models.Model):
+    """
+    Client model for accounting firms managing multiple customers.
+
+    Each client has its own database file. Supports lifecycle management:
+    active -> suspended -> expired.
+    """
+
+    TRANG_THAI_CHOICES = [
+        ("active", "Hoạt động"),
+        ("suspended", "Tạm khóa"),
+        ("expired", "Hết hạn"),
+    ]
+
+    ma_khach_hang = models.CharField(
+        max_length=20,
+        unique=True,
+        verbose_name="Mã khách hàng",
+        help_text="Tự động sinh (KH001, KH002, ...)",
+    )
+    ten_cong_ty = models.CharField(
+        max_length=255,
+        verbose_name="Tên công ty",
+    )
+    ma_so_thue = models.CharField(
+        max_length=20,
+        verbose_name="Mã số thuế",
+    )
+    nganh_nghe = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+        verbose_name="Ngành nghề",
+    )
+    db_path = models.CharField(
+        max_length=500,
+        verbose_name="Đường dẫn CSDL",
+        help_text="VD: data/clients/client_001_2026.sqlite3",
+    )
+    trang_thai = models.CharField(
+        max_length=20,
+        choices=TRANG_THAI_CHOICES,
+        default="active",
+        verbose_name="Trạng thái",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Ngày tạo",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Ngày cập nhật",
+    )
+
+    class Meta:
+        ordering = ["ma_khach_hang"]
+        verbose_name = "Khách hàng (Dịch vụ kế toán)"
+        verbose_name_plural = "Khách hàng (Dịch vụ kế toán)"
+
+    def __str__(self):
+        return f"{self.ma_khach_hang} - {self.ten_cong_ty}"
+
+    def save(self, *args, **kwargs):
+        """Auto-generate ma_khach_hang if not set."""
+        if not self.ma_khach_hang:
+            last = Client.objects.order_by("-ma_khach_hang").first()
+            if last and last.ma_khach_hang.startswith("KH"):
+                try:
+                    num = int(last.ma_khach_hang[2:]) + 1
+                except ValueError:
+                    num = 1
+            else:
+                num = 1
+            self.ma_khach_hang = f"KH{num:03d}"
+        super().save(*args, **kwargs)
+
+    def suspend(self):
+        """Suspend client access."""
+        self.trang_thai = "suspended"
+        self.save(update_fields=["trang_thai", "updated_at"])
+
+    def activate(self):
+        """Reactivate client."""
+        self.trang_thai = "active"
+        self.save(update_fields=["trang_thai", "updated_at"])
+
+    def archive(self):
+        """Archive client (set to expired)."""
+        self.trang_thai = "expired"
+        self.save(update_fields=["trang_thai", "updated_at"])
+
+    @classmethod
+    def get_active_clients(cls):
+        """Get all active clients."""
+        return cls.objects.filter(trang_thai="active")
+
+
+class ClientUserMapping(models.Model):
+    """
+    Maps users to clients with optional role per client.
+
+    Allows firm accountants to access specific clients with specific roles.
+    """
+
+    client = models.ForeignKey(
+        "he_thong.Client",
+        on_delete=models.CASCADE,
+        related_name="user_mappings",
+        verbose_name="Khách hàng",
+    )
+    user = models.ForeignKey(
+        "users.NguoiDung",
+        on_delete=models.CASCADE,
+        related_name="client_mappings",
+        verbose_name="Người dùng",
+    )
+    vai_tro = models.ForeignKey(
+        "he_thong.VaiTro",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Vai trò (theo khách hàng)",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Ngày tạo",
+    )
+
+    class Meta:
+        ordering = ["client__ma_khach_hang"]
+        verbose_name = "Phân quyền khách hàng"
+        verbose_name_plural = "Phân quyền khách hàng"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["client", "user"],
+                name="unique_client_user_mapping",
+            ),
+        ]
+
+    def __str__(self):
+        role_str = f" ({self.vai_tro})" if self.vai_tro else ""
+        return f"{self.client} → {self.user}{role_str}"

@@ -1,73 +1,114 @@
 {% extends "base.html" %}
 {% block title %}Dashboard - Kế toán SME{% endblock %}
-{% block breadcrumb %}<span>Dashboard</span>{% endblock %}
 
 {% block content %}
 <!-- Stats cards -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-title">Hóa đơn</span>
-            <div class="stat-icon" style="background: #e8f0fe; color: #1a73e8;">🧾</div>
+<div class="row">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Hóa đơn</div>
+                        <div class="fs-4 fw-bold">{{ hoa_don_count|default:"0" }}</div>
+                    </div>
+                    <div class="fs-1">🧾</div>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'nghiep_vu:hoa_don_list' %}">Xem chi tiết</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
         </div>
-        <div class="stat-value">{{ hoa_don_count }}</div>
-        <div class="stat-change up">▲ Tạo mới</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-title">Phiếu thu</span>
-            <div class="stat-icon" style="background: #e6f4ea; color: #34a853;">📝</div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Phiếu thu</div>
+                        <div class="fs-4 fw-bold">{{ phieu_thu_count|default:"0" }}</div>
+                    </div>
+                    <div class="fs-1">📝</div>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'nghiep_vu:phieu_thu_list' %}">Xem chi tiết</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
         </div>
-        <div class="stat-value">{{ phieu_thu_count }}</div>
-        <div class="stat-change up">▲ Tạo mới</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-title">Phiếu chi</span>
-            <div class="stat-icon" style="background: #fce8e6; color: #ea4335;">💸</div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Phiếu chi</div>
+                        <div class="fs-4 fw-bold">{{ phieu_chi_count|default:"0" }}</div>
+                    </div>
+                    <div class="fs-1">💸</div>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'nghiep_vu:phieu_chi_list' %}">Xem chi tiết</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
         </div>
-        <div class="stat-value">{{ phieu_chi_count }}</div>
-        <div class="stat-change">Chờ xử lý</div>
     </div>
-    <div class="stat-card">
-        <div class="stat-header">
-            <span class="stat-title">Kho</span>
-            <div class="stat-icon" style="background: #fef7e0; color: #fbbc04;">📦</div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-info text-white mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Kho</div>
+                        <div class="fs-4 fw-bold">{{ kho_entry_count|default:"0" }}</div>
+                    </div>
+                    <div class="fs-1">📦</div>
+                </div>
+            </div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <a class="small text-white stretched-link" href="{% url 'kho:kho_list' %}">Xem chi tiết</a>
+                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </div>
         </div>
-        <div class="stat-value">{{ kho_entry_count }}</div>
-        <div class="stat-change">Nhập/Xuất</div>
     </div>
 </div>
 
 <!-- Quick actions -->
-<div class="card">
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-bolt me-1"></i>
+        Thao tác nhanh
+    </div>
     <div class="card-body">
-        <h6 class="card-title">Thao tác nhanh</h6>
-        <div class="quick-actions">
-            <a href="{% url 'nghiep_vu:phieu_thu_create' %}" class="quick-action-btn">
-                <span class="icon">📝</span> Phiếu thu
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{% url 'nghiep_vu:phieu_thu_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Phiếu thu
             </a>
-            <a href="{% url 'nghiep_vu:phieu_chi_create' %}" class="quick-action-btn">
-                <span class="icon">💸</span> Phiếu chi
+            <a href="{% url 'nghiep_vu:phieu_chi_create' %}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i> Phiếu chi
             </a>
-            <a href="{% url 'nghiep_vu:hoa_don_create' %}" class="quick-action-btn">
-                <span class="icon">🧾</span> Hóa đơn
+            <a href="{% url 'nghiep_vu:hoa_don_create' %}" class="btn btn-warning">
+                <i class="fas fa-plus me-1"></i> Hóa đơn
             </a>
-            <a href="{% url 'kho:kho_list' %}" class="quick-action-btn">
-                <span class="icon">📦</span> Kho hàng
+            <a href="{% url 'kho:kho_list' %}" class="btn btn-info">
+                <i class="fas fa-warehouse me-1"></i> Kho hàng
             </a>
-            <a href="{% url 'bao_cao:bang_cdk' %}" class="quick-action-btn">
-                <span class="icon">📊</span> Báo cáo
+            <a href="{% url 'bao_cao:bang_cdk' %}" class="btn btn-secondary">
+                <i class="fas fa-chart-bar me-1"></i> Báo cáo
             </a>
         </div>
     </div>
 </div>
 
 <!-- Recent transactions -->
-<div class="card">
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Giao dịch gần đây
+    </div>
     <div class="card-body">
-        <h6 class="card-title">Giao dịch gần đây</h6>
-        <table class="table">
+        <table id="datatablesSimple">
             <thead>
                 <tr>
                     <th>Ngày</th>
@@ -86,7 +127,7 @@
                     <td>{{ gd.loai }}</td>
                     <td>{{ gd.doi_tuong }}</td>
                     <td class="text-end">{{ gd.so_tien|floatformat:0 }}</td>
-                    <td><span class="status-badge status-{{ gd.trang_thai }}">{{ gd.trang_thai_display }}</span></td>
+                    <td><span class="badge bg-{{ gd.trang_thai|default:'secondary' }}">{{ gd.trang_thai_display }}</span></td>
                 </tr>
                 {% empty %}
                 <tr><td colspan="6" class="text-center text-muted">Chưa có giao dịch nào</td></tr>
@@ -97,9 +138,12 @@
 </div>
 
 <!-- Keyboard hints -->
-<div class="card">
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-keyboard me-1"></i>
+        Phím tắt toàn cục
+    </div>
     <div class="card-body">
-        <h6 class="card-title">Phím tắt toàn cục</h6>
         <div class="row">
             <div class="col-md-3"><kbd>Ctrl</kbd>+<kbd>Enter</kbd> - Lưu form</div>
             <div class="col-md-3"><kbd>Esc</kbd> - Hủy / Quay lại</div>
@@ -110,63 +154,7 @@
 </div>
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-        margin-bottom: 24px;
-    }
-    .stat-card {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .stat-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 12px;
-    }
-    .stat-title { color: var(--text-secondary); font-size: 0.875rem; }
-    .stat-icon {
-        width: 40px; height: 40px;
-        border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.25rem;
-    }
-    .stat-value {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin-bottom: 4px;
-    }
-    .stat-change { font-size: 0.75rem; display: flex; align-items: center; gap: 4px; }
-    .stat-change.up { color: #34a853; }
-    .stat-change.down { color: #ea4335; }
-
-    .quick-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .quick-action-btn {
-        display: flex; align-items: center; gap: 8px;
-        padding: 12px 20px;
-        background: white;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        text-decoration: none;
-        color: var(--text-primary);
-    }
-    .quick-action-btn:hover {
-        border-color: var(--primary-color);
-        box-shadow: 0 2px 8px rgba(26,115,232,0.2);
-        color: var(--text-primary);
-    }
-    .quick-action-btn .icon { font-size: 1.25rem; }
-
-    @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
-</style>
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'js/datatables-simple-demo.js' %}"></script>
 {% endblock %}

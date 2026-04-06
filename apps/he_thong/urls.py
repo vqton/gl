@@ -54,4 +54,17 @@ urlpatterns = [
     path("quan-ly-csdl/restore/", views.db_restore, name="db_restore"),
     path("quan-ly-csdl/vacuum/", views.db_vacuum, name="db_vacuum"),
     path("quan-ly-csdl/export/", views.db_export, name="db_export"),
+    # Client Management
+    path("khach-hang/", views.client_list, name="client_list"),
+    path("khach-hang/them-moi/", views.client_onboard, name="client_onboard"),
+    path("khach-hang/<int:pk>/tam-khoa/", views.client_suspend, name="client_suspend"),
+    path(
+        "khach-hang/<int:pk>/kich-hoat/", views.client_activate, name="client_activate"
+    ),
+    path("khach-hang/<int:pk>/luu-tru/", views.client_archive, name="client_archive"),
+    path(
+        "khach-hang/sao-lu-hang-loat/",
+        views.client_batch_backup,
+        name="client_batch_backup",
+    ),
 ]

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Thêm Khách hàng Mới - Kế toán SME{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">➕ Thêm Khách hàng Mới</h1>
+<ol class="breadcrumb mb-4">
+    <li class="breadcrumb-item"><a href="{% url 'accounting:dashboard' %}">Trang chủ</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'he_thong:client_list' %}">Khách hàng</a></li>
+    <li class="breadcrumb-item active">Thêm mới</li>
+</ol>
+
+<div class="row">
+    <div class="col-xl-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-building me-1"></i>
+                Thông tin khách hàng
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Tên công ty <span class="text-danger">*</span></label>
+                        <input type="text" name="ten_cong_ty" class="form-control" required placeholder="VD: Công ty TNHH Thương mại ABC">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mã số thuế <span class="text-danger">*</span></label>
+                        <input type="text" name="ma_so_thue" class="form-control" required placeholder="VD: 0123456789" maxlength="14">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngành nghề</label>
+                        <input type="text" name="nganh_nghe" class="form-control" placeholder="VD: Thương mại, Sản xuất, Dịch vụ">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Năm tài chính bắt đầu</label>
+                        <select name="nam" class="form-select">
+                            <option value="2026" selected>2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2027">2027</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Hệ thống sẽ tự động:
+                        <ul class="mb-0 mt-1">
+                            <li>Tạo CSDL mới từ mẫu</li>
+                            <li>Chạy migrate và tải danh mục tài khoản</li>
+                            <li>Sinh mã khách hàng tự động (KH001, KH002, ...)</li>
+                        </ul>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check me-1"></i> Tạo khách hàng
+                        </button>
+                        <a href="{% url 'he_thong:client_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-times me-1"></i> Hủy
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-lightbulb me-1"></i>
+                Hướng dẫn
+            </div>
+            <div class="card-body">
+                <h6>Quy trình onboard khách hàng:</h6>
+                <ol>
+                    <li>Nhập thông tin công ty</li>
+                    <li>Hệ thống tạo CSDL mới</li>
+                    <li>Tự động tải Chart of Accounts (TT 99)</li>
+                    <li>Khách hàng sẵn sàng sử dụng</li>
+                </ol>
+                <hr>
+                <h6>Lưu ý:</h6>
+                <ul>
+                    <li>Mã số thuế phải duy nhất</li>
+                    <li>CSDL mẫu phải tồn tại (data/template_2026.sqlite3)</li>
+                    <li>Chỉ Kế toán trưởng mới được onboard</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -584,3 +584,122 @@ def db_export(request):
             messages.error(request, f"Lỗi xuất dữ liệu: {e}")
             return redirect("he_thong:db_management")
     return redirect("he_thong:db_management")
+
+
+# ==================== Client Management Views ====================
+
+from django.db import models
+
+from apps.he_thong.models import Client, ClientUserMapping
+from apps.tien_ich.client_manager import ClientManager
+
+
+@login_required
+def client_list(request):
+    """Client list for accounting firms."""
+    status_filter = request.GET.get("status", "")
+    search = request.GET.get("search", "")
+
+    clients = Client.objects.all()
+    if status_filter:
+        clients = clients.filter(trang_thai=status_filter)
+    if search:
+        clients = clients.filter(
+            models.Q(ten_cong_ty__icontains=search)
+            | models.Q(ma_so_thue__icontains=search)
+            | models.Q(ma_khach_hang__icontains=search)
+        )
+
+    context = {
+        "clients": clients,
+        "status_filter": status_filter,
+        "search": search,
+    }
+    return render(request, "he_thong/client_list.html", context)
+
+
+@login_required
+def client_onboard(request):
+    """Client onboarding wizard."""
+    if request.method == "POST":
+        try:
+            client_data = {
+                "ten_cong_ty": request.POST.get("ten_cong_ty"),
+                "ma_so_thue": request.POST.get("ma_so_thue"),
+                "nganh_nghe": request.POST.get("nganh_nghe", ""),
+                "nam": int(request.POST.get("nam", 2026)),
+            }
+            manager = ClientManager()
+            client = manager.onboard(client_data)
+            messages.success(
+                request,
+                f"Khách hàng {client.ma_khach_hang} - {client.ten_cong_ty} đã được tạo thành công",
+            )
+            return redirect("he_thong:client_list")
+        except Exception as e:
+            messages.error(request, f"Lỗi tạo khách hàng: {e}")
+
+    return render(request, "he_thong/client_onboard.html")
+
+
+@login_required
+def client_suspend(request, pk):
+    """Suspend client access."""
+    if request.method == "POST":
+        try:
+            manager = ClientManager()
+            client = manager.suspend(pk)
+            messages.success(request, f"Đã tạm khóa khách hàng {client.ma_khach_hang}")
+        except Exception as e:
+            messages.error(request, f"Lỗi: {e}")
+    return redirect("he_thong:client_list")
+
+
+@login_required
+def client_activate(request, pk):
+    """Activate suspended client."""
+    if request.method == "POST":
+        try:
+            manager = ClientManager()
+            client = manager.activate(pk)
+            messages.success(request, f"Đã kích hoạt khách hàng {client.ma_khach_hang}")
+        except Exception as e:
+            messages.error(request, f"Lỗi: {e}")
+    return redirect("he_thong:client_list")
+
+
+@login_required
+def client_archive(request, pk):
+    """Archive client."""
+    if request.method == "POST":
+        try:
+            manager = ClientManager()
+            archive_path = manager.archive(pk)
+            messages.success(request, f"Đã lưu trữ khách hàng: {archive_path}")
+        except Exception as e:
+            messages.error(request, f"Lỗi: {e}")
+    return redirect("he_thong:client_list")
+
+
+@login_required
+def client_batch_backup(request):
+    """Backup all active clients."""
+    if request.method == "POST":
+        try:
+            manager = ClientManager()
+            results = manager.batch_backup()
+            success_count = len(results["success"])
+            failed_count = len(results["failed"])
+            messages.success(
+                request,
+                f"Sao lưu hàng loạt: {success_count} thành công, {failed_count} thất bại",
+            )
+            if results["failed"]:
+                for fail in results["failed"]:
+                    messages.warning(
+                        request,
+                        f"Thất bại: {fail['client']} - {fail['error']}",
+                    )
+        except Exception as e:
+            messages.error(request, f"Lỗi sao lưu hàng loạt: {e}")
+    return redirect("he_thong:client_list")
