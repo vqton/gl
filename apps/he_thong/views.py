@@ -1,9 +1,11 @@
 """He thong (System) views."""
 
 import csv
+import json
 import logging
 import os
 import shutil
+from pathlib import Path
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -272,3 +274,192 @@ def nguoi_dung_role_edit(request, pk):
         "he_thong/user_role_form.html",
         {"user_obj": user, "roles": roles},
     )
+
+
+DB_CONFIG_PATH = (
+    Path(__file__).resolve().parent.parent.parent / "core" / "db_config.json"
+)
+
+
+def is_first_run() -> bool:
+    """Check if this is the first run (no valid config exists).
+
+    Returns:
+        True if db_config.json is missing, empty, or invalid.
+    """
+    try:
+        if not DB_CONFIG_PATH.exists():
+            return True
+
+        content = DB_CONFIG_PATH.read_text(encoding="utf-8")
+        if not content.strip():
+            return True
+
+        config = json.loads(content)
+        return not config or "default" not in config
+    except (json.JSONDecodeError, Exception):
+        return True
+
+
+def save_db_config(config_data: dict) -> None:
+    """Save database configuration to JSON file with encrypted password.
+
+    Args:
+        config_data: Database configuration dictionary.
+    """
+    import json
+
+    from apps.tien_ich.crypto import encrypt
+
+    engine = config_data.get("database_type", "sqlite")
+    db_name = config_data.get("db_name", "")
+
+    config = {
+        "default": {
+            "engine": engine,
+            "name": db_name,
+        }
+    }
+
+    if engine != "sqlite":
+        password = config_data.get("db_password", "")
+        if password:
+            config["default"]["password"] = encrypt(password)
+        config["default"]["user"] = config_data.get("db_user", "")
+        config["default"]["host"] = config_data.get("db_host", "localhost")
+        config["default"]["port"] = int(config_data.get("db_port", 0))
+
+    DB_CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    DB_CONFIG_PATH.write_text(
+        json.dumps(config, indent=4, ensure_ascii=False), encoding="utf-8"
+    )
+
+
+def test_db_connection(config_data: dict) -> tuple[bool, str]:
+    """Test database connection with provided config.
+
+    Args:
+        config_data: Database configuration dictionary.
+
+    Returns:
+        Tuple of (success, message).
+    """
+    engine = config_data.get("database_type", "sqlite")
+    db_name = config_data.get("db_name", "")
+
+    try:
+        if engine == "sqlite":
+            import sqlite3
+
+            conn = sqlite3.connect(db_name)
+            conn.close()
+            return True, "Kết nối SQLite thành công"
+        elif engine == "mysql":
+            import pymysql
+
+            conn = pymysql.connect(
+                host=config_data.get("db_host", "localhost"),
+                port=int(config_data.get("db_port", 3306)),
+                user=config_data.get("db_user", ""),
+                password=config_data.get("db_password", ""),
+                database=db_name,
+            )
+            conn.close()
+            return True, "Kết nối MySQL thành công"
+        elif engine == "postgresql":
+            import psycopg2
+
+            conn = psycopg2.connect(
+                host=config_data.get("db_host", "localhost"),
+                port=int(config_data.get("db_port", 5432)),
+                user=config_data.get("db_user", ""),
+                password=config_data.get("db_password", ""),
+                dbname=db_name,
+            )
+            conn.close()
+            return True, "Kết nối PostgreSQL thành công"
+        elif engine == "sqlserver":
+            import pyodbc
+
+            conn_str = (
+                f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+                f"SERVER={config_data.get('db_host', 'localhost')},"
+                f"{config_data.get('db_port', 1433)};"
+                f"DATABASE={db_name};"
+                f"UID={config_data.get('db_user', '')};"
+                f"PWD={config_data.get('db_password', '')}"
+            )
+            conn = pyodbc.connect(conn_str)
+            conn.close()
+            return True, "Kết nối SQL Server thành công"
+        else:
+            return False, f"Loại cơ sở dữ liệu không hỗ trợ: {engine}"
+    except ImportError as e:
+        return False, f"Thiếu thư viện: {e}"
+    except Exception as e:
+        return False, f"Không thể kết nối: {e}"
+
+
+def setup_wizard(request):
+    """Setup wizard view for first-run database configuration.
+
+    Redirects to login if already configured.
+    """
+    if not is_first_run():
+        return redirect("accounting:login")
+
+    if request.method == "POST":
+        action = request.POST.get("action", "save")
+
+        if action == "test":
+            config_data = {
+                "database_type": request.POST.get("database_type", "sqlite"),
+                "db_name": request.POST.get("db_name", ""),
+                "db_host": request.POST.get("db_host", ""),
+                "db_port": request.POST.get("db_port", ""),
+                "db_user": request.POST.get("db_user", ""),
+                "db_password": request.POST.get("db_password", ""),
+            }
+            success, message = test_db_connection(config_data)
+            return JsonResponse({"success": success, "message": message})
+
+        elif action == "save":
+            config_data = {
+                "database_type": request.POST.get("database_type", "sqlite"),
+                "db_name": request.POST.get("db_name", ""),
+                "db_host": request.POST.get("db_host", ""),
+                "db_port": request.POST.get("db_port", ""),
+                "db_user": request.POST.get("db_user", ""),
+                "db_password": request.POST.get("db_password", ""),
+            }
+            save_db_config(config_data)
+            messages.success(request, "Đã lưu cấu hình cơ sở dữ liệu.")
+            return redirect("accounting:login")
+
+    return render(request, "he_thong/setup_wizard.html")
+
+
+def setup_test_connection(request):
+    """AJAX endpoint for testing database connection.
+
+    Returns:
+        JSON response with success status and message.
+    """
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            data = request.POST
+
+        config_data = {
+            "database_type": data.get("database_type", "sqlite"),
+            "db_name": data.get("db_name", ""),
+            "db_host": data.get("db_host", ""),
+            "db_port": data.get("db_port", ""),
+            "db_user": data.get("db_user", ""),
+            "db_password": data.get("db_password", ""),
+        }
+        success, message = test_db_connection(config_data)
+        return JsonResponse({"success": success, "message": message})
+
+    return JsonResponse({"success": False, "message": "Method not allowed"})

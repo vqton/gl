@@ -83,16 +83,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 ASGI_APPLICATION = 'core.asgi.application'
 
-# Database - SQLite with WAL mode
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db' / 'accounting_tt99.sqlite3',
-        'OPTIONS': {
-            'timeout': 30,
-        },
-    }
-}
+# Database - dynamically loaded from db_config.json
+from core.db_loader import load_db_config
+DATABASES = load_db_config()
+
+# Database router for multi-tenant setup
+DATABASE_ROUTERS = ['core.routers.CompanyRouter']
 
 # Custom user model
 AUTH_USER_MODEL = 'users.NguoiDung'

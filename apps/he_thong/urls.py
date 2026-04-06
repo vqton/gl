@@ -7,6 +7,12 @@ from apps.he_thong import views
 app_name = "he_thong"
 
 urlpatterns = [
+    path("setup/", views.setup_wizard, name="setup_wizard"),
+    path(
+        "setup/test-connection/",
+        views.setup_test_connection,
+        name="setup_test_connection",
+    ),
     path("health/", views.health_check, name="health"),
     path("cong-ty/", views.cong_ty_view, name="cong_ty"),
     path(

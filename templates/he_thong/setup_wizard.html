@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt hệ thống - Kế toán SME</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-hover: #1557b0;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+            --bg-light: #f8f9fa;
+            --border-color: #dadce0;
+            --success-color: #0d904f;
+            --error-color: #d93025;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: var(--bg-light);
+            color: var(--text-primary);
+        }
+        .setup-container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 32px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        .setup-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .setup-header h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0 0 8px;
+        }
+        .setup-header p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+        }
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-light);
+        }
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .db-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .db-type-option {
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .db-type-option:hover {
+            border-color: var(--primary-color);
+        }
+        .db-type-option.selected {
+            border-color: var(--primary-color);
+            background: rgba(26,115,232,0.05);
+        }
+        .db-type-option h3 {
+            margin: 0 0 4px;
+            font-size: 1rem;
+        }
+        .db-type-option p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .connection-form {
+            display: none;
+        }
+        .connection-form.active {
+            display: block;
+        }
+        #connection-status {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 4px;
+            display: none;
+        }
+        #connection-status.success {
+            display: block;
+            background: #e6f4ea;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        #connection-status.error {
+            display: block;
+            background: #fce8e6;
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+        }
+        .recommended-badge {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1>Cài đặt cơ sở dữ liệu</h1>
+            <p>Chọn loại cơ sở dữ liệu và nhập thông tin kết nối</p>
+        </div>
+
+        <form id="setup-form" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Loại cơ sở dữ liệu</label>
+                <div class="db-type-selector">
+                    <div class="db-type-option selected" data-type="sqlite" onclick="selectDbType('sqlite')">
+                        <h3>SQLite <span class="recommended-badge">Khuyến nghị</span></h3>
+                        <p>Phù hợp cho doanh nghiệp vừa và nhỏ</p>
+                    </div>
+                    <div class="db-type-option" data-type="mysql" onclick="selectDbType('mysql')">
+                        <h3>MySQL / MariaDB</h3>
+                        <p>Hiệu năng cao, mở rộng tốt</p>
+                    </div>
+                    <div class="db-type-option" data-type="postgresql" onclick="selectDbType('postgresql')">
+                        <h3>PostgreSQL</h3>
+                        <p>Mã nguồn mở, ổn định</p>
+                    </div>
+                    <div class="db-type-option" data-type="sqlserver" onclick="selectDbType('sqlserver')">
+                        <h3>SQL Server</h3>
+                        <p>Tương thích môi trường Windows</p>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="action" id="form-action" value="save">
+            <input type="hidden" name="database_type" id="database_type" value="sqlite">
+
+            <div id="sqlite-form" class="connection-form active">
+                <div class="form-group">
+                    <label for="sqlite_path">Đường dẫn file SQLite</label>
+                    <input type="text" id="sqlite_path" name="db_name"
+                           value="db/accounting_tt99.sqlite3"
+                           placeholder="db/accounting_tt99.sqlite3">
+                </div>
+            </div>
+
+            <div id="server-form" class="connection-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="db_host">Máy chủ</label>
+                        <input type="text" id="db_host" name="db_host"
+                               placeholder="localhost">
+                    </div>
+                    <div class="form-group">
+                        <label for="db_port">Cổng</label>
+                        <input type="number" id="db_port" name="db_port"
+                               placeholder="3306">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="db_name">Tên cơ sở dữ liệu</label>
+                    <input type="text" id="db_name_server" name="db_name"
+                           placeholder="accounting_db">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="db_user">Tên đăng nhập</label>
+                        <input type="text" id="db_user" name="db_user"
+                               placeholder="root">
+                    </div>
+                    <div class="form-group">
+                        <label for="db_password">Mật khẩu</label>
+                        <input type="password" id="db_password" name="db_password"
+                               placeholder="••••••••">
+                    </div>
+                </div>
+            </div>
+
+            <div id="connection-status"></div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" id="test-btn"
+                        onclick="testConnection()">
+                    Kiểm tra kết nối
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Lưu và tiếp tục
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const defaultPorts = {
+            sqlite: '',
+            mysql: '3306',
+            postgresql: '5432',
+            sqlserver: '1433'
+        };
+
+        function selectDbType(type) {
+            document.querySelectorAll('.db-type-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+            document.getElementById('database_type').value = type;
+
+            if (type === 'sqlite') {
+                document.getElementById('sqlite-form').classList.add('active');
+                document.getElementById('server-form').classList.remove('active');
+                document.getElementById('test-btn').style.display = 'none';
+            } else {
+                document.getElementById('sqlite-form').classList.remove('active');
+                document.getElementById('server-form').classList.add('active');
+                document.getElementById('test-btn').style.display = 'inline-block';
+                if (!document.getElementById('db_port').value) {
+                    document.getElementById('db_port').value = defaultPorts[type];
+                }
+            }
+        }
+
+        async function testConnection() {
+            const statusEl = document.getElementById('connection-status');
+            statusEl.className = '';
+            statusEl.textContent = 'Đang kiểm tra...';
+
+            const data = {
+                database_type: document.getElementById('database_type').value,
+                db_name: document.querySelector('input[name="db_name"]').value,
+                db_host: document.getElementById('db_host').value,
+                db_port: document.getElementById('db_port').value,
+                db_user: document.getElementById('db_user').value,
+                db_password: document.getElementById('db_password').value
+            };
+
+            try {
+                const response = await fetch('{% url "he_thong:setup_test_connection" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    statusEl.className = 'success';
+                    statusEl.textContent = result.message;
+                } else {
+                    statusEl.className = 'error';
+                    statusEl.textContent = result.message;
+                }
+            } catch (error) {
+                statusEl.className = 'error';
+                statusEl.textContent = 'Lỗi kết nối: ' + error.message;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            selectDbType('sqlite');
+        });
+    </script>
+</body>
+</html>

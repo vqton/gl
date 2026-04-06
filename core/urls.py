@@ -3,8 +3,16 @@
 from django.contrib import admin
 from django.urls import include, path
 
+from apps.he_thong import views as he_thong_views
+
 urlpatterns = [
     path('', include('apps.accounting.urls')),
+    path('setup/', he_thong_views.setup_wizard, name='setup_wizard'),
+    path(
+        'setup/test-connection/',
+        he_thong_views.setup_test_connection,
+        name='setup_test_connection',
+    ),
     path('admin/', admin.site.urls),
     path('nghiep-vu/', include('apps.nghiep_vu.urls')),
     path('danh-muc/', include('apps.danh_muc.urls')),
