@@ -11,10 +11,10 @@ CIRCULAR99_COA = [
 
     # ── TK 111 — Tiền mặt ──
     {"code": "111", "name": "Tiền mặt", "level": 1, "type": "asset",
-     "name_en": "Cash", "description": "Tiền Việt Nam, ngoại tệ, vàng货币 tại quỹ"},
+     "name_en": "Cash", "description": "Tiền Việt Nam, ngoại tệ, vàng tiền tệ tại quỹ"},
     {"code": "1111", "name": "Tiền Việt Nam", "level": 2, "type": "asset", "parent_code": "111"},
     {"code": "1112", "name": "Ngoại tệ", "level": 2, "type": "asset", "parent_code": "111"},
-    {"code": "1113", "name": "Vàng货币", "level": 2, "type": "asset", "parent_code": "111"},
+    {"code": "1113", "name": "Vàng tiền tệ", "level": 2, "type": "asset", "parent_code": "111"},
 
     # ── TK 112 — Tiền gửi không kỳ hạn ──
     {"code": "112", "name": "Tiền gửi không kỳ hạn", "level": 1, "type": "asset",

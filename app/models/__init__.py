@@ -8,6 +8,7 @@ from app.models.inventory_item import InventoryItem
 from app.models.casbin_rule import CasbinRule
 from app.models.audit_log import AuditLog
 from app.models.period import AccountingPeriod
+from app.models.invoice import Invoice
 
 __all__ = [
     "User",
@@ -23,4 +24,5 @@ __all__ = [
     "CasbinRule",
     "AuditLog",
     "AccountingPeriod",
+    "Invoice",
 ]

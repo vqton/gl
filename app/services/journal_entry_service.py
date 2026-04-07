@@ -61,12 +61,14 @@ class JournalEntryService:
         db.session.flush()
 
         for i, line_data in enumerate(lines, 1):
+            debit_raw = str(line_data.get("debit_amount", "0")).replace(".", "").replace(",", ".")
+            credit_raw = str(line_data.get("credit_amount", "0")).replace(".", "").replace(",", ".")
             line = JournalEntryLine(
                 journal_entry_id=entry.id,
                 line_number=i,
                 account_code=line_data["account_code"],
-                debit_amount=Decimal(str(line_data.get("debit_amount", 0))),
-                credit_amount=Decimal(str(line_data.get("credit_amount", 0))),
+                debit_amount=Decimal(debit_raw) if debit_raw else Decimal("0"),
+                credit_amount=Decimal(credit_raw) if credit_raw else Decimal("0"),
                 description=line_data.get("description", ""),
                 cost_center=line_data.get("cost_center"),
                 partner_code=line_data.get("partner_code"),
