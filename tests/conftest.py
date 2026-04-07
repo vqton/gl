@@ -1,6 +1,5 @@
-import os
-import tempfile
 import pytest
+from sqlalchemy import StaticPool
 from app import create_app
 from app.extensions import db as _db
 from app.models.user import User
@@ -8,23 +7,18 @@ from app.models.user import User
 
 @pytest.fixture
 def app():
-    """Fresh app with isolated DB per test."""
-    tf = tempfile.NamedTemporaryFile(suffix=".sqlite", delete=False)
-    db_path = tf.name
-    tf.close()
-
-    app = create_app("testing", test_db_uri=f"sqlite:///{db_path}")
+    """Fresh app with in-memory SQLite DB per test using StaticPool."""
+    app = create_app("testing", test_db_uri="sqlite:///:memory:")
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "poolclass": StaticPool,
+        "connect_args": {"check_same_thread": False},
+    }
 
     with app.app_context():
         _db.create_all()
         yield app
         _db.session.rollback()
         _db.session.close()
-
-    try:
-        os.unlink(db_path)
-    except OSError:
-        pass
 
 
 @pytest.fixture
