@@ -22,7 +22,7 @@ class Invoice(BaseModel):
     accounting_period = db.Column(db.String(7), nullable=False)
 
     customer = db.relationship("Customer", back_populates="invoices")
-    payments = db.relationship("Payment", back_populates="invoice", lazy="dynamic")
+    payments = db.relationship("Payment", back_populates="invoice_rel", lazy="dynamic")
 
     @property
     def balance(self):

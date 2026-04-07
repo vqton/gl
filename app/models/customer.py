@@ -37,7 +37,8 @@ class Payment(BaseModel):
     reference = db.Column(db.String(100), default="")
     notes = db.Column(db.Text, default="")
 
-    invoice = db.relationship("Invoice", back_populates="payments")
+    invoice_rel = db.relationship("Invoice", back_populates="payments")
+    customer = db.relationship("Customer", back_populates="payments")
 
     def __repr__(self):
         return f"<Payment {self.payment_number}>"

@@ -1,5 +1,5 @@
 casbin==1.36.0
-casbin-sqlalchemy-adapter==0.6.3
+casbin-sqlalchemy-adapter==1.4.0
 Flask==3.0.2
 Flask-SQLAlchemy==3.1.1
 Flask-Migrate==4.0.7
