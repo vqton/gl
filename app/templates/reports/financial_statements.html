@@ -1,0 +1,75 @@
+{% extends "layouts/base.html" %}
+{% block title %}Báo cáo tài chính — Tổng hợp{% endblock %}
+{% block page_title %}Tổng hợp báo cáo tài chính{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">Báo cáo</a></li>
+<li class="breadcrumb-item active">Tổng hợp</li>
+{% endblock %}
+{% block content %}
+<form class="row g-2 mb-3" method="GET">
+    <div class="col-auto"><input type="month" name="period" class="form-control form-control-sm" value="{{ period }}"></div>
+    <div class="col-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search me-1"></i>Xem</button></div>
+</form>
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <small class="text-muted">Tổng tài sản</small>
+                <h4 class="text-primary">{{ "{:,.0f}".format(dashboard.total_assets) }}đ</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <small class="text-muted">Nợ phải trả</small>
+                <h4 class="text-danger">{{ "{:,.0f}".format(dashboard.total_liabilities) }}đ</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <small class="text-muted">Vốn chủ sở hữu</small>
+                <h4 class="text-success">{{ "{:,.0f}".format(dashboard.total_equity) }}đ</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <small class="text-muted">Lợi nhuận sau thuế</small>
+                <h4 class="{% if dashboard.net_profit >= 0 %}text-success{% else %}text-danger{% endif %}">{{ "{:,.0f}".format(dashboard.net_profit) }}đ</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header py-2"><i class="fas fa-exclamation-triangle me-1 text-warning"></i>Công việc chờ xử lý</div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4"><small>Hóa đơn bán nháp</small><h5 class="text-primary">{{ dashboard.pending_invoices }}</h5></div>
+                    <div class="col-4"><small>Hóa đơn mua nháp</small><h5 class="text-warning">{{ dashboard.pending_bills }}</h5></div>
+                    <div class="col-4"><small>Chờ duyệt</small><h5 class="text-info">{{ dashboard.pending_approvals + dashboard.pending_bill_approvals }}</h5></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header py-2"><i class="fas fa-link me-1"></i>Xem báo cáo chi tiết</div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('reports.b01') }}?period={{ period }}" class="btn btn-sm btn-outline-primary">B01-DN — Bảng cân đối kế toán</a>
+                    <a href="{{ url_for('reports.b02') }}?period={{ period }}" class="btn btn-sm btn-outline-success">B02-DN — Kết quả HĐKD</a>
+                    <a href="{{ url_for('reports.b03') }}?period={{ period }}" class="btn btn-sm btn-outline-info">B03-DN — Lưu chuyển tiền tệ</a>
+                    <a href="{{ url_for('reports.b09') }}?period={{ period }}" class="btn btn-sm btn-outline-warning">B09-DN — Thuyết minh BCTC</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

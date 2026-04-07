@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+{% block title %}Thêm TSCĐ{% endblock %}
+{% block page_title %}Thêm tài sản cố định{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('fa.assets') }}">TSCĐ</a></li>
+<li class="breadcrumb-item active">Thêm mới</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-2"><i class="fas fa-plus me-1"></i>Thêm tài sản cố định</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row g-3">
+                <div class="col-md-3"><label class="form-label">Mã TSCĐ <span class="text-danger">*</span></label><input type="text" name="asset_code" class="form-control" required></div>
+                <div class="col-md-5"><label class="form-label">Tên tài sản <span class="text-danger">*</span></label><input type="text" name="asset_name" class="form-control" required></div>
+                <div class="col-md-4">
+                    <label class="form-label">Loại TSCĐ</label>
+                    <select name="category" class="form-select">
+                        <option value="may_moc">Máy móc, thiết bị</option>
+                        <option value="phuong_tien">Phương tiện vận tải</option>
+                        <option value="nha_xuong">Nhà xưởng, kiến trúc</option>
+                        <option value="van_phong">Thiết bị văn phòng</option>
+                        <option value="pm">Phần mềm</option>
+                        <option value="khac">Khác</option>
+                    </select>
+                </div>
+                <div class="col-md-3"><label class="form-label">Nguyên giá <span class="text-danger">*</span></label><input type="number" name="original_cost" class="form-control" step="1000" required></div>
+                <div class="col-md-2"><label class="form-label">Giá trị thanh lý</label><input type="number" name="residual_value" class="form-control" value="0" step="1000"></div>
+                <div class="col-md-2"><label class="form-label">Thời gian khấu hao (năm) <span class="text-danger">*</span></label><input type="number" name="useful_life_years" class="form-control" min="1" required></div>
+                <div class="col-md-3">
+                    <label class="form-label">Phương pháp khấu hao</label>
+                    <select name="depreciation_method" class="form-select">
+                        <option value="straight_line">Đường thẳng</option>
+                    </select>
+                </div>
+                <div class="col-md-3"><label class="form-label">Ngày đưa vào sử dụng <span class="text-danger">*</span></label><input type="date" name="acquisition_date" class="form-control" value="{{ today }}" required></div>
+                <div class="col-md-3"><label class="form-label">Ngày bắt đầu khấu hao</label><input type="date" name="depreciation_start_date" class="form-control" value="{{ today }}"></div>
+                <div class="col-md-3"><label class="form-label">Vị trí / Nơi sử dụng</label><input type="text" name="location" class="form-control"></div>
+                <div class="col-md-3"><label class="form-label">Người quản lý</label><input type="text" name="responsible_person" class="form-control"></div>
+            </div>
+            <div class="alert alert-info mt-3"><small><i class="fas fa-info-circle me-1"></i>Khấu hao tháng = (Nguyên giá - Giá trị thanh lý) / (Số năm × 12). Phương pháp đường thẳng theo Circular 99/2025.</small></div>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="{{ url_for('fa.assets') }}" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Lưu</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
