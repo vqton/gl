@@ -1,3 +1,40 @@
 {% extends "layouts/base.html" %}
-{% block title %}Thuế - cit{% endblock %}
-{% block content %}<h1>cit</h1><p>Content for cit</p>{% endblock %}
+{% block title %}Thuế TNDN — Thuế{% endblock %}
+{% block page_title %}Thuế thu nhập doanh nghiệp (TNDN){% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('tax.index') }}">Thuế</a></li>
+<li class="breadcrumb-item active">Thuế TNDN</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-building me-1"></i>Thuế thu nhập doanh nghiệp</span>
+        <button class="btn btn-sm btn-outline-secondary no-print" onclick="window.print()"><i class="fas fa-print me-1"></i>In</button>
+    </div>
+    <div class="card-body py-2">
+        <form class="row g-2 mb-2 no-print">
+            <div class="col-auto"><input type="month" class="form-control form-control-sm" placeholder="Kỳ tính thuế"></div>
+            <div class="col-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search me-1"></i>Xem</button></div>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-compact mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:35px" class="text-center">STT</th>
+                        <th>Chỉ tiêu</th>
+                        <th style="width:130px" class="text-end">Giá trị</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="text-center">1</td><td>Tổng lợi nhuận kế toán trước thuế</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">2</td><td>Điều chỉnh tăng</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">3</td><td>Điều chỉnh giảm</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">4</td><td>Thu nhập tính thuế</td><td class="text-end">—</td></tr>
+                    <tr class="fw-bold bg-light"><td class="text-center">5</td><td>Thuế TNDN phải nộp (20%)</td><td class="text-end">—</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

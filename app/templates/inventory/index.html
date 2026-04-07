@@ -1,3 +1,31 @@
 {% extends "layouts/base.html" %}
-{% block title %}Kho - index{% endblock %}
-{% block content %}<h1>index</h1><p>Content for index</p>{% endblock %}
+{% block title %}Kho — Tổng quan{% endblock %}
+{% block page_title %}Kho — Tổng quan{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item active">Kho</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-boxes fa-2x text-primary mb-2"></i>
+                <h6 class="card-title">Danh mục vật tư</h6>
+                <p class="text-muted small mb-2">Nguyên liệu, công cụ, hàng hóa</p>
+                <a href="{{ url_for('inventory.items') }}" class="btn btn-sm btn-primary">Xem vật tư</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-exchange-alt fa-2x text-success mb-2"></i>
+                <h6 class="card-title">Nhập / Xuất kho</h6>
+                <p class="text-muted small mb-2">Phiếu nhập, phiếu xuất tồn kho</p>
+                <a href="{{ url_for('inventory.movements') }}" class="btn btn-sm btn-success">Xem nhập xuất</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

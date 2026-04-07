@@ -51,6 +51,9 @@ pytest tests/services/test_account_service.py::TestAccountService --no-cov -v
 
 # Run with debugger on failure:
 pytest tests/ --tb=long --no-cov -x
+
+# Skip slow tests:
+pytest tests/ -m "not slow" --no-cov -v
 ```
 
 ### Lint & Format
@@ -67,7 +70,7 @@ Pre-commit hooks run on every commit. GitHub Actions runs on push/PR.
 
 **Layered pattern:** `models → services → views`
 - **Models** (`app/models/`): SQLAlchemy ORM, inherit from `BaseModel`
-- **Services** (`app/services/`): Business logic, static methods, no Flask imports
+- **Services** (`app/services/`): Business logic, `@staticmethod`, no Flask imports
 - **Views** (`app/views/`): Flask Blueprints, handle HTTP, call services
 
 Each module has its own blueprint: `gl`, `ar`, `ap`, `tax`, `payroll`, `fa`, `inventory`, `reports`, `admin`, `auth`, `main`.
@@ -123,6 +126,7 @@ Use `isort` (configured in `pyproject.toml`) for automatic sorting.
 - `BaseModel.save()` / `delete()` / `update()` do NOT commit — caller commits
 - Services call `db.session.commit()` after mutations
 - Use `db.session.get(Model, id)` instead of legacy `Model.query.get(id)`
+- Use `db.session.flush()` before accessing auto-generated IDs within a transaction
 
 ### Testing
 - **TDD methodology**: Write test first, then implementation
@@ -131,6 +135,7 @@ Use `isort` (configured in `pyproject.toml`) for automatic sorting.
 - Fixtures: `app`, `db`, `client`, `admin_user`, `accountant_user`
 - Tests that don't need DB should NOT use `db` fixture
 - Use `pytest.raises(ValueError, match="pattern")` for error assertions
+- Use `factory-boy` + `Faker` for test data generation
 
 ### Templates
 - Extend `layouts/base.html`

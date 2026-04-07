@@ -1,3 +1,41 @@
 {% extends "layouts/base.html" %}
-{% block title %}Thuế - index{% endblock %}
-{% block content %}<h1>index</h1><p>Content for index</p>{% endblock %}
+{% block title %}Thuế — Tổng quan{% endblock %}
+{% block page_title %}Thuế — Tổng quan{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item active">Thuế</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-percent fa-2x text-primary mb-2"></i>
+                <h6 class="card-title">Thuế GTGT</h6>
+                <p class="text-muted small mb-2">Kê khai thuế giá trị gia tăng</p>
+                <a href="{{ url_for('tax.vat') }}" class="btn btn-sm btn-primary">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-building fa-2x text-success mb-2"></i>
+                <h6 class="card-title">Thuế TNDN</h6>
+                <p class="text-muted small mb-2">Thuế thu nhập doanh nghiệp</p>
+                <a href="{{ url_for('tax.cit') }}" class="btn btn-sm btn-success">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-user-tie fa-2x text-info mb-2"></i>
+                <h6 class="card-title">Thuế TNCN</h6>
+                <p class="text-muted small mb-2">Thuế thu nhập cá nhân</p>
+                <a href="{{ url_for('tax.pit') }}" class="btn btn-sm btn-info">Xem chi tiết</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

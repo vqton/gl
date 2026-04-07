@@ -18,9 +18,11 @@ def create_app(config_name=None, test_db_uri=None):
         app.config["SQLALCHEMY_DATABASE_URI"] = test_db_uri
 
     init_extensions(app)
+    init_casbin(app)
     register_blueprints(app)
     register_error_handlers(app)
     register_shell_context(app)
+    register_cli(app)
 
     return app
 
@@ -37,6 +39,47 @@ def init_extensions(app):
         return db.session.get(User, int(user_id))
 
 
+def init_casbin(app):
+    """Initialize Casbin RBAC enforcer."""
+    import csv
+    import casbin
+    from casbin_sqlalchemy_adapter import Adapter
+
+    with app.app_context():
+        # Import models so SQLAlchemy knows about them before create_all()
+        from app.models.user import User, Role
+        from app.models.casbin_rule import CasbinRule
+        from app.models.audit_log import AuditLog
+
+        # Ensure tables exist before seeding
+        db.create_all()
+
+        adapter = Adapter(db.engine)
+        model_path = os.path.join(app.root_path, "..", "rbac_model.conf")
+        enforcer = casbin.Enforcer(model_path, adapter)
+
+        if not app.config.get("TESTING", False):
+            if not enforcer.get_policy():
+                policy_path = os.path.join(app.root_path, "..", "rbac_policy.csv")
+                with open(policy_path, "r") as f:
+                    reader = csv.reader(f)
+                    for row in reader:
+                        row = [r.strip() for r in row if r.strip()]
+                        if not row or row[0].startswith("#"):
+                            continue
+                        if row[0] == "p" and len(row) >= 4:
+                            enforcer.add_policy(row[1], row[2], row[3])
+                        elif row[0] == "g" and len(row) >= 3:
+                            enforcer.add_grouping_policy(row[1], row[2])
+                enforcer.save_policy()
+
+            # Seed default roles into DB
+            from app.services.admin_service import AdminRoleService
+            AdminRoleService.seed_default_roles()
+
+        app.casbin_enforcer = enforcer
+
+
 def register_blueprints(app):
     from app.views.auth import auth_bp
     from app.views.gl import gl_bp
@@ -49,6 +92,7 @@ def register_blueprints(app):
     from app.views.reports import reports_bp
     from app.views.admin import admin_bp
     from app.views.main import main_bp
+    from app.views.permissions import permissions_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix="/auth")
@@ -61,6 +105,7 @@ def register_blueprints(app):
     app.register_blueprint(inventory_bp, url_prefix="/inventory")
     app.register_blueprint(reports_bp, url_prefix="/reports")
     app.register_blueprint(admin_bp, url_prefix="/admin")
+    app.register_blueprint(permissions_bp)
 
 
 def register_error_handlers(app):
@@ -87,14 +132,25 @@ def register_error_handlers(app):
 def register_shell_context(app):
     @app.shell_context_processor
     def make_shell_context():
-        from app.models.user import User
+        from app.models.user import User, Role
         from app.models.account import Account
         from app.models.journal_entry import JournalEntry, JournalEntryLine
+        from app.models.audit_log import AuditLog
+        from app.models.casbin_rule import CasbinRule
 
         return dict(
             db=db,
             User=User,
+            Role=Role,
             Account=Account,
             JournalEntry=JournalEntry,
             JournalEntryLine=JournalEntryLine,
+            AuditLog=AuditLog,
+            CasbinRule=CasbinRule,
         )
+
+
+def register_cli(app):
+    """Register CLI commands."""
+    from app.cli import init_cli
+    init_cli(app)

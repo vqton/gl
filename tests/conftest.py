@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from sqlalchemy import StaticPool
 from app import create_app
@@ -16,9 +18,27 @@ def app():
 
     with app.app_context():
         _db.create_all()
+        _load_casbin_policies(app)
         yield app
         _db.session.rollback()
         _db.session.close()
+
+
+def _load_casbin_policies(app):
+    """Load Casbin policies from CSV into the test database."""
+    import os
+    import casbin
+
+    enforcer = app.casbin_enforcer
+    policy_path = os.path.join(app.root_path, "..", "rbac_policy.csv")
+    model_path = os.path.join(app.root_path, "..", "rbac_model.conf")
+
+    temp_enforcer = casbin.Enforcer(model_path, policy_path)
+    for policy in temp_enforcer.get_policy():
+        enforcer.add_policy(*policy)
+    for grouping in temp_enforcer.get_grouping_policy():
+        enforcer.add_grouping_policy(*grouping)
+    enforcer.save_policy()
 
 
 @pytest.fixture

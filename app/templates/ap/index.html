@@ -1,3 +1,31 @@
 {% extends "layouts/base.html" %}
-{% block title %}Phải trả - index{% endblock %}
-{% block content %}<h1>index</h1><p>Content for index</p>{% endblock %}
+{% block title %}Phải trả — Tổng quan{% endblock %}
+{% block page_title %}Phải trả — Tổng quan{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item active">Phải trả</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-file-invoice-dollar fa-2x text-warning mb-2"></i>
+                <h6 class="card-title">Hóa đơn mua hàng</h6>
+                <p class="text-muted small mb-2">Quản lý hóa đơn, công nợ phải trả nhà cung cấp</p>
+                <a href="{{ url_for('ap.bills') }}" class="btn btn-sm btn-warning">Xem hóa đơn</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-truck fa-2x text-info mb-2"></i>
+                <h6 class="card-title">Nhà cung cấp</h6>
+                <p class="text-muted small mb-2">Danh sách nhà cung cấp, đối tác</p>
+                <a href="{{ url_for('ap.suppliers') }}" class="btn btn-sm btn-info">Xem NCC</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

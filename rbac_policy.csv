@@ -1,0 +1,119 @@
+# Casbin RBAC Policy — Vietnamese Accounting Software
+# Format: p, role, resource_pattern, action
+#         g, user_role, parent_role (role inheritance)
+#
+# Resources: /gl/*, /ar/*, /ap/*, /tax/*, /payroll/*, /fa/*, /inventory/*, /reports/*, /admin/*
+# Actions: GET, POST, PUT, DELETE
+
+# ============================================================
+# ADMIN — Full access to everything
+# ============================================================
+p, admin, /*, (GET)|(POST)|(PUT)|(DELETE)
+
+# ============================================================
+# CFO — Read all, approve high-value entries, admin settings
+# ============================================================
+p, cfo, /gl/*, GET
+p, cfo, /gl/journal_entries, POST
+p, cfo, /gl/journal_entries/*/approve, POST
+p, cfo, /ar/*, GET
+p, cfo, /ap/*, GET
+p, cfo, /ap/bills/*/approve, POST
+p, cfo, /tax/*, GET
+p, cfo, /tax/*/submit, POST
+p, cfo, /payroll/*, GET
+p, cfo, /payroll/payslip/approve, POST
+p, cfo, /fa/*, GET
+p, cfo, /fa/assets/*/dispose, POST
+p, cfo, /inventory/*, GET
+p, cfo, /reports/*, GET
+p, cfo, /admin/users, GET
+p, cfo, /admin/settings, (GET)|(POST)
+
+# ============================================================
+# CHIEF ACCOUNTANT — Full GL, approve entries, all reports
+# ============================================================
+p, chief_accountant, /gl/*, (GET)|(POST)|(PUT)|(DELETE)
+p, chief_accountant, /gl/journal_entries/*/approve, POST
+p, chief_accountant, /gl/journal_entries/*/post, POST
+p, chief_accountant, /gl/period/*/lock, POST
+p, chief_accountant, /gl/period/*/unlock, POST
+p, chief_accountant, /ar/*, (GET)|(POST)
+p, chief_accountant, /ap/*, (GET)|(POST)
+p, chief_accountant, /ap/bills/*/approve, POST
+p, chief_accountant, /tax/*, (GET)|(POST)
+p, chief_accountant, /tax/*/submit, POST
+p, chief_accountant, /payroll/*, GET
+p, chief_accountant, /payroll/payslip/approve, POST
+p, chief_accountant, /fa/*, (GET)|(POST)
+p, chief_accountant, /fa/assets/*/dispose, POST
+p, chief_accountant, /inventory/*, (GET)|(POST)
+p, chief_accountant, /reports/*, GET
+p, chief_accountant, /admin/users, GET
+
+# ============================================================
+# ACCOUNTANT — GL read/write, AR, AP, FA, Inventory
+# ============================================================
+p, accountant, /gl/*, (GET)|(POST)|(PUT)
+p, accountant, /ar/*, (GET)|(POST)|(PUT)
+p, accountant, /ap/*, (GET)|(POST)|(PUT)
+p, accountant, /fa/*, (GET)|(POST)|(PUT)
+p, accountant, /inventory/*, (GET)|(POST)|(PUT)
+p, accountant, /reports/*, GET
+p, accountant, /tax/*, GET
+
+# ============================================================
+# TAX ACCOUNTANT — Full tax module, read GL/AP/AR
+# ============================================================
+p, tax_accountant, /tax/*, (GET)|(POST)|(PUT)|(DELETE)
+p, tax_accountant, /tax/*/submit, POST
+p, tax_accountant, /gl/*, GET
+p, tax_accountant, /ar/*, GET
+p, tax_accountant, /ap/*, GET
+p, tax_accountant, /reports/*, GET
+
+# ============================================================
+# PAYROLL ACCOUNTANT — Full payroll, read employees
+# ============================================================
+p, payroll_accountant, /payroll/*, (GET)|(POST)|(PUT)
+p, payroll_accountant, /payroll/payslip/approve, POST
+p, payroll_accountant, /reports/payroll, GET
+
+# ============================================================
+# CASHIER — Cash/bank transactions, payment execution
+# ============================================================
+p, cashier, /gl/cash/*, (GET)|(POST)
+p, cashier, /gl/bank/*, (GET)|(POST)
+p, cashier, /ap/bills/*/pay, POST
+p, cashier, /ar/invoices/*/receive-payment, POST
+p, cashier, /reports/cash, GET
+p, cashier, /reports/bank, GET
+
+# ============================================================
+# AUDITOR — Read-only access to all modules
+# ============================================================
+p, auditor, /gl/*, GET
+p, auditor, /ar/*, GET
+p, auditor, /ap/*, GET
+p, auditor, /tax/*, GET
+p, auditor, /payroll/*, GET
+p, auditor, /fa/*, GET
+p, auditor, /inventory/*, GET
+p, auditor, /reports/*, GET
+p, auditor, /admin/users, GET
+p, auditor, /admin/audit-log, GET
+
+# ============================================================
+# VIEWER — Read-only dashboard and reports
+# ============================================================
+p, viewer, /, GET
+p, viewer, /dashboard, GET
+p, viewer, /reports/*, GET
+
+# ============================================================
+# ROLE INHERITANCE
+# ============================================================
+g, accountant, viewer
+g, chief_accountant, accountant
+g, cfo, chief_accountant
+g, admin, cfo

@@ -1,3 +1,51 @@
 {% extends "layouts/base.html" %}
-{% block title %}Báo cáo - index{% endblock %}
-{% block content %}<h1>index</h1><p>Content for index</p>{% endblock %}
+{% block title %}Báo cáo — Tổng quan{% endblock %}
+{% block page_title %}Báo cáo tài chính{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item active">Báo cáo</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-balance-scale fa-2x text-primary mb-2"></i>
+                <h6 class="card-title">B01-DN</h6>
+                <p class="text-muted small mb-2">Bảng cân đối kế toán</p>
+                <a href="{{ url_for('reports.b01') }}" class="btn btn-sm btn-primary">Xem báo cáo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-2x text-success mb-2"></i>
+                <h6 class="card-title">B02-DN</h6>
+                <p class="text-muted small mb-2">Kết quả hoạt động kinh doanh</p>
+                <a href="{{ url_for('reports.b02') }}" class="btn btn-sm btn-success">Xem báo cáo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-money-bill-wave fa-2x text-info mb-2"></i>
+                <h6 class="card-title">B03-DN</h6>
+                <p class="text-muted small mb-2">Lưu chuyển tiền tệ</p>
+                <a href="{{ url_for('reports.b03') }}" class="btn btn-sm btn-info">Xem báo cáo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-file-alt fa-2x text-warning mb-2"></i>
+                <h6 class="card-title">B09-DN</h6>
+                <p class="text-muted small mb-2">Thuyết minh BCTC</p>
+                <a href="{{ url_for('reports.b09') }}" class="btn btn-sm btn-warning">Xem báo cáo</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

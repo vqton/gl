@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from app.extensions import db
 from app.models.journal_entry import JournalEntry, JournalEntryLine
+from app.models.user import User
 
 
 class JournalEntryService:
@@ -26,9 +27,18 @@ class JournalEntryService:
         return JournalEntry.query.filter_by(entry_number=entry_number).first()
 
     @staticmethod
-    def create(entry_date, description, lines, entry_type="daily",
-               document_date=None, document_number=None, accounting_period=None,
-               currency="VND", exchange_rate=1, created_by=None):
+    def create(
+        entry_date,
+        description,
+        lines,
+        entry_type="daily",
+        document_date=None,
+        document_number=None,
+        accounting_period=None,
+        currency="VND",
+        exchange_rate=1,
+        created_by=None,
+    ):
         if accounting_period is None:
             accounting_period = entry_date.strftime("%Y-%m")
 
@@ -71,6 +81,15 @@ class JournalEntryService:
         entry = JournalEntry.query.get(entry_id)
         if not entry:
             raise ValueError(f"Journal entry {entry_id} not found")
+
+        user = db.session.get(User, user_id)
+        if not user:
+            raise ValueError(f"User {user_id} not found")
+
+        from app.services.authorization import AuthorizationService
+
+        AuthorizationService.enforce(user, "approve", entry)
+
         entry.approve(user_id)
         db.session.commit()
         return entry
@@ -91,28 +110,34 @@ class JournalEntryService:
         accounts = Account.query.order_by(Account.code).all()
         result = []
         for acc in accounts:
-            debit_q = db.session.query(db.func.coalesce(
-                db.func.sum(JournalEntryLine.debit_amount), 0
-            )).join(JournalEntry).filter(
-                JournalEntryLine.account_code == acc.code,
-                JournalEntry.accounting_period <= period,
-                JournalEntry.status == "posted",
+            debit_q = (
+                db.session.query(db.func.coalesce(db.func.sum(JournalEntryLine.debit_amount), 0))
+                .join(JournalEntry)
+                .filter(
+                    JournalEntryLine.account_code == acc.code,
+                    JournalEntry.accounting_period <= period,
+                    JournalEntry.status == "posted",
+                )
             )
-            credit_q = db.session.query(db.func.coalesce(
-                db.func.sum(JournalEntryLine.credit_amount), 0
-            )).join(JournalEntry).filter(
-                JournalEntryLine.account_code == acc.code,
-                JournalEntry.accounting_period <= period,
-                JournalEntry.status == "posted",
+            credit_q = (
+                db.session.query(db.func.coalesce(db.func.sum(JournalEntryLine.credit_amount), 0))
+                .join(JournalEntry)
+                .filter(
+                    JournalEntryLine.account_code == acc.code,
+                    JournalEntry.accounting_period <= period,
+                    JournalEntry.status == "posted",
+                )
             )
             total_debit = debit_q.scalar()
             total_credit = credit_q.scalar()
             balance = total_debit - total_credit
-            result.append({
-                "code": acc.code,
-                "name": acc.name,
-                "debit": total_debit,
-                "credit": total_credit,
-                "balance": balance,
-            })
+            result.append(
+                {
+                    "code": acc.code,
+                    "name": acc.name,
+                    "debit": total_debit,
+                    "credit": total_credit,
+                    "balance": balance,
+                }
+            )
         return result

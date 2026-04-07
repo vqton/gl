@@ -1,3 +1,31 @@
 {% extends "layouts/base.html" %}
-{% block title %}TSCĐ - index{% endblock %}
-{% block content %}<h1>index</h1><p>Content for index</p>{% endblock %}
+{% block title %}TSCĐ — Tổng quan{% endblock %}
+{% block page_title %}Tài sản cố định — Tổng quan{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item active">Tài sản cố định</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3 mb-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-box fa-2x text-primary mb-2"></i>
+                <h6 class="card-title">Danh mục TSCĐ</h6>
+                <p class="text-muted small mb-2">Quản lý tài sản cố định hữu hình, vô hình</p>
+                <a href="{{ url_for('fa.assets') }}" class="btn btn-sm btn-primary">Xem TSCĐ</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-2x text-warning mb-2"></i>
+                <h6 class="card-title">Hao mòn / Khấu hao</h6>
+                <p class="text-muted small mb-2">Tính và phân bổ khấu hao TSCĐ</p>
+                <a href="{{ url_for('fa.depreciation') }}" class="btn btn-sm btn-warning">Xem khấu hao</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

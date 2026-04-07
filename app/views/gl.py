@@ -5,18 +5,21 @@ from flask_login import login_required, current_user
 
 from app.services.account_service import AccountService
 from app.services.journal_entry_service import JournalEntryService
+from app.middleware.authorization import require_permission
 
 gl_bp = Blueprint("gl", __name__)
 
 
 @gl_bp.route("/")
 @login_required
+@require_permission()
 def index():
     return render_template("gl/index.html")
 
 
 @gl_bp.route("/accounts")
 @login_required
+@require_permission()
 def accounts():
     accounts = AccountService.get_all()
     return render_template("gl/accounts.html", accounts=accounts)
@@ -24,6 +27,7 @@ def accounts():
 
 @gl_bp.route("/accounts/new", methods=["GET", "POST"])
 @login_required
+@require_permission()
 def new_account():
     if request.method == "POST":
         try:
@@ -45,6 +49,7 @@ def new_account():
 
 @gl_bp.route("/journal-entries")
 @login_required
+@require_permission()
 def journal_entries():
     page = request.args.get("page", 1, type=int)
     period = request.args.get("period")
@@ -55,6 +60,7 @@ def journal_entries():
 
 @gl_bp.route("/journal-entries/new", methods=["GET", "POST"])
 @login_required
+@require_permission()
 def new_journal_entry():
     if request.method == "POST":
         try:
@@ -84,6 +90,7 @@ def new_journal_entry():
 
 @gl_bp.route("/journal-entries/<int:entry_id>")
 @login_required
+@require_permission()
 def view_journal_entry(entry_id):
     entry = JournalEntryService.get_by_id(entry_id)
     if not entry:
@@ -94,6 +101,7 @@ def view_journal_entry(entry_id):
 
 @gl_bp.route("/journal-entries/<int:entry_id>/approve", methods=["POST"])
 @login_required
+@require_permission()
 def approve_journal_entry(entry_id):
     try:
         JournalEntryService.approve(entry_id, current_user.id)
@@ -105,6 +113,7 @@ def approve_journal_entry(entry_id):
 
 @gl_bp.route("/trial-balance")
 @login_required
+@require_permission()
 def trial_balance():
     period = request.args.get("period", date.today().strftime("%Y-%m"))
     data = JournalEntryService.get_trial_balance(period)

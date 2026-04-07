@@ -1,11 +1,101 @@
 {% extends "layouts/base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Bảng điều khiển — Kế toán TT99{% endblock %}
+{% block page_title %}Bảng điều khiển{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Bảng điều khiển</li>
+{% endblock %}
 {% block content %}
-<h1>Dashboard</h1>
-<div class="dashboard-grid">
-    <div class="card"><h3>Số dư tiền mặt</h3><p>0 VND</p></div>
-    <div class="card"><h3>Phải thu</h3><p>0 VND</p></div>
-    <div class="card"><h3>Phải trả</h3><p>0 VND</p></div>
-    <div class="card"><h3>Thuế phải nộp</h3><p>0 VND</p></div>
+<div class="row g-3 mb-3">
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Tổng chứng từ (tháng)</div>
+                        <div class="fs-4 fw-bold">—</div>
+                    </div>
+                    <i class="fas fa-file-invoice fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Đã ghi sổ</div>
+                        <div class="fs-4 fw-bold">—</div>
+                    </div>
+                    <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-warning text-dark h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Chờ duyệt</div>
+                        <div class="fs-4 fw-bold">—</div>
+                    </div>
+                    <i class="fas fa-clock fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card bg-danger text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="small">Chưa cân đối</div>
+                        <div class="fs-4 fw-bold">—</div>
+                    </div>
+                    <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header py-2">
+                <i class="fas fa-clock me-1"></i>Chứng từ gần đây
+            </div>
+            <div class="card-body p-0">
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                    <p class="mb-0">Chưa có chứng từ nào</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header py-2">
+                <i class="fas fa-bolt me-1"></i>Thao tác nhanh
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('gl.new_journal_entry') }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-plus me-1"></i>Thêm chứng từ mới
+                    </a>
+                    <a href="{{ url_for('gl.accounts') }}" class="btn btn-sm btn-outline-secondary">
+                        <i class="fas fa-list me-1"></i>Xem danh mục tài khoản
+                    </a>
+                    <a href="{{ url_for('gl.trial_balance') }}" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-balance-scale me-1"></i>Số dư tài khoản
+                    </a>
+                    <a href="{{ url_for('reports.b01') }}" class="btn btn-sm btn-outline-success">
+                        <i class="fas fa-file-alt me-1"></i>Báo cáo B01-DN
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

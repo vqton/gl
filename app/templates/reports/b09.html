@@ -1,3 +1,57 @@
 {% extends "layouts/base.html" %}
-{% block title %}Báo cáo - b09{% endblock %}
-{% block content %}<h1>b09</h1><p>Content for b09</p>{% endblock %}
+{% block title %}B09-DN — Thuyết minh BCTC{% endblock %}
+{% block page_title %}B09-DN — Thuyết minh báo cáo tài chính{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('reports.index') }}">Báo cáo</a></li>
+<li class="breadcrumb-item active">B09-DN</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-2 d-flex justify-content-between align-items-center">
+        <span><i class="fas fa-file-alt me-1"></i>Mẫu số B09-DN — Thuyết minh báo cáo tài chính</span>
+        <button class="btn btn-sm btn-outline-secondary no-print" onclick="window.print()"><i class="fas fa-print me-1"></i>In</button>
+    </div>
+    <div class="card-body py-2">
+        <form class="row g-2 mb-2 no-print">
+            <div class="col-auto"><input type="month" class="form-control form-control-sm" placeholder="Kỳ báo cáo"></div>
+            <div class="col-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search me-1"></i>Xem</button></div>
+        </form>
+        <div class="text-center mb-3">
+            <h6 class="fw-bold mb-0">THUYẾT MINH BÁO CÁO TÀI CHÍNH</h6>
+            <small class="text-muted">(Ban hành theo Thông tư 99/2025/TT-BTC)</small>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-compact mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:35px" class="text-center">STT</th>
+                        <th style="width:50px" class="text-center">Mã số</th>
+                        <th>Chỉ tiêu</th>
+                        <th style="width:110px" class="text-end">Số đầu năm</th>
+                        <th style="width:110px" class="text-end">Số cuối kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fw-bold bg-light"><td colspan="5">I. Đặc điểm hoạt động của doanh nghiệp</td></tr>
+                    <tr><td class="text-center">1</td><td class="text-center">01</td><td>Địa chỉ trụ sở chính</td><td colspan="2">—</td></tr>
+                    <tr><td class="text-center">2</td><td class="text-center">02</td><td>Lĩnh vực kinh doanh</td><td colspan="2">—</td></tr>
+                    <tr class="fw-bold bg-light"><td colspan="5">II. Chính sách kế toán áp dụng</td></tr>
+                    <tr><td class="text-center">3</td><td class="text-center">03</td><td>Chế độ kế toán áp dụng</td><td colspan="2">Thông tư 99/2025/TT-BTC</td></tr>
+                    <tr><td class="text-center">4</td><td class="text-center">04</td><td>Phương pháp khấu hao TSCĐ</td><td colspan="2">—</td></tr>
+                    <tr class="fw-bold bg-light"><td colspan="5">III. Thông tin chi tiết</td></tr>
+                    <tr><td class="text-center">5</td><td class="text-center">05</td><td>Tiền và tương đương tiền</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">6</td><td class="text-center">06</td><td>Phải thu khách hàng</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">7</td><td class="text-center">07</td><td>Hàng tồn kho</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">8</td><td class="text-center">08</td><td>Tài sản cố định</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">9</td><td class="text-center">09</td><td>Phải trả người bán</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">10</td><td class="text-center">10</td><td>Vay và nợ thuê tài chính</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">11</td><td class="text-center">11</td><td>Vốn chủ sở hữu</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">12</td><td class="text-center">12</td><td>Doanh thu bán hàng</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                    <tr><td class="text-center">13</td><td class="text-center">13</td><td>Giá vốn hàng bán</td><td class="text-end">—</td><td class="text-end">—</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

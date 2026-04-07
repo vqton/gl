@@ -1,0 +1,57 @@
+{% extends "layouts/base.html" %}
+{% block title %}Chi tiết vai trò {{ role.name }} — Quản trị{% endblock %}
+{% block page_title %}Vai trò: {{ role.display_name }}{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Quản trị</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('admin.roles') }}">Vai trò</a></li>
+<li class="breadcrumb-item active">{{ role.name }}</li>
+{% endblock %}
+{% block content %}
+<div class="row g-3">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header py-2"><i class="fas fa-key me-1"></i>Phân quyền ({{ permissions|length }} quyền)</div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-bordered table-compact mb-0">
+                    <thead class="table-light"><tr><th>Tài nguyên</th><th>Hành động</th></tr></thead>
+                    <tbody>
+                        {% for p in permissions %}
+                        <tr><td><code>{{ p.resource }}</code></td><td><code>{{ p.action }}</code></td></tr>
+                        {% else %}
+                        <tr><td colspan="2" class="text-center text-muted py-3">Chưa có quyền nào</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-header py-2"><i class="fas fa-info-circle me-1"></i>Thông tin vai trò</div>
+            <div class="card-body">
+                <table class="table table-sm table-compact mb-0">
+                    <tr><td class="text-muted">Tên</td><td><code>{{ role.name }}</code></td></tr>
+                    <tr><td class="text-muted">Hiển thị</td><td>{{ role.display_name }}</td></tr>
+                    <tr><td class="text-muted">Mô tả</td><td>{{ role.description }}</td></tr>
+                    <tr><td class="text-muted">Hệ thống</td><td>{% if role.is_system %}<span class="badge bg-secondary">Có</span>{% else %}<span class="badge bg-success">Không</span>{% endif %}</td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header py-2"><i class="fas fa-users me-1"></i>Người dùng ({{ users|length }})</div>
+            <div class="card-body p-0">
+                <table class="table table-sm table-compact mb-0">
+                    <tbody>
+                        {% for u in users %}
+                        <tr><td>{{ u.username }}</td><td class="text-muted small">{{ u.full_name }}</td></tr>
+                        {% else %}
+                        <tr><td colspan="2" class="text-center text-muted small">Chưa có người dùng</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
