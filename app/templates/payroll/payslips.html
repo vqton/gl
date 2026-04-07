@@ -7,19 +7,17 @@
 <li class="breadcrumb-item active">Bảng lương</li>
 {% endblock %}
 {% block content %}
-<div class="card">
-    <div class="card-header py-2 d-flex justify-content-between align-items-center">
-        <span><i class="fas fa-receipt me-1"></i>Bảng lương</span>
-        <div class="d-flex gap-2 no-print">
-            <button class="btn btn-sm btn-outline-secondary" onclick="window.print()"><i class="fas fa-print me-1"></i>In</button>
-            <button class="btn btn-sm btn-primary"><i class="fas fa-calculator me-1"></i>Tính lương</button>
-        </div>
+<form class="row g-2 mb-3" method="GET">
+    <div class="col-auto"><input type="month" name="period" class="form-control form-control-sm" value="{{ period }}"></div>
+    <div class="col-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search me-1"></i>Xem</button></div>
+    <div class="col-auto ms-auto">
+        <a href="{{ url_for('payroll.new_payslip') }}" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i>Tính lương</a>
+        <button class="btn btn-sm btn-outline-secondary no-print ms-1" onclick="window.print()"><i class="fas fa-print me-1"></i>In</button>
     </div>
+</form>
+<div class="card">
+    <div class="card-header py-2"><i class="fas fa-receipt me-1"></i>Bảng lương kỳ {{ period }}</div>
     <div class="card-body py-2">
-        <form class="row g-2 mb-2 no-print">
-            <div class="col-auto"><input type="month" class="form-control form-control-sm" placeholder="Kỳ lương"></div>
-            <div class="col-auto"><button type="submit" class="btn btn-sm btn-outline-secondary"><i class="fas fa-search me-1"></i>Xem</button></div>
-        </form>
         <div class="table-responsive">
             <table class="table table-sm table-bordered table-hover table-compact mb-0">
                 <thead class="table-light">
@@ -27,19 +25,59 @@
                         <th style="width:35px" class="text-center">STT</th>
                         <th style="width:70px">Mã NV</th>
                         <th>Họ và tên</th>
-                        <th style="width:100px" class="text-end">Lương CB</th>
-                        <th style="width:80px" class="text-end">Phụ cấp</th>
-                        <th style="width:80px" class="text-end">Làm thêm</th>
+                        <th style="width:100px" class="text-end">Tổng thu nhập</th>
                         <th style="width:80px" class="text-end">BHXH (8%)</th>
                         <th style="width:80px" class="text-end">BHYT (1.5%)</th>
                         <th style="width:80px" class="text-end">BHTN (1%)</th>
                         <th style="width:80px" class="text-end">Thuế TNCN</th>
                         <th style="width:100px" class="text-end">Thực lĩnh</th>
+                        <th style="width:80px" class="text-center">Trạng thái</th>
+                        <th style="width:80px" class="no-print">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for p in payslips %}
+                    <tr>
+                        <td class="text-center">{{ loop.index }}</td>
+                        <td>{{ p.employee.employee_code }}</td>
+                        <td>{{ p.employee.full_name }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(p.total_income) }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(p.bhxh_employee) }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(p.bhyt_employee) }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(p.bhtn_employee) }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(p.pit) }}</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(p.net_salary) }}</td>
+                        <td class="text-center">
+                            {% if p.status == 'draft' %}<span class="badge bg-secondary">Nháp</span>
+                            {% elif p.status == 'approved' %}<span class="badge bg-success">Đã duyệt</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if p.status == 'draft' %}
+                            <form method="POST" action="{{ url_for('payroll.approve_payslip', payslip_id=p.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-success" title="Duyệt"><i class="fas fa-check"></i></button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
                     <tr><td colspan="11" class="text-center text-muted py-4"><i class="fas fa-inbox fa-2x mb-2 d-block"></i>Chưa có dữ liệu bảng lương</td></tr>
+                    {% endfor %}
                 </tbody>
+                {% if payslips %}
+                <tfoot class="table-light">
+                    <tr>
+                        <td colspan="3" class="fw-bold">Tổng cộng</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(payslips|sum(attribute='total_income')) }}</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(payslips|map(attribute='bxhs_employee')|sum) }}</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(payslips|map(attribute='bhyt_employee')|sum) }}</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(payslips|map(attribute='bhtn_employee')|sum) }}</td>
+                        <td class="text-end fw-bold">{{ "{:,.0f}".format(payslips|map(attribute='pit')|sum) }}</td>
+                        <td class="text-end fw-bold text-primary">{{ "{:,.0f}".format(payslips|sum(attribute='net_salary')) }}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+                {% endif %}
             </table>
         </div>
     </div>
