@@ -1,0 +1,66 @@
+{% extends "layouts/base.html" %}
+{% block title %}Tính bảng lương — Tiền lương{% endblock %}
+{% block page_title %}Tính bảng lương{% endblock %}
+{% block breadcrumb %}
+<li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Trang chủ</a></li>
+<li class="breadcrumb-item"><a href="{{ url_for('payroll.payslips') }}">Bảng lương</a></li>
+<li class="breadcrumb-item active">Tính lương</li>
+{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header py-2"><i class="fas fa-calculator me-1"></i>Tính bảng lương</div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Kỳ lương <span class="text-danger">*</span></label>
+                    <input type="month" name="period" class="form-control" value="{{ period }}" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Nhân viên <span class="text-danger">*</span></label>
+                    <select name="employee_id" class="form-select" required>
+                        <option value="">— Chọn nhân viên —</option>
+                        {% for emp in employees %}
+                        <option value="{{ emp.id }}">{{ emp.employee_code }} — {{ emp.full_name }} ({{ "{:,.0f}".format(emp.gross_salary) }}đ)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Ngày công chuẩn</label>
+                    <input type="number" name="working_days" class="form-control" value="26" min="1">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Ngày công thực tế</label>
+                    <input type="number" name="actual_days" class="form-control" value="26" min="0">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Giờ làm thêm</label>
+                    <input type="number" name="overtime_hours" class="form-control" value="0" min="0" step="0.5">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Phụ cấp khác</label>
+                    <input type="number" name="allowance" class="form-control" value="0" min="0" step="1000">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Thưởng</label>
+                    <input type="number" name="bonus" class="form-control" value="0" min="0" step="1000">
+                </div>
+                <div class="col-md-12">
+                    <label class="form-label">Ghi chú</label>
+                    <textarea name="notes" class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="alert alert-info mt-3">
+                <small><i class="fas fa-info-circle me-1"></i>Lương sẽ được tính tự động theo công thức:
+                <strong>Lương thực tế = (Lương gross / Ngày công chuẩn) × Ngày công thực tế + Làm thêm + Phụ cấp + Thưởng</strong>
+                <br>Bảo hiểm: BHXH 8%, BHYT 1.5%, BHTN 1% (trừ vào lương NLĐ)
+                <br>Thuế TNCN: lũy tiến từng phần, giảm trừ cá nhân 11tr + 4.4tr/người phụ thuộc</small>
+            </div>
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <a href="{{ url_for('payroll.payslips') }}" class="btn btn-secondary">Hủy</a>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-calculator me-1"></i>Tính lương</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
