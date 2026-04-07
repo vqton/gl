@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 <div class="row g-3 mb-3">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card h-100">
             <div class="card-body text-center">
                 <i class="fas fa-boxes fa-2x text-primary mb-2"></i>
@@ -17,13 +17,25 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card h-100">
             <div class="card-body text-center">
                 <i class="fas fa-exchange-alt fa-2x text-success mb-2"></i>
                 <h6 class="card-title">Nhập / Xuất kho</h6>
                 <p class="text-muted small mb-2">Phiếu nhập, phiếu xuất tồn kho</p>
                 <a href="{{ url_for('inventory.movements') }}" class="btn btn-sm btn-success">Xem nhập xuất</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-info">
+            <div class="card-body">
+                <h6 class="card-title text-info"><i class="fas fa-chart-bar me-1"></i>Tổng hợp kho</h6>
+                <div class="row text-center mt-3">
+                    <div class="col-6"><small class="text-muted">Tổng vật tư</small><h5>{{ summary.total_items }}</h5></div>
+                    <div class="col-6"><small class="text-muted">Giá trị tồn kho</small><h6>{{ "{:,.0f}".format(summary.total_value) }}đ</h6></div>
+                    <div class="col-12"><small class="text-muted">Vật tư dưới định mức: <span class="text-danger fw-bold">{{ summary.low_stock_count }}</span></small></div>
+                </div>
             </div>
         </div>
     </div>

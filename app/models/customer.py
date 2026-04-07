@@ -15,6 +15,7 @@ class Customer(BaseModel):
     credit_limit = db.Column(db.Numeric(18, 2), default=0)
 
     invoices = db.relationship("Invoice", back_populates="customer")
+    payments = db.relationship("Payment", back_populates="customer")
 
     @classmethod
     def get_by_code(cls, code):

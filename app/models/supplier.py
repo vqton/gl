@@ -13,6 +13,8 @@ class Supplier(BaseModel):
     email = db.Column(db.String(128), nullable=True)
     payment_terms = db.Column(db.Integer, default=30)
 
+    bills = db.relationship("Bill", back_populates="supplier")
+
     @classmethod
     def get_by_code(cls, code):
         return cls.query.filter_by(code=code).first()
