@@ -59,7 +59,7 @@ def new_invoice():
                 customer_id=int(request.form["customer_id"]),
                 description=request.form.get("description", ""),
                 lines=lines,
-                vat_rate=float(request.form.get("vat_rate", 10)),
+                vat_rate=float(request.form.get("vat_rate", 10.0)),
                 due_date=due_date,
             )
             flash(f"Hóa đơn {invoice.invoice_number} đã được tạo.", "success")

@@ -19,7 +19,7 @@ class CustomerService:
         return Customer.query.filter_by(code=code).first()
 
     @staticmethod
-    def create(code, name, tax_code="", address="", phone="", email="", credit_limit=0):
+    def create(code, name, tax_code="", address="", phone="", email="", credit_limit=0, payment_terms=30):
         if Customer.get_by_code(code):
             raise ValueError(f"Khách hàng với mã '{code}' đã tồn tại")
         customer = Customer(
@@ -30,6 +30,7 @@ class CustomerService:
             phone=phone,
             email=email,
             credit_limit=credit_limit,
+            payment_terms=payment_terms,
         )
         db.session.add(customer)
         db.session.commit()
