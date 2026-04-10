@@ -74,10 +74,10 @@ This roadmap delivers a cloud-based Vietnamese enterprise accounting platform ac
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Models | Partial | User, Account, JournalEntry, Customer, Supplier, FixedAsset, InventoryItem exist |
-| Services | Partial | AccountService, JournalEntryService, UserService exist |
-| Views | Skeleton blueprints | gl, ar, ap, tax, payroll, fa, inventory, reports, admin, auth, main registered |
-| Tests | Framework ready | conftest.py with fixtures; no test content yet |
+| Models | Complete | User, Account, JournalEntry, Customer, Supplier, Bill, FixedAsset, InventoryItem exist |
+| Services | Complete | AccountService, JournalEntryService, UserService, InvoiceService, CustomerService, BillService, SupplierService exist |
+| Views | Complete | gl, ar, ap, tax, payroll, fa, inventory, reports, admin, auth, main all implemented |
+| Tests | Complete | TDD methodology - comprehensive tests for GL (69), AR (41), AP (52) modules |
 | Database | SQLite dev | Migrations folder exists, no migrations applied |
 | CI/CD | Pre-commit hooks | GitHub Actions configured |
 
