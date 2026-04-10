@@ -93,11 +93,11 @@ class PayrollService:
                        overtime_hours=0, allowance=0, bonus=0, notes=""):
         employee = db.session.get(Employee, employee_id)
         if not employee:
-            raise ValueError("Employee not found")
+            raise ValueError("Nhân viên không tìm thấy")
 
         existing = Payslip.query.filter_by(employee_id=employee_id, period=period).first()
         if existing:
-            raise ValueError(f"Payslip for {employee.employee_code} in {period} already exists")
+            raise ValueError(f"Bảng lương cho {employee.employee_code} kỳ {period} đã tồn tại")
 
         gross = Decimal(str(employee.gross_salary))
         if actual_days != working_days and working_days > 0:
@@ -158,9 +158,9 @@ class PayrollService:
     def approve_payslip(payslip_id):
         payslip = db.session.get(Payslip, payslip_id)
         if not payslip:
-            raise ValueError("Payslip not found")
+            raise ValueError("Bảng lương không tìm thấy")
         if payslip.status != "draft":
-            raise ValueError("Only draft payslips can be approved")
+            raise ValueError("Chỉ bảng lương ở trạng thái nháp mới có thể duyệt")
         payslip.status = "approved"
         db.session.commit()
         return payslip
@@ -223,8 +223,12 @@ class EmployeeService:
                id_number="", address="", phone="", email="", tax_code="",
                bank_account="", bank_name="", dependents=0, is_insured=True,
                insurance_salary=None, salary_allowance=0):
+        if not employee_code or not employee_code.strip():
+            raise ValueError("Mã nhân viên không được để trống")
+        if not full_name or not full_name.strip():
+            raise ValueError("Tên nhân viên không được để trống")
         if Employee.get_by_code(employee_code):
-            raise ValueError(f"Employee with code '{employee_code}' already exists")
+            raise ValueError(f"Nhân viên với mã '{employee_code}' đã tồn tại")
         employee = Employee(
             employee_code=employee_code,
             full_name=full_name,

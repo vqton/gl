@@ -74,10 +74,10 @@ This roadmap delivers a cloud-based Vietnamese enterprise accounting platform ac
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Models | Complete | User, Account, JournalEntry, Customer, Supplier, Bill, FixedAsset, InventoryItem exist |
-| Services | Complete | AccountService, JournalEntryService, UserService, InvoiceService, CustomerService, BillService, SupplierService, FixedAssetService, InventoryService |
+| Models | Complete | User, Account, JournalEntry, Customer, Supplier, Bill, FixedAsset, InventoryItem, Employee, Payslip, AccountingPeriod |
+| Services | Complete | AccountService, JournalEntryService, UserService, InvoiceService, CustomerService, BillService, SupplierService, FixedAssetService, InventoryService, PayrollService, EmployeeService, PeriodService |
 | Views | Complete | gl, ar, ap, tax, payroll, fa, inventory, reports, admin, auth, main all implemented |
-| Tests | Complete | TDD methodology - comprehensive tests for GL (69), AR (41), AP (52), FA (16), Inventory (19) modules |
+| Tests | Complete | TDD methodology - 296 tests: GL (69), AR (41), AP (52), FA (16), Inventory (19), Payroll (22), Period (12), Views |
 | Database | SQLite dev | Migrations folder exists, no migrations applied |
 | CI/CD | Pre-commit hooks | GitHub Actions configured |
 
