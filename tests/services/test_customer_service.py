@@ -106,7 +106,7 @@ class TestCustomerService:
 
     def test_create_missing_required_fields(self, db):
         # Missing code
-        with pytest.raises(ValueError, match="Khách hàng với mã"):
+        with pytest.raises(ValueError, match="Mã khách hàng không được để trống"):
             CustomerService.create(
                 code="",  # Empty code
                 name="Test Customer",
@@ -114,8 +114,8 @@ class TestCustomerService:
             )
         db.session.rollback()
 
-        # Missing name - should raise some exception from database constraint
-        with pytest.raises(Exception):  # Will fail on name validation (NOT NULL constraint)
+        # Missing name
+        with pytest.raises(ValueError, match="Tên khách hàng không được để trống"):
             CustomerService.create(
                 code="KH007",
                 name="",  # Empty name

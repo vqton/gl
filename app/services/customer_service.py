@@ -20,6 +20,10 @@ class CustomerService:
 
     @staticmethod
     def create(code, name, tax_code="", address="", phone="", email="", credit_limit=0, payment_terms=30):
+        if not code or not code.strip():
+            raise ValueError("Mã khách hàng không được để trống")
+        if not name or not name.strip():
+            raise ValueError("Tên khách hàng không được để trống")
         if Customer.get_by_code(code):
             raise ValueError(f"Khách hàng với mã '{code}' đã tồn tại")
         customer = Customer(

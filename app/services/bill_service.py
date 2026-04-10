@@ -188,8 +188,12 @@ class SupplierService:
 
     @staticmethod
     def create(code, name, tax_code="", address="", phone="", email="", payment_terms=30):
+        if not code or not code.strip():
+            raise ValueError("Mã nhà cung cấp không được để trống")
+        if not name or not name.strip():
+            raise ValueError("Tên nhà cung cấp không được để trống")
         if Supplier.get_by_code(code):
-            raise ValueError(f"Supplier with code '{code}' already exists")
+            raise ValueError(f"Nhà cung cấp với mã '{code}' đã tồn tại")
         supplier = Supplier(
             code=code,
             name=name,
