@@ -29,8 +29,12 @@ class FixedAssetService:
                acquisition_date, depreciation_method="straight_line",
                residual_value=0, depreciation_start_date=None,
                location="", responsible_person=""):
+        if not asset_code or not asset_code.strip():
+            raise ValueError("Mã tài sản không được để trống")
+        if not asset_name or not asset_name.strip():
+            raise ValueError("Tên tài sản không được để trống")
         if FixedAsset.get_by_code(asset_code):
-            raise ValueError(f"Asset with code '{asset_code}' already exists")
+            raise ValueError(f"Tài sản với mã '{asset_code}' đã tồn tại")
         asset = FixedAsset(
             asset_code=asset_code,
             asset_name=asset_name,
@@ -116,9 +120,9 @@ class FixedAssetService:
     def dispose_asset(asset_id, disposal_date, disposal_value=0, reason=""):
         asset = db.session.get(FixedAsset, asset_id)
         if not asset:
-            raise ValueError("Asset not found")
+            raise ValueError("Tài sản không tìm thấy")
         if asset.status != "active":
-            raise ValueError("Only active assets can be disposed")
+            raise ValueError("Chỉ tài sản đang hoạt động mới có thể thanh lý")
         asset.status = "disposed"
         asset.disposal_date = disposal_date
         asset.disposal_value = disposal_value

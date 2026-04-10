@@ -19,6 +19,10 @@ class FixedAsset(BaseModel):
     status = db.Column(db.String(20), default="active", nullable=False)
     accumulated_depreciation = db.Column(db.Numeric(18, 2), default=0)
 
+    @classmethod
+    def get_by_code(cls, asset_code):
+        return cls.query.filter_by(asset_code=asset_code).first()
+
     @property
     def net_book_value(self):
         return self.original_cost - self.accumulated_depreciation

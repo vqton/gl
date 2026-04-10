@@ -15,6 +15,10 @@ class InventoryItem(BaseModel):
     min_quantity = db.Column(db.Numeric(18, 4), default=0)
     valuation_method = db.Column(db.String(20), default="fifo")
 
+    @classmethod
+    def get_by_code(cls, item_code):
+        return cls.query.filter_by(item_code=item_code).first()
+
     @property
     def is_low_stock(self):
         return self.quantity < self.min_quantity

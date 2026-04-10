@@ -82,5 +82,15 @@ class User(UserMixin, db.Model):
     def get_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+        db.session.commit()
+        return self
+
+    def delete(self):
+        db.session.delete(self)
+
     def __repr__(self):
         return f"<User {self.username}>"

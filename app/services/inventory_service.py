@@ -42,12 +42,12 @@ class InventoryService:
     @staticmethod
     def create(item_code, item_name, category, unit, quantity=0, unit_cost=0,
                min_quantity=0, valuation_method="fifo"):
-        if InventoryItem.get_by_code(item_code) and InventoryItem.query.filter_by(
-            item_code=item_code
-        ).first():
-            existing = InventoryItem.query.filter_by(item_code=item_code).first()
-            if existing:
-                raise ValueError(f"Item with code '{item_code}' already exists")
+        if not item_code or not item_code.strip():
+            raise ValueError("Mã vật tư không được để trống")
+        if not item_name or not item_name.strip():
+            raise ValueError("Tên vật tư không được để trống")
+        if InventoryItem.get_by_code(item_code):
+            raise ValueError(f"Vật tư với mã '{item_code}' đã tồn tại")
         item = InventoryItem(
             item_code=item_code,
             item_name=item_name,
@@ -68,7 +68,7 @@ class InventoryService:
         """Receive goods into inventory. Updates quantity and weighted average cost."""
         item = InventoryItem.query.filter_by(item_code=item_code).first()
         if not item:
-            raise ValueError(f"Item '{item_code}' not found")
+            raise ValueError(f"Vật tư '{item_code}' không tìm thấy")
 
         quantity = float(quantity)
         unit_cost = float(unit_cost)
@@ -89,12 +89,12 @@ class InventoryService:
         """Issue goods from inventory using FIFO valuation."""
         item = InventoryItem.query.filter_by(item_code=item_code).first()
         if not item:
-            raise ValueError(f"Item '{item_code}' not found")
+            raise ValueError(f"Vật tư '{item_code}' không tìm thấy")
 
         quantity = float(quantity)
         if quantity > float(item.quantity):
             raise ValueError(
-                f"Insufficient stock. Available: {item.quantity}, Requested: {quantity}"
+                f"Số lượng không đủ. Còn: {item.quantity}, Yêu cầu: {quantity}"
             )
 
         issue_value = quantity * float(item.unit_cost)
@@ -108,7 +108,7 @@ class InventoryService:
         """Manual inventory adjustment."""
         item = InventoryItem.query.filter_by(item_code=item_code).first()
         if not item:
-            raise ValueError(f"Item '{item_code}' not found")
+            raise ValueError(f"Vật tư '{item_code}' không tìm thấy")
 
         new_quantity = float(new_quantity)
         item.quantity = new_quantity
