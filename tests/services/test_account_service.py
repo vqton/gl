@@ -39,8 +39,15 @@ class TestAccountService:
 
     def test_create_duplicate_raises_error(self, db):
         AccountService.create(code="111", name="Cash", account_type="asset")
-        with pytest.raises(ValueError, match="already exists"):
+        with pytest.raises(ValueError, match="đã tồn tại"):
             AccountService.create(code="111", name="Cash2", account_type="asset")
+
+    def test_create_missing_required_fields(self, db):
+        with pytest.raises(ValueError, match="Mã tài khoản không được để trống"):
+            AccountService.create(code="", name="Cash", account_type="asset")
+        
+        with pytest.raises(ValueError, match="Tên tài khoản không được để trống"):
+            AccountService.create(code="111", name="", account_type="asset")
 
     def test_update_account(self, db):
         AccountService.create(code="111", name="Cash", account_type="asset")
@@ -48,7 +55,7 @@ class TestAccountService:
         assert account.name == "Cash Updated"
 
     def test_update_not_found_raises_error(self, db):
-        with pytest.raises(ValueError, match="not found"):
+        with pytest.raises(ValueError, match="không tìm thấy"):
             AccountService.update("999", name="Nope")
 
     def test_delete_account(self, db):
@@ -58,11 +65,11 @@ class TestAccountService:
 
     def test_delete_system_account_raises_error(self, db):
         AccountService.create(code="111", name="Cash", account_type="asset", is_system=True)
-        with pytest.raises(ValueError, match="Cannot delete system"):
+        with pytest.raises(ValueError, match="hệ thống"):
             AccountService.delete("111")
 
     def test_delete_not_found_raises_error(self, db):
-        with pytest.raises(ValueError, match="not found"):
+        with pytest.raises(ValueError, match="không tìm thấy"):
             AccountService.delete("999")
 
     def test_seed_circular99(self, db):
