@@ -1,0 +1,16 @@
+/mnt/e/gl/src/Application/bin/Debug/net8.0/GL.Application.deps.json
+/mnt/e/gl/src/Application/bin/Debug/net8.0/GL.Application.dll
+/mnt/e/gl/src/Application/bin/Debug/net8.0/GL.Application.pdb
+/mnt/e/gl/src/Application/bin/Debug/net8.0/GL.Domain.dll
+/mnt/e/gl/src/Application/bin/Debug/net8.0/GL.Domain.pdb
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.csproj.AssemblyReference.cache
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.AssemblyInfoInputs.cache
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.AssemblyInfo.cs
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.csproj.CoreCompileInputs.cache
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.sourcelink.json
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Appli.BAC4AD04.Up2Date
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.dll
+/mnt/e/gl/src/Application/obj/Debug/net8.0/refint/GL.Application.dll
+/mnt/e/gl/src/Application/obj/Debug/net8.0/GL.Application.pdb
+/mnt/e/gl/src/Application/obj/Debug/net8.0/ref/GL.Application.dll

@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "eh/t6GSVgLY=",
+  "success": true,
+  "projectFilePath": "/mnt/e/gl/src/Infrastructure/GL.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "/root/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.2/microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "/root/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.2/microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "/root/.nuget/packages/mysqlconnector/2.5.0/mysqlconnector.2.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,12 @@
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.AssemblyInfoInputs.cache
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.AssemblyInfo.cs
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.csproj.CoreCompileInputs.cache
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.sourcelink.json
+/mnt/e/gl/src/Domain/bin/Debug/net8.0/GL.Domain.deps.json
+/mnt/e/gl/src/Domain/bin/Debug/net8.0/GL.Domain.dll
+/mnt/e/gl/src/Domain/bin/Debug/net8.0/GL.Domain.pdb
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.dll
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/refint/GL.Domain.dll
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/GL.Domain.pdb
+/mnt/e/gl/src/Domain/obj/Debug/net8.0/ref/GL.Domain.dll

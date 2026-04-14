@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Báo cáo tài chính";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+    <hr />
+    
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Bảng cân đối kế toán (BCĐKT)</h5>
+                    <p class="card-text">Báo cáo tổng hợp tài sản, nợ phải trả và vốn chủ sở hữu tại thời điểm cuối kỳ.</p>
+                    <a asp-controller="Reports" asp-action="BalanceSheet" class="btn btn-primary">Xem BCĐKT</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Kết quả kinh doanh (BCKQHĐKD)</h5>
+                    <p class="card-text">Báo cáo tổng hợp doanh thu, chi phí và lợi nhuận trong kỳ báo cáo.</p>
+                    <a asp-controller="Reports" asp-action="IncomeStatement" class="btn btn-primary">Xem BCKQHĐKD</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
