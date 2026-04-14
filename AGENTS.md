@@ -37,7 +37,7 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
 ```
 
 ## Key Conventions
-- Target framework: .NET 8 (net8.0) - target .NET 10 when SDK is available
+- Target framework: .NET 10 (LTS)
 - Repository pattern used for data access
 - **TDD approach: Always write tests before implementation**
 - **Always write docstring/XML comments in Vietnamese when possible**
