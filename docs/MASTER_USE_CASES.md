@@ -107,6 +107,7 @@
 | **Tax X01-X05** | ✅ Full | - | Done |
 | **Cash T01-T22** | ✅ Full | - | Done |
 | **Bank B01-B08** | ✅ Full | - | Done |
+| **Inventory I01-I07** | ✅ Full | - | Done |
 | Fixed Assets | ✅ Full | - | Done |
 | Payroll | ✅ Full | - | Done |
 | Period Closing | ✅ G01-G04 | G05-G08 | Later |

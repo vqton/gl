@@ -340,4 +340,103 @@ namespace GL.Application.DTOs
         public decimal PaymentAmountVnd { get; set; }
         public string AccountingPeriodId { get; set; }
     }
+
+    /// <summary>
+    /// DTO cho yêu cầu nhập kho hàng mua (I01)
+    /// </summary>
+    public class InventoryReceiptRequest
+    {
+        public DateTime ReceiptDate { get; set; }
+        public string InventoryAccount { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal UnitPriceVnd { get; set; }
+        public decimal VatRate { get; set; }
+        public string SupplierId { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu xuất kho hàng bán/sử dụng (I02)
+    /// </summary>
+    public class InventoryIssueRequest
+    {
+        public DateTime IssueDate { get; set; }
+        public string InventoryAccount { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal UnitCostVnd { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu chuyển kho nội bộ (I03)
+    /// </summary>
+    public class InventoryTransferRequest
+    {
+        public DateTime TransferDate { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal UnitCostVnd { get; set; }
+        public string FromWarehouse { get; set; }
+        public string ToWarehouse { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu kiểm kê hàng tồn kho (I04)
+    /// </summary>
+    public class InventoryCountRequest
+    {
+        public DateTime CountDate { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal BookQuantity { get; set; }
+        public decimal ActualQuantity { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu đánh giá hàng tồn kho (I05)
+    /// </summary>
+    public class InventoryRevaluationRequest
+    {
+        public DateTime RevaluationDate { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal BookValueVnd { get; set; }
+        public decimal MarketValueVnd { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu trích lập dự phòng (I06)
+    /// </summary>
+    public class InventoryProvisionRequest
+    {
+        public DateTime ProvisionDate { get; set; }
+        public decimal ProvisionAmountVnd { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu xử lý hàng hư hỏng (I07)
+    /// </summary>
+    public class InventoryWriteOffRequest
+    {
+        public DateTime WriteOffDate { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal WriteOffQuantity { get; set; }
+        public decimal UnitCostVnd { get; set; }
+        public decimal VatRecoverableVnd { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
 }
