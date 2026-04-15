@@ -148,6 +148,59 @@ namespace GL.Application.DTOs
     }
 
     /// <summary>
+    /// DTO cho yêu cầu hạch toán VAT đầu vào không được khấu trừ (X04)
+    /// </summary>
+    public class UnrecoverableVatRequest
+    {
+        public string InvoiceId { get; set; }
+        public DateTime RecognitionDate { get; set; }
+        public decimal VatAmountVnd { get; set; }
+        public string ExpenseAccountCode { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu ghi nhận thuế TNDN hoãn lại (X05)
+    /// </summary>
+    public class DeferredTaxRequest
+    {
+        public string FiscalYearId { get; set; }
+        public DateTime RecognitionDate { get; set; }
+        public decimal DeferredTaxAssetVnd { get; set; }
+        public string TaxCode { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu đảo thuế TNDN hoãn lại
+    /// </summary>
+    public class DeferredTaxReversalRequest
+    {
+        public DateTime ReversalDate { get; set; }
+        public decimal ReversalAmountVnd { get; set; }
+        public string OriginalDeferredTaxCode { get; set; }
+        public string Reason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu tạo hóa đơn điện tử (FCT)
+    /// </summary>
+    public class FctInvoiceRequest
+    {
+        public string InvoiceId { get; set; }
+        public DateTime InvoiceDate { get; set; }
+        public string SellerTaxCode { get; set; }
+        public string BuyerTaxCode { get; set; }
+        public decimal TotalBeforeVatVnd { get; set; }
+        public decimal VatRate { get; set; }
+        public decimal VatAmountVnd { get; set; }
+        public string PaymentStatus { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
     /// DTO cho yêu cầu phân bổ chi phí trả trước (G04)
     /// </summary>
     public class PrepaidExpenseAllocationRequest

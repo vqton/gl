@@ -47,7 +47,7 @@
 
 ---
 
-## 🗂️ PART 5: TAX (X01-X05)
+## 🗂️ PART 5: TAX (X01-X05) ✅ COMPLETE
 
 ### 📌 X01 — KÊ KHAI VAT ĐẦU VÀO
 - **Tác nhân:** Kế toán thuế
@@ -59,6 +59,8 @@
 ### 📌 X03 — KHẤU TRỪ THUẾ TNCN
 ### 📌 X04 — QUYẾT TOÁN THUẾ TNDN
 ### 📌 X05 — HÓA ĐƠN ĐIỆN TỬ
+
+> **Implementation:** `TaxService.cs` - 8 methods, 12 tests passing
 
 ---
 
@@ -98,14 +100,14 @@
 
 | Module | Implemented | Missing | Priority |
 |--------|-----------|---------|----------|
-| COA | Entity | Service (validate) | Medium |
-| Sales S01-S06 | Entity | Service (S04-S06) | High |
-| Purchase P01-P05 | Entity | Service (P03-P05) | High |
+| COA Validation | Entity | Service (validate) | Next |
+| **Sales S01-S06** | ✅ Full | - | Done |
+| **Purchase P01-P05** | ✅ Full | - | Done |
 | Cash T01-T22 | ✅ Full | - | Done |
-| Tax X01-X05 | Entity | All services | High |
+| **Tax X01-X05** | ✅ Full | - | Done |
 | Fixed Assets | ✅ Full | - | Done |
 | Payroll | ✅ Full | - | Done |
-| Period Closing | ✅ G01-G04 | G05-G08 | Low |
+| Period Closing | ✅ G01-G04 | G05-G08 | Later |
 
 ---
 
@@ -115,7 +117,9 @@
 |-------|--------|----------|------------|
 | Phase 2 | Sales S01-S06 | Week 3 | SalesService.cs |
 | Phase 3 | Purchase P01-P05 | Week 5 | PurchaseService.cs |
-| Phase 4 | Tax X01-X05 | Week 8 | TaxService.cs |
+| Phase 4 | Tax X01-X05 | Week 8 | TaxService.cs (12 tests) |
+| Phase 5 | COA Validation | Week 11 | CoaValidationService.cs |
+| Phase 6 | Period Closing G05-G08 | Week 12 | TBD |
 
 ---
 

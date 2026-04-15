@@ -97,11 +97,13 @@
 ### 5. Tax (X01-X05)
 | ID | Name | Status | Notes |
 |----|------|--------|-------|
-| X01 | VAT Input (1331) | ⚠️ Partial | Transaction service |
-| X02 | VAT Output (33311) | ⚠️ Partial | Transaction service |
-| X03 | PIT Withholding | ⚠️ Partial | Need service |
-| X04 | Annual Tax Declaration | ❌ Not implemented | |
-| X05 | FCT Invoice | ❌ Not implemented | |
+| X01 | VAT Input (1331) | ✅ Complete | TaxService |
+| X02 | VAT Output (33311) | ✅ Complete | TaxService |
+| X03 | PIT Withholding | ✅ Complete | TaxService |
+| X04 | Unrecoverable VAT | ✅ Complete | TaxService |
+| X05 | FCT Invoice | ✅ Complete | TaxService |
+
+**Status: ✅ COMPLETE (5/5)**
 
 ### 6. Payroll & Social Insurance (L01-L07)
 | ID | Name | Status | Notes |
