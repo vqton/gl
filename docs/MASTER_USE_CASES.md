@@ -12,25 +12,38 @@
 | `use_cases/laodong_tienluong.md` | Payroll & Labor | L01-L07 |
 | `use_cases/coa_use_cases.md` | Chart of Accounts | C01-C09 |
 | `use_cases/purchase_use_cases.md` | Purchase & Inventory | P01-P05 |
-| `use_cases/cash_use_cases.md` | Cash & Bank | T01-T22 | ✅ Complete |
+| `use_cases/cash_use_cases.md` | Cash & Bank | T01-T22 ✅ Complete |
 
 ---
 
 ## 🗂️ PART 4: CASH & BANK (T01-T22) ✅ COMPLETE
 
-### 📌 T01 — THANH TOÁN CHO NHÀ CUNG CẤP
-- **Luồng chính:** Nợ 331 / Có 111/112
+| T# | Use Case | Định khoản |
+|----|----------|------------|
+| T01 | Rút tiền ngân hàng về quỹ | Nợ 111 / Có 112 |
+| T02 | Thu tiền bán hàng nhập quỹ | Nợ 111 / Có 511 + Có 333 |
+| T03 | Chi tiền mua hàng | Nợ 156,133 / Có 111 |
+| T04 | Nộp tiền vào ngân hàng | Nợ 112 / Có 111 |
+| T05 | Chi lương tiền mặt | Nợ 334 / Có 111 |
+| T06 | Chi tạm ứng | Nợ 141 / Có 111 |
+| T07 | Thu hồi nợ phải thu | Nợ 111 / Có 131 |
+| T08 | Thừa tiền mặt (kiểm kê) | Nợ 111 / Có 338 |
+| T09 | Thiếu tiền mặt (kiểm kê) | Nợ 138 / Có 111 |
+| T10 | Nhận vốn góp | Nợ 111 / Có 411 |
+| T11 | Nhận ký quỹ | Nợ 111 / Có 344 |
+| T12 | Hoàn trả ký quỹ | Nợ 344 / Có 111 |
+| T13 | Chi phí kinh doanh | Nợ 6xx,133 / Có 111 |
+| T14 | Đi vay | Nợ 111 / Có 341/311 |
+| T15 | Bán đầu tư | Nợ 111 / Có 121 + 515/635 |
+| T16 | Mua đầu tư | Nợ 121 / Có 111 |
+| T17 | Thu ngoại tệ (bán hàng) | Nợ 1112 / Có 511 |
+| T18 | Thu hồi nợ ngoại tệ | Nợ 1112 / Có 131 |
+| T19 | Xuất ngoại tệ mua hàng | Nợ 156 / Có 1112 |
+| T20 | Bán ngoại tệ | Nợ 1111 / Có 1112 |
+| T21 | Ứng trước NCC ngoại tệ | Nợ 331 / Có 1112 |
+| T22 | Thu tiền đặt trước (ngoại tệ) | Nợ 1112 / Có 131 |
 
-### 📌 T02 — THU TIỀN TỪ KHÁCH HÀNG
-- **Luồng chính:** Nợ 111/112 / Có 131
-
-### 📌 T03 — CHUYỂN KHOẢN NGÂN HÀNG
-- **Luồng chính:** Nợ 112 / Có 111
-
-### 📌 T04 — QUỸ TIỀN MẶT (Thủ quỹ)
-### 📌 T05 — ĐỐI CHIẾU NGÂN HÀNG
-
-> ℹ️ **Detail:** Full T01-T22 use cases documented in `use_cases/cash_use_cases.md`
+> **Implementation:** `CashService.cs` - 22 methods, 25 tests passing
 
 ---
 
@@ -114,9 +127,10 @@
 | Sales Detail | docs/use_cases/sales_use_cases.md |
 | Payroll Detail | docs/use_cases/laodong_tienluong.md |
 | COA Detail | docs/use_cases/coa_use_cases.md |
+| Cash Detail | docs/use_cases/cash_use_cases.md |
 | TT99 Full Specs | docs/core_use_cases_TT99_2025_updated.md |
 
 ---
 
 *Last Updated: April 2026*  
-*Consolidated from: COA, Sales, Payroll, Period Closing docs*
+*Consolidated from: COA, Sales, Payroll, Cash, Period Closing docs*

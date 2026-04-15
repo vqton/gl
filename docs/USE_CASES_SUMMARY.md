@@ -34,12 +34,12 @@
 | Module | Use Cases | Status | Priority |
 |--------|----------|--------|----------|
 | **COA** (Chart of Accounts) | C01-C09 | ⚠️ Partial | P1 |
-| **Sales & Revenue** (S01-S06) | S01-S06 | 📝 Documented | P0 |
+| **Sales & Revenue** (S01-S06) | S01-S06 | ⚠️ Partial | P0 |
 | **Purchase & Inventory** (P01-P05) | P01-P05 | ⚠️ Partial | P0 |
-| **Cash & Bank** (T01-T05) | T01-T05 | ⚠️ Partial | P0 |
+| **Cash & Bank** (T01-T22) | T01-T22 | ✅ Complete | Done |
 | **Tax** (X01-X05) | X01-X05 | ⚠️ Partial | P1 |
-| **Fixed Assets** (A01-A06) | A01-A06 | ✅ Complete | P2 |
-| **Payroll** (L01-L07) | L01-L07 | ✅ Complete | P2 |
+| **Fixed Assets** (A01-A06) | A01-A06 | ✅ Complete | Done |
+| **Payroll** (L01-L07) | L01-L07 | ✅ Complete | Done |
 | **Period Closing** (G01-G08) | G01-G08 | ✅ G01-G04 | P2 |
 
 ---
