@@ -1,5 +1,5 @@
 # 📋 IMPLEMENTATION ROADMAP & EXECUTION PLAN
-*Updated: April 2026 | Based on MASTER_USE_CASES.md*
+*Updated: April 2026 | Based on MASTER_USE_CASES.md & Gap Analysis*
 
 ---
 
@@ -26,24 +26,32 @@
 
 ---
 
-### PHASE 2: Sales & Revenue (CURRENT - Week 3)
-| Week | Module | Use Cases | Deliverables | Tests |
-|------|--------|-----------|-------------|-------|
-| 3a | **S01: Bán tiền mặt** | S01 | SalesService.CreateCashSale | 3 |
-| 3b | **S02: Bán chịu** | S02 | SalesService.CreateCreditSale | 3 |
-| 3c | **S03: Giá vốn** | S03 | SalesService.RecordCOGS | 3 |
-| 3d | **S04: Trả hàng** | S04 | SalesService.ProcessReturn | 3 |
-| 3e | **S05: Giảm giá** | S05 | SalesService.ApplyDiscount | 2 |
-| 3f | **S06: Chiết khấu TT** | S06 | SalesService.ApplyPaymentDiscount | 2 |
+### PHASE 2: Sales (CURRENT - Week 3)
+| Week | Module | Use Cases | Deliverables | Tests | Status |
+|------|--------|-----------|-------------|-------|--------|
+| 3 | **Sales Documentation** | S01-S06 | sales_use_cases.md | ✅ Done |
+| 3a | **S01: Bán tiền mặt** | S01 | SalesService.CreateCashSale | 3 | 🔄 Implementing |
+| 3b | **S02: Bán chịu** | S02 | SalesService.CreateCreditSale | 3 | ⏳ Pending |
+| 3c | **S03: Giá vốn** | S03 | SalesService.RecordCOGS | 3 | ⏳ Pending |
+| 3d | **S04: Trả hàng** | S04 | SalesService.ProcessReturn | 3 | ⏳ Pending |
+| 3e | **S05: Giảm giá** | S05 | SalesService.ApplyDiscount | 2 | ⏳ Pending |
+| 3f | **S06: Chiết khấu TT** | S06 | SalesService.ApplyPaymentDiscount | 2 | ⏳ Pending |
 
 **Target: 16 tests for Sales**
 
 ---
 
-### PHASE 3: Purchase & Inventory (Week 5)
-| Week | Module | Use Cases | Deliverables |
-|------|--------|-----------|--------------|
-| 5 | **P01-P05** | Purchase Orders, Inventory, Returns | PurchaseService |
+### PHASE 2b: Purchase Documentation (Week 4)
+| Week | Module | Use Cases | Deliverables | Tests | Status |
+|------|--------|-----------|-------------|-------|--------|
+| 4 | **Purchase Documentation** | P01-P06 | purchase_use_cases.md | ✅ Done |
+
+---
+
+### PHASE 3: Purchase Implementation (Week 5)
+| Week | Module | Use Cases | Deliverables | Tests |
+|------|--------|-----------|-------------|-------|
+| 5 | **P01-P05** | Purchase Orders, Inventory, Returns | PurchaseService | 16 |
 
 ---
 
@@ -58,6 +66,7 @@
 | Week | Module | Use Cases | Deliverables |
 |------|--------|-----------|--------------|
 | 7 | **Tax (X01-X05)** | VAT, PIT, FCT | TaxService |
+| 8 | **Reports (R01-R03)** | Trial Balance, Income Statement | ReportService |
 | 8 | **Reports** | B01-B03 | ReportService |
 
 ---

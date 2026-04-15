@@ -30,10 +30,16 @@ namespace GL.Domain.Entities
         
         // Totals
         public decimal SubTotal { get; set; }
+        public decimal DiscountPercent { get; set; }
         public decimal DiscountAmount { get; set; }
+        public decimal NetAmount { get; set; }
         public decimal VATAmount { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal COGS { get; set; }
+        
+        // Simple journal reference
+        public string JournalEntryDescription { get; set; }
+        public string JournalEntryType { get; set; }
         
         // Status
         public SalesStatus Status { get; set; }
@@ -94,23 +100,6 @@ namespace GL.Domain.Entities
         Overdue
     }
 
-    /// <summary>
-    /// Input để tạo giao dịch bán hàng
-    /// </summary>
-    public class CreateSaleInput
-    {
-        public SalesType Type { get; set; }
-        public string CustomerId { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerTaxCode { get; set; }
-        
-        public int PaymentTermDays { get; set; }
-        public decimal VatRate { get; set; } = 0.10m;
-        
-        public DateTime TransactionDate { get; set; }
-        public List<SalesLineInput> Lines { get; set; }
-    }
-
     public class SalesLineInput
     {
         public string ProductId { get; set; }
@@ -118,18 +107,5 @@ namespace GL.Domain.Entities
         public decimal Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal DiscountPercent { get; set; }
-    }
-
-    /// <summary>
-    /// Input để xử lý trả hàng
-    /// </summary>
-    public class ReturnInput
-    {
-        public string SalesId { get; set; }
-        public string ProductId { get; set; }
-        public decimal Quantity { get; set; }
-        public string Reason { get; set; }
-        public DateTime ReturnDate { get; set; }
-        public decimal RefundAmount { get; set; }
     }
 }

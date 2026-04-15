@@ -62,14 +62,14 @@
 ### 2. Sales & Revenue (S01-S06)
 | ID | Name | Status | Notes |
 |----|------|--------|-------|
-| S01 | Cash Sales + VAT | 📝 Documented | 111 → 511, 33311 |
-| S02 | Credit Sales (131) | 📝 Documented | 131 → 511, 33311 |
-| S03 | Record COGS (632) | 📝 Documented | 632 → 156/155 |
-| S04 | Sales Returns | 📝 Documented | 5212 |
-| S05 | Sales Discount | 📝 Documented | 5211 |
-| S06 | Payment Discount | 📝 Documented | 5213 |
+| S01 | Cash Sales + VAT | ✅ Implemented | 111 → 511, 33311 |
+| S02 | Credit Sales (131) | ✅ Implemented | 131 → 511, 33311 |
+| S03 | Record COGS (632) | ✅ Implemented | 632 → 156/155 |
+| S04 | Sales Returns | ✅ Implemented | 5212 |
+| S05 | Sales Discount | ✅ Implemented | 5211 |
+| S06 | Payment Discount | ✅ Implemented | 5213 |
 
-**Status: 📝 Documented (Implementation pending)**
+**Status: ✅ Implemented (6/6) - 9 new tests**
 
 ### 3. Purchase & Inventory (P01-P05)
 | ID | Name | Status | Notes |
