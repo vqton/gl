@@ -230,4 +230,114 @@ namespace GL.Application.DTOs
         public bool IsValid { get; set; }
         public string ErrorMessage { get; set; }
     }
+
+    /// <summary>
+    /// DTO cho yêu cầu đốichiếu sao kê ngân hàng (B01)
+    /// </summary>
+    public class BankReconciliationRequest
+    {
+        public DateTime ReconciliationDate { get; set; }
+        public string BankAccountCode { get; set; }
+        public decimal BookBalance { get; set; }
+        public decimal BankStatementBalance { get; set; }
+        public string DifferenceReason { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu chuyển khoản thanh toán (B02)
+    /// </summary>
+    public class WirePaymentRequest
+    {
+        public DateTime PaymentDate { get; set; }
+        public string SupplierId { get; set; }
+        public string SupplierName { get; set; }
+        public decimal AmountVnd { get; set; }
+        public decimal VatAmountVnd { get; set; }
+        public string BankAccountCode { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu giải ngân vay ngân hàng (B03)
+    /// </summary>
+    public class LoanDrawdownRequest
+    {
+        public DateTime DrawdownDate { get; set; }
+        public decimal LoanAmountVnd { get; set; }
+        public string LoanAccountCode { get; set; }
+        public string BankName { get; set; }
+        public decimal InterestRate { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu trả nợ vay (B04)
+    /// </summary>
+    public class LoanRepaymentRequest
+    {
+        public DateTime RepaymentDate { get; set; }
+        public decimal PrincipalAmountVnd { get; set; }
+        public decimal InterestAmountVnd { get; set; }
+        public string LoanAccountCode { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu phí ngân hàng (B05)
+    /// </summary>
+    public class BankFeeRequest
+    {
+        public DateTime FeeDate { get; set; }
+        public decimal FeeAmountVnd { get; set; }
+        public string FeeDescription { get; set; }
+        public string ExpenseAccountCode { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu lãi tiền gửi (B06)
+    /// </summary>
+    public class InterestIncomeRequest
+    {
+        public DateTime InterestDate { get; set; }
+        public decimal InterestAmountVnd { get; set; }
+        public string BankAccountCode { get; set; }
+        public decimal TaxWithheldVnd { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu đánh giá lại ngoại hối (B07)
+    /// </summary>
+    public class FxRevaluationRequest
+    {
+        public DateTime RevaluationDate { get; set; }
+        public string BankAccountCode { get; set; }
+        public decimal OriginalAmountVnd { get; set; }
+        public decimal NewAmountVnd { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu mở LC (B07)
+    /// </summary>
+    public class LcOpeningRequest
+    {
+        public DateTime LcIssueDate { get; set; }
+        public decimal LcAmountVnd { get; set; }
+        public string BankName { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho yêu cầu thanh toán LC
+    /// </summary>
+    public class LcSettlementRequest
+    {
+        public DateTime SettlementDate { get; set; }
+        public decimal OriginalLcAmountVnd { get; set; }
+        public decimal PaymentAmountVnd { get; set; }
+        public string AccountingPeriodId { get; set; }
+    }
 }

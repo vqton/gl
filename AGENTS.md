@@ -54,7 +54,7 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
 - Uses MySqlConnector package for MariaDB connectivity
 - Update connection string in `src/WebApp/appsettings.json` before running
 
-## Current Status (COA Module Complete)
+## Current Status (Bank Module Complete)
 - Core entities: Account, AccountType, Transaction, TransactionLine
 - Modules implemented:
   - **Payroll** (L01-L07) ✅ Complete
@@ -63,4 +63,5 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
   - **Cash & Bank** (T01-T22) ✅ Complete
   - **Tax** (X01-X05) ✅ Complete
   - **COA Validation** ✅ Complete
-- Tests: 255 passing (all modules)
+  - **Bank** (B01-B08) ✅ New
+- Tests: 266 passing (all modules)
