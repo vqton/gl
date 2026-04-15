@@ -1,5 +1,18 @@
 # 📋 TT99 USE CASES SUMMARY
-*Consolidated - Last Updated: April 2026*
+*Consolidated - Last Updated: April 2026*  
+*See also: MASTER_USE_CASES.md for complete reference*
+
+---
+
+## 📁 DOCUMENT STRUCTURE
+
+| File | Content |
+|------|---------|
+| [MASTER_USE_CASES.md](MASTER_USE_CASES.md) | Consolidated master document |
+| [docs/use_cases/sales_use_cases.md](docs/use_cases/sales_use_cases.md) | Sales (S01-S06) detail |
+| [docs/use_cases/laodong_tienluong.md](docs/use_cases/laodong_tienluong.md) | Payroll detail |
+| [docs/use_cases/coa_use_cases.md](docs/use_cases/coa_use_cases.md) | COA detail |
+| [docs/core_use_cases_TT99_2025_updated.md](docs/core_use_cases_TT99_2025_updated.md) | TT99 Full specs |
 
 ---
 
@@ -8,7 +21,7 @@
 | Module | Use Cases | Status | Priority |
 |--------|----------|--------|----------|
 | **COA** (Chart of Accounts) | 9 | Partial | P0 |
-| **Sales & Revenue** (S01-S06) | 6 | Partial | P0 |
+| **Sales & Revenue** (S01-S06) | 6 | ✅ Complete | P0 |
 | **Purchase & Inventory** (P01-P05) | 5 | Partial | P0 |
 | **Cash & Bank** (T01-T05) | 5 | Partial | P0 |
 | **Tax** (X01-X05) | 5 | Partial | P0 |

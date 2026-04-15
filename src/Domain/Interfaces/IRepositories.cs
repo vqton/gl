@@ -56,6 +56,16 @@ namespace GL.Domain.Interfaces
         void Delete(string id);
     }
 
+    public interface ISalesRepository
+    {
+        SalesTransaction GetById(string id);
+        IEnumerable<SalesTransaction> GetByCustomer(string customerId);
+        IEnumerable<SalesTransaction> GetAll();
+        void Add(SalesTransaction sale);
+        void Update(SalesTransaction sale);
+        void Delete(string id);
+    }
+
     public interface IFixedAssetRepository
     {
         FixedAsset GetById(string id);
