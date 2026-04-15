@@ -35,4 +35,44 @@ namespace GL.Domain.Interfaces
         void Update(PayrollLine line);
         void Delete(string id);
     }
+
+    public interface ISocialInsuranceRepository
+    {
+        SocialInsuranceDeclaration GetById(string id);
+        SocialInsuranceDeclaration GetByPeriod(int year, int month);
+        IEnumerable<SocialInsuranceDeclaration> GetAll();
+        void Add(SocialInsuranceDeclaration declaration);
+        void Update(SocialInsuranceDeclaration declaration);
+        void Delete(string id);
+    }
+
+    public interface ISalaryScaleRepository
+    {
+        SalaryScale GetById(string id);
+        SalaryScale GetByCode(string code);
+        IEnumerable<SalaryScale> GetAll();
+        void Add(SalaryScale scale);
+        void Update(SalaryScale scale);
+        void Delete(string id);
+    }
+
+    public interface IFixedAssetRepository
+    {
+        FixedAsset GetById(string id);
+        FixedAsset GetByCode(string code);
+        IEnumerable<FixedAsset> GetAll();
+        void Add(FixedAsset asset);
+        void Update(FixedAsset asset);
+        void Delete(string id);
+    }
+
+    public interface IAccountingPeriodRepository
+    {
+        AccountingPeriod GetByPeriod(int year, int month);
+        AccountingPeriod GetByCode(string code);
+        IEnumerable<AccountingPeriod> GetAll();
+        void Add(AccountingPeriod period);
+        void Update(AccountingPeriod period);
+        void Delete(string id);
+    }
 }
