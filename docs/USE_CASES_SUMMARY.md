@@ -1,5 +1,18 @@
 # 📋 TT99 USE CASES SUMMARY
-*Consolidated - Last Updated: April 2026*  
+*Consolidated - Last Updated: April 2026*
+*See also: MASTER_USE_CASES.md for complete reference*
+
+---
+
+## 📁 DOCUMENT STRUCTURE
+
+| File | Content |
+|------|---------|
+| [MASTER_USE_CASES.md](MASTER_USE_CASES.md) | Consolidated master document |
+| [use_cases/sales_use_cases.md](use_cases/sales_use_cases.md) | Sales (S01-S06) detail |
+| [use_cases/laodong_tienluong.md](use_cases/laodong_tienluong.md) | Payroll detail |
+| [use_cases/coa_use_cases.md](use_cases/coa_use_cases.md) | COA detail |
+| [docs/core_use_cases_TT99_2025_updated.md](core_use_cases_TT99_2025_updated.md) | TT99 Full specs |  
 *See also: MASTER_USE_CASES.md for complete reference*
 
 ---
@@ -20,14 +33,14 @@
 
 | Module | Use Cases | Status | Priority |
 |--------|----------|--------|----------|
-| **COA** (Chart of Accounts) | 9 | Partial | P0 |
-| **Sales & Revenue** (S01-S06) | 6 | ✅ Complete | P0 |
-| **Purchase & Inventory** (P01-P05) | 5 | Partial | P0 |
-| **Cash & Bank** (T01-T05) | 5 | Partial | P0 |
-| **Tax** (X01-X05) | 5 | Partial | P0 |
-| **Fixed Assets** (A01-A06) | 6 | ✅ Complete | P0 |
-| **Payroll** (L01-L07) | 7 | ✅ Complete | P0 |
-| **Period Closing** (G01-G08) | 8 | ✅ Complete (G01-G04) | P0 |
+| **COA** (Chart of Accounts) | C01-C09 | ⚠️ Partial | P1 |
+| **Sales & Revenue** (S01-S06) | S01-S06 | 📝 Documented | P0 |
+| **Purchase & Inventory** (P01-P05) | P01-P05 | ⚠️ Partial | P0 |
+| **Cash & Bank** (T01-T05) | T01-T05 | ⚠️ Partial | P0 |
+| **Tax** (X01-X05) | X01-X05 | ⚠️ Partial | P1 |
+| **Fixed Assets** (A01-A06) | A01-A06 | ✅ Complete | P2 |
+| **Payroll** (L01-L07) | L01-L07 | ✅ Complete | P2 |
+| **Period Closing** (G01-G08) | G01-G08 | ✅ G01-G04 | P2 |
 
 ---
 

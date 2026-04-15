@@ -3,18 +3,47 @@
 
 ---
 
-## 📊 DOCUMENT OVERVIEW
+## 📁 DOCUMENT STRUCTURE
 
-| Module | Use Cases | Status | Priority |
-|--------|----------|--------|----------|
-| **COA** (Chart of Accounts) | C01-C09 | ⚠️ Partial | P0 |
-| **Sales & Revenue** (S01-S06) | S01-S06 | ✅ Complete | P0 |
-| **Purchase & Inventory** (P01-P05) | P01-P05 | ⚠️ Partial | P0 |
-| **Cash & Bank** (T01-T05) | T01-T05 | ⚠️ Partial | P0 |
-| **Tax** (X01-X05) | X01-X05 | ⚠️ Partial | P0 |
-| **Fixed Assets** (A01-A06) | A01-A06 | ✅ Complete | P0 |
-| **Payroll** (L01-L07) | L01-L07 | ✅ Complete | P0 |
-| **Period Closing** (G01-G08) | G01-G04 | ✅ Complete | P0 |
+| File | Module | Coverage |
+|------|--------|----------|
+| `MASTER_USE_CASES.md` | **This file** | Consolidated overview |
+| `use_cases/sales_use_cases.md` | Sales & Revenue | S01-S06 |
+| `use_cases/laodong_tienluong.md` | Payroll & Labor | L01-L07 |
+| `use_cases/coa_use_cases.md` | Chart of Accounts | C01-C09 |
+| `use_cases/purchase_use_cases.md` | Purchase & Inventory | P01-P05 |
+| `use_cases/cash_use_cases.md` | Cash & Bank | T01-T05 |
+| `use_cases/tax_use_cases.md` | Tax | X01-X05 |
+| `use_cases/fixed_asset_use_cases.md` | Fixed Assets | A01-A06 |
+| `use_cases/period_closing_use_cases.md` | Period Closing | G01-G08 |
+
+---
+
+## 📊 GAP ANALYSIS & IMPLEMENTATION STATUS
+
+| Module | Use Cases | Implemented | Missing | Priority |
+|--------|-----------|-------------|---------|----------|
+| **COA** | C01-C09 | 3 | C02-C04, C06, C08-C09 | P1 |
+| **Sales** | S01-S06 | 0 | All 6 | P0 |
+| **Purchase** | P01-P05 | 0 | All 5 | P0 |
+| **Cash** | T01-T05 | 0 | All 5 | P0 |
+| **Tax** | X01-X05 | 0 | All 5 | P1 |
+| **Fixed Assets** | A01-A06 | 6 | A06 | P2 |
+| **Payroll** | L01-L07 | 7 | - | ✅ Done |
+| **Period Closing** | G01-G08 | 4 | G05-G08 | P2 |
+
+---
+
+## 🎯 IMPLEMENTATION PRIORITY (Stakeholder Aligned)
+
+| Phase | Module | Week | Deliverables |
+|-------|--------|------|--------------|
+| **Phase 2** | Sales (S01-S06) | 3 | SalesService, Returns, Discounts |
+| **Phase 2** | Purchase (P01-P05) | 4 | PurchaseService, Inventory costing |
+| **Phase 3** | Cash & Bank (T01-T05) | 5 | CashService, Reconciliation |
+| **Phase 3** | Tax (X01-X05) | 6 | VATService, Withholding |
+| **Phase 4** | COA Services (C01-C09) | 7 | Validation, Import/Export |
+| **Phase 4** | Period Closing (G05-G08) | 8 | Provisions, FX, Final closing |
 
 ---
 
