@@ -62,21 +62,28 @@
 ### 2. Sales & Revenue (S01-S06)
 | ID | Name | Status | Notes |
 |----|------|--------|-------|
-| S01 | Cash Sales + VAT | ⚠️ Partial | Transaction service |
-| S02 | Credit Sales (131) | ⚠️ Partial | Transaction service |
-| S03 | Record COGS (632) | ⚠️ Partial | Need integration |
-| S04 | Sales Returns | ❌ Not implemented | |
-| S05 | Sales Discount | ❌ Not implemented | |
-| S06 | Foreign Currency Sales | ❌ Not implemented | |
+| S01 | Cash Sales + VAT | 📝 Documented | 111 → 511, 33311 |
+| S02 | Credit Sales (131) | 📝 Documented | 131 → 511, 33311 |
+| S03 | Record COGS (632) | 📝 Documented | 632 → 156/155 |
+| S04 | Sales Returns | 📝 Documented | 5212 |
+| S05 | Sales Discount | 📝 Documented | 5211 |
+| S06 | Payment Discount | 📝 Documented | 5213 |
+
+**Status: 📝 Documented (Implementation pending)**
 
 ### 3. Purchase & Inventory (P01-P05)
 | ID | Name | Status | Notes |
 |----|------|--------|-------|
-| P01 | Purchase Goods (156/331) | ⚠️ Partial | Transaction service |
-| P02 | Purchase Materials (152) | ⚠️ Partial | Transaction service |
-| P03 | Inventory Issue (15x) | ❌ Not implemented | Need service |
-| P04 | Inventory Count | ❌ Not implemented | |
-| P05 | Purchase Returns | ❌ Not implemented | |
+| P01a | Purchase + Invoice together | 📝 Documented | 156, 1331, 331 |
+| P01b | Invoice before goods | 📝 Documented | 151 tracking |
+| P01c | Goods before invoice | 📝 Documented | Temp pricing |
+| P02 | Direct to cost (no inventory) | 📝 Documented | 621/627/641 |
+| P03 | Purchase with freight | 📝 Documented | 1562 cost |
+| P04 | Trade discount | 📝 Documented | 521 |
+| P05 | Purchase returns | 📝 Documented | 156, 1331, 331 |
+| P06 | Installment purchase | 📝 Documented | 242 interest |
+
+**Status: 📝 Documented (Implementation pending)**
 
 ### 4. Cash & Bank (T01-T05)
 | ID | Name | Status | Notes |

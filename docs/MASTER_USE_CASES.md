@@ -25,7 +25,7 @@
 |--------|-----------|-------------|---------|----------|
 | **COA** | C01-C09 | 3 | C02-C04, C06, C08-C09 | P1 |
 | **Sales** | S01-S06 | 0 | All 6 | P0 |
-| **Purchase** | P01-P05 | 0 | All 5 | P0 |
+| **Purchase** | P01-P05 | 0 | All 5 (P06 additional) | P0 |
 | **Cash** | T01-T05 | 0 | All 5 | P0 |
 | **Tax** | X01-X05 | 0 | All 5 | P1 |
 | **Fixed Assets** | A01-A06 | 6 | A06 | P2 |
