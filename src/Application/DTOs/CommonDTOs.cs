@@ -209,4 +209,25 @@ namespace GL.Application.DTOs
         public DateTime AllocationDate { get; set; }
         public string AccountingPeriodId { get; set; }
     }
+
+    /// <summary>
+    /// DTO cho yêu cầu kiểm tra COA đầy đủ
+    /// </summary>
+    public class CoaValidationRequest
+    {
+        public string AccountCode { get; set; }
+        public GL.Domain.Enums.AccountType AccountType { get; set; }
+        public decimal DebitAmount { get; set; }
+        public decimal CreditAmount { get; set; }
+        public string ParentCode { get; set; }
+    }
+
+    /// <summary>
+    /// Kết quả kiểm tra COA
+    /// </summary>
+    public class CoaValidationResult
+    {
+        public bool IsValid { get; set; }
+        public string ErrorMessage { get; set; }
+    }
 }
