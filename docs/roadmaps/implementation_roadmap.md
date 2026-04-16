@@ -1,273 +1,211 @@
-# 📋 IMPLEMENTATION ROADMAP & EXECUTION PLAN
-*Updated: April 2026 | Based on MASTER_USE_CASES.md & Gap Analysis*
+# GL Accounting System - Implementation Roadmap & Execution Plan
+*Updated: April 2026 | Version 2.0*
 
 ---
 
-## 🎯 IMPLEMENTATION STRATEGY
+## Executive Summary
 
-### TDD Methodology
+| Status | Description |
+|--------|-------------|
+| ✅ **Phase 1-2** | Core Modules (24 services) - **COMPLETED** |
+| ⚠️ **Current State** | Demo/PoC - Not production ready |
+| 🔧 **Required** | Database, Audit, Reporting, Integration |
+
+---
+
+## 📊 COMPLETED MODULES (Phase 1-2)
+
+### All Services Implemented
+
+| # | Module | Code | Service | Tests | Status |
+|---|--------|------|---------|-------|--------|
+| 1 | Sales | S01-S06 | SalesService.cs | 18 | ✅ |
+| 2 | Purchase | P01-P05 | PurchaseService.cs | 15 | ✅ |
+| 3 | Cash | T01-T22 | CashService.cs | 25 | ✅ |
+| 4 | Bank | B01-B08 | BankService.cs | 11 | ✅ |
+| 5 | Inventory | I01-I07 | InventoryService.cs | 11 | ✅ |
+| 6 | Tax | X01-X05 | TaxService.cs | 12 | ✅ |
+| 7 | Fixed Assets | A01-A06 | FixedAssetService.cs | 22 | ✅ |
+| 8 | Payroll | L01-L07 | PayrollCalculationService.cs | 35 | ✅ |
+| 9 | Period Closing | G01-G04 | TransactionService.cs | 8 | ✅ |
+| 10 | GL Central Posting | G05 | GLCentralPostingService.cs | 6 | ✅ |
+| 11 | Cost Accounting | C01 | CostAccountingService.cs | 6 | ✅ |
+| 12 | Subsidiary Ledgers | S01-S03 | SubsidiaryLedgerService.cs | 9 | ✅ |
+
+**Total: 297 tests passing**
+
+---
+
+## 🚨 GAP ANALYSIS (What's Missing for Production)
+
+### Critical Gaps
+
+| Gap | Priority | Impact | Estimated Effort |
+|-----|----------|--------|-------------------|
+| Database Integration | 🔴 P0 | Data lost on restart | 2 weeks |
+| Audit Trail | 🔴 P0 | Non-compliant with TT99 | 1 week |
+| Period Locking | 🔴 P0 | Can post to closed periods | 1 week |
+| User/Role Management | 🔴 P0 | No access control | 1 week |
+| COA Validation | 🟠 P1 | Invalid account codes accepted | 1 week |
+| Trial Balance Report | 🟠 P1 | Cannot generate B01-BN | 2 weeks |
+| Sub-Ledger Reports | 🟠 P1 | Missing Sổ chi tiết | 2 weeks |
+| E-invoice Integration | 🟡 P2 | No HĐĐT support | 3 weeks |
+| Bank Reconciliation | 🟡 P2 | Manual only | 2 weeks |
+| Data Backup/Restore | 🔴 P0 | No disaster recovery | 1 week |
+
+---
+
+## 📅 IMPLEMENTATION ROADMAP (Phase 3-6)
+
+### PHASE 3: Database & Persistence (Weeks 1-2)
+| Week | Task | Deliverable | Owner |
+|------|------|--------------|-------|
+| 1 | Add EF Core | DbContext, entities mapping | Dev |
+| 1 | MariaDB provider | Connection string, pooling | Dev |
+| 1 | Implement Repositories | ISalesRepository, etc. | Dev |
+| 1 | Add Migrations | Database schema | Dev |
+| 1 | COA Seeding | Initial chart of accounts | Dev |
+| 2 | Repository Tests | Integration tests | Dev |
+
+**Deliverables:**
+- [ ] Entity Framework Core with MariaDB
+- [ ] All Repository interfaces implemented
+- [ ] Database migrations
+- [ ] COA seeding (200+ accounts)
+
+---
+
+### PHASE 4: Compliance & Audit (Weeks 3-4)
+| Week | Task | Deliverable | Owner |
+|------|------|--------------|-------|
+| 3 | AuditTrailService | Log all transactions | Dev |
+| 3 | Add User tracking | UserId on all entries | Dev |
+| 3 | PeriodLockingService | Open/Close periods | Dev |
+| 3 | FiscalYearService | Fiscal year controls | Dev |
+| 4 | ApprovalWorkflow | Approve large transactions | Dev |
+| 4 | Permission system | Role-based access | Dev |
+
+**Deliverables:**
+- [ ] Full audit trail (per TT99/Article 18)
+- [ ] Period locking mechanism
+- [ ] User/Role management
+- [ ] Approval workflows
+
+---
+
+### PHASE 5: Reporting (Weeks 5-6)
+| Week | Task | Deliverable | Owner |
+|------|------|--------------|-------|
+| 5 | Trial Balance | Bảng cân đối tài khoản | Dev |
+| 5 | General Ledger | Sổ cái tổng hợp | Dev |
+| 5 | Sub-ledger 131 | Sổ chi tiết 131 | Dev |
+| 5 | Sub-ledger 331 | Sổ chi tiết 331 | Dev |
+| 6 | Sub-ledger 156 | Sổ chi tiết 156 | Dev |
+| 6 | Financial Statements | B01-BN, B02-BN | Dev |
+| 6 | Cash Flow | Lưu chuyển tiền tệ | Dev |
+
+**Deliverables:**
+- [ ] Trial Balance (Bảng cân đối tài khoản)
+- [ ] General Ledger (Sổ cái)
+- [ ] Sub-ledgers (Sổ chi tiết 131, 331, 156)
+- [ ] Financial Statements (B01-BN, B02-BN, B03-BN)
+
+---
+
+### PHASE 6: Integration (Weeks 7-8)
+| Week | Task | Deliverable | Owner |
+|------|------|--------------|-------|
+| 7 | E-invoice | VN eInvoice integration | Dev |
+| 7 | Tax XML | Tờ khai thuế export | Dev |
+| 7 | BHXH Report | Báo cáo BHXH | Dev |
+| 8 | Bank Import | Đối chiếu ngân hàng | Dev |
+| 8 | Data Export | Excel/PDF export | Dev |
+| 8 | Backup/Restore | Disaster recovery | Dev |
+
+**Deliverables:**
+- [ ] E-invoice integration
+- [ ] Tax declaration export
+- [ ] Bank statement import
+- [ ] Data backup/restore
+
+---
+
+## 📊 GANTT CHART
+
 ```
-1. Write failing tests first (TDD)
-2. Implement to pass tests
-3. Run: dotnet build && dotnet test
-4. Commit with descriptive message
-```
-
----
-
-## 📊 PHASE IMPLEMENTATION PLAN
-
-### PHASE 1: Critical Core (COMPLETED ✅)
-| Week | Module | Use Cases | Deliverables | Tests |
-|------|--------|-----------|-------------|-------|
-| 1 | **Fixed Assets (A01-A06)** | A01-A06 | FixedAsset, FixedAssetService | 9 |
-| 2 | **Period Closing (G01-G04)** | G01-G04 | PeriodClosingService | 8 |
-| **Total** | | | **17 tests** | ✅ Pass |
-
----
-
-### PHASE 2: Sales (CURRENT - Week 3)
-| Week | Module | Use Cases | Deliverables | Tests | Status |
-|------|--------|-----------|-------------|-------|--------|
-| 3 | **Sales Documentation** | S01-S06 | sales_use_cases.md | ✅ Done |
-| 3a | **S01: Bán tiền mặt** | S01 | SalesService.CreateCashSale | 3 | 🔄 Implementing |
-| 3b | **S02: Bán chịu** | S02 | SalesService.CreateCreditSale | 3 | ⏳ Pending |
-| 3c | **S03: Giá vốn** | S03 | SalesService.RecordCOGS | 3 | ⏳ Pending |
-| 3d | **S04: Trả hàng** | S04 | SalesService.ProcessReturn | 3 | ⏳ Pending |
-| 3e | **S05: Giảm giá** | S05 | SalesService.ApplyDiscount | 2 | ⏳ Pending |
-| 3f | **S06: Chiết khấu TT** | S06 | SalesService.ApplyPaymentDiscount | 2 | ⏳ Pending |
-
-**Target: 16 tests for Sales**
-
----
-
-### PHASE 2b: Purchase Documentation (Week 4)
-| Week | Module | Use Cases | Deliverables | Tests | Status |
-|------|--------|-----------|-------------|-------|--------|
-| 4 | **Purchase Documentation** | P01-P06 | purchase_use_cases.md | ✅ Done |
-
----
-
-### PHASE 3: Purchase Implementation (Week 5)
-| Week | Module | Use Cases | Deliverables | Tests |
-|------|--------|-----------|-------------|-------|
-| 5 | **P01-P05** | Purchase Orders, Inventory, Returns | PurchaseService | 16 |
-
----
-
-### PHASE 4: Cash & Bank (Week 6)
-| Week | Module | Use Cases | Deliverables |
-|------|--------|-----------|--------------|
-| 6 | **T01-T05** | Payments, Receipts, Transfers | CashService |
-
----
-
-### PHASE 5: Tax & Reporting (Week 7-8)
-| Week | Module | Use Cases | Deliverables |
-|------|--------|-----------|--------------|
-| 7 | **Tax (X01-X05)** | VAT, PIT, FCT | TaxService |
-| 8 | **Reports (R01-R03)** | Trial Balance, Income Statement | ReportService |
-| 8 | **Reports** | B01-B03 | ReportService |
-
----
-
-## 📅 GANTT CHART
-
-```
-Week:    1   2   3   4   5   6   7   8
-        |---|---|---|---|---|---|---|---|
-Phase1   ████████                    DONE ✅
-Phase2           ████████              IN PROGRESS
-Phase3                       ████████
-Phase4                       ████████
-Phase5                               ██████████
-```
-
----
-
-## 🔧 SALES (S01-S06) IMPLEMENTATION DETAILS
-
-### Entity: SalesTransaction.cs
-```csharp
-public class SalesTransaction
-{
-    public string Id { get; set; }
-    public string TransactionNo { get; set; }
-    public DateTime TransactionDate { get; set; }
-    public SalesType Type { get; set; }  // Cash, Credit
-    public string CustomerId { get; set; }
-    public string CustomerName { get; set; }
-    
-    // Items
-    public List<SalesLine> Lines { get; set; }
-    
-    // Totals
-    public decimal SubTotal { get; set; }
-    public decimal VATAmount { get; set; }
-    public decimal TotalAmount { get; set; }
-    public decimal COGS { get; set; }  // Giá vốn
-    
-    // Status
-    public SalesStatus Status { get; set; }
-    public PaymentStatus PaymentStatus { get; set; }
-}
-
-public class SalesLine
-{
-    public string ProductId { get; set; }
-    public string ProductName { get; set; }
-    public decimal Quantity { get; set; }
-    public decimal UnitPrice { get; set; }
-    public decimal DiscountPercent { get; set; }
-    public decimal DiscountAmount { get; set; }
-    public decimal LineTotal { get; set; }
-}
-
-public enum SalesType
-{
-    Cash,           // Bán tiền mặt
-    Credit,         // Bán chịu
-    Installment,    // Bán trả góp
-    Consignment     // Bán đại lý
-}
-
-public enum SalesStatus
-{
-    Draft,
-    PendingPayment,
-    Paid,
-    PartiallyPaid,
-    Overdue,
-    Returned,
-    Cancelled
-}
-```
-
-### Service: SalesService.cs (Required Methods)
-```csharp
-public class SalesService
-{
-    // S01: Bán tiền mặt
-    (bool, SalesTransaction) CreateCashSale(CreateSaleInput input);
-    
-    // S02: Bán chịu
-    (bool, SalesTransaction) CreateCreditSale(CreateSaleInput input);
-    
-    // S03: Ghi nhận giá vốn
-    (bool, string) RecordCOGS(string transactionId, string productId, decimal quantity);
-    
-    // S04: Xử lý trả hàng
-    (bool, SalesTransaction) ProcessReturn(string transactionId, ReturnInput input);
-    
-    // S05: Giảm giá hàng bán
-    (bool, string) ApplyDiscount(string transactionId, decimal discountAmount);
-    
-    // S06: Chiết khấu thanh toán
-    (bool, string) ApplyPaymentDiscount(string transactionId, decimal discountPercent);
-    
-    // Queries
-    SalesTransaction GetById(string id);
-    IEnumerable<SalesTransaction> GetByCustomer(string customerId);
-    IEnumerable<SalesTransaction> GetOverdueSales();
-}
-```
-
-### Journal Entry Mapping
-| Use Case | Debit | Credit |
-|----------|-------|--------|
-| S01: Bán tiền mặt | 111/112 | 511, 33311 |
-| S02: Bán chịu | 131 | 511, 33311 |
-| S03: Giá vốn | 632 | 156/155 |
-| S04a: Trả hàng | 5212, 3331 | 131/111 |
-| S04b: Điều chỉnh giá vốn | 156/155 | 632 |
-| S05: Giảm giá | 5211 | 131/111 |
-| S06: Chiết khấu TT | 111, 5213 | 131 |
-
----
-
-## 📋 TEST CASES (TDD)
-
-```csharp
-[Fact]
-public void S01_CreateCashSale_BalancesCorrectly()
-{
-    // Test: Tổng Nợ = Tổng Có
-}
-
-[Fact]
-public void S01_CreateCashSale_WithVAT_10Percent()
-{
-    // Test: VAT = 10% của doanh thu
-}
-
-[Fact]
-public void S02_CreateCreditSale_SetsOverdueAfter30Days()
-{
-    // Test: PaymentStatus tự động overdue sau 30 ngày
-}
-
-[Fact]
-public void S03_RecordCOGS_FIFO_CalculatesCorrectly()
-{
-    // Test: Tính giá xuất kho FIFO
-}
-
-[Fact]
-public void S03_RecordCOGS_WeightedAverage_CalculatesCorrectly()
-{
-    // Test: Tính giá xuất kho bình quân
-}
-
-[Fact]
-public void S04_ProcessReturn_ReducesRevenue()
-{
-    // Test: Doanh thu giảm qua 5212
-}
-
-[Fact]
-public void S04_ProcessReturn_AdjustsCOGS()
-{
-    // Test: Giá vốn được điều chỉnh
-}
-
-[Fact]
-public void S05_ApplyDiscount_ValidAmount()
-{
-    // Test: Giảm giá <= 20% giá trị
-}
-
-[Fact]
-public void S06_ApplyPaymentDiscount_CalculatesCorrectly()
-{
-    // Test: Chiết khấu = số tiền × tỷ lệ
-}
+Week:      1   2   3   4   5   6   7   8
+            |---|---|---|---|---|---|---|---|
+Phase1-2   ████████████████████████████████  DONE ✅
+Phase3     ████████                          DB & Persistence
+Phase4     ████████████                      Compliance & Audit  
+Phase5     ████████████                      Reporting
+Phase6     ████████████                      Integration
 ```
 
 ---
 
-## 📈 SUCCESS METRICS
+## 🎯 SUCCESS METRICS
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Test Coverage | ≥ 80% | 67% |
-| Modules Implemented | 10/10 | 4/10 |
-| Use Cases Complete | 50+ | 27 |
-| Build Warnings | < 50 | 70 |
-| All Tests Pass | 200+ | 169 |
+| Metric | Target | Current | Phase Target |
+|--------|--------|---------|--------------|
+| Test Coverage | ≥ 80% | 67% | 85% |
+| Unit Tests | 300+ | 297 | 350+ |
+| Integration Tests | 50+ | 0 | 100+ |
+| Services | 24 | 24 | 32 |
+| Use Cases | 50+ | 50+ | 80+ |
+| Build Warnings | < 20 | 280+ | < 20 |
+| Production Ready | No | - | Yes |
 
 ---
 
-## 🚦 GETTING STARTED
+## 📁 FILE STRUCTURE (Current)
+
+```
+src/
+├── Application/
+│   ├── DTOs/
+│   │   └── CommonDTOs.cs              # 546 lines
+│   └── Services/
+│       ├── SalesService.cs            # 254 lines
+│       ├── PurchaseService.cs
+│       ├── CashService.cs             # 22 methods
+│       ├── BankService.cs             # B01-B08
+│       ├── InventoryService.cs        # I01-I07
+│       ├── TaxService.cs
+│       ├── FixedAssetService.cs       # A01-A06
+│       ├── PayrollCalculationService.cs
+│       ├── TransactionService.cs      # G01-G04
+│       ├── GLCentralPostingService.cs # G05 ⭐
+│       ├── CostAccountingService.cs   # C01 ⭐
+│       └── SubsidiaryLedgerService.cs # S01-S03 ⭐
+├── Domain/
+│   ├── Entities/
+│   │   ├── Transaction.cs             # Core
+│   │   ├── SalesTransaction.cs
+│   │   ├── PurchaseTransaction.cs
+│   │   └── ...
+│   └── Interfaces/
+│       └── IRepositories.cs
+└── WebApp/                            # Empty - not implemented
+```
+
+---
+
+## 🚀 GETTING STARTED
 
 ```bash
-# Build solution
+# Clone and build
+git clone https://github.com/vqton/gl.git
+cd gl
 dotnet build
 
 # Run all tests
 dotnet test
 
-# Run Sales tests only
-dotnet test tests/Domain.Tests/GL.Domain.Tests.csproj --filter "Sales"
+# Run specific module tests
+dotnet test --filter "SalesService"
+dotnet test --filter "InventoryService"
+dotnet test --filter "CostAccounting"
 
 # Run with coverage
 dotnet test --collect:"XPlat Code Coverage"
@@ -275,28 +213,40 @@ dotnet test --collect:"XPlat Code Coverage"
 
 ---
 
-## 📁 FILES STRUCTURE
+## 🎯 PRIORITY ACTION ITEMS
 
-```
-src/
-├── Domain/
-│   └── Entities/
-│       ├── SalesTransaction.cs    ← NEW
-│       ├── FixedAsset.cs        ← Existing
-│       └── AccountingPeriod.cs  ← Existing
-├── Application/
-│   └── Services/
-│       ├── SalesService.cs       ← NEW
-│       ├── FixedAssetService.cs   ← Existing
-│       └── PeriodClosingService.cs ← Existing
-└── tests/
-    └── Domain.Tests/
-        ├── SalesTests.cs          ← NEW
-        ├── FixedAssetTests.cs    ← Existing
-        └── PeriodClosingTests.cs  ← Existing
-```
+### Immediate (This Sprint)
+| # | Task | Owner | Deadline |
+|---|------|-------|-----------|
+| 1 | Choose database (PostgreSQL/MariaDB) | Tech Lead | Day 1 |
+| 2 | Design Entity Framework schema | Tech Lead | Day 2 |
+| 3 | Start implementing Repositories | Dev Team | Day 3 |
+
+### Short-term (2 weeks)
+| # | Task | Owner | Deadline |
+|---|------|-------|-----------|
+| 4 | Complete Phase 3 - Database | Dev Team | Week 2 |
+| 5 | Add basic audit trail | Dev Team | Week 2 |
+
+### Medium-term (1 month)
+| # | Task | Owner | Deadline |
+|---|------|-------|-----------|
+| 6 | Complete Phase 4 - Compliance | Dev Team | Week 4 |
+| 7 | Complete Phase 5 - Reporting | Dev Team | Week 6 |
 
 ---
 
-*Roadmap updated based on: MASTER_USE_CASES.md*  
-*Last updated: April 2026*
+## 📞 RESOURCES
+
+| Resource | Link |
+|----------|------|
+| GitHub Repository | https://github.com/vqton/gl |
+| Documentation | docs/GL_USE_CASES_COMPLETE.md |
+| Production Assessment | docs/PRODUCTION_READINESS.md |
+| Use Cases | docs/use_cases/ |
+
+---
+
+*Roadmap Version: 2.0*
+*Last Updated: April 2026*
+*Next Review: After Phase 3 completion*

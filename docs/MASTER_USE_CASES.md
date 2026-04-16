@@ -135,6 +135,7 @@
 | Master Use Cases | This document |
 | Complete Use Cases | docs/GL_USE_CASES_COMPLETE.md |
 | Production Readiness | docs/PRODUCTION_READINESS.md |
+| Implementation Roadmap | docs/roadmaps/implementation_roadmap.md |
 | Sales Detail | docs/use_cases/sales_use_cases.md |
 | Payroll Detail | docs/use_cases/laodong_tienluong.md |
 | COA Detail | docs/use_cases/coa_use_cases.md |
