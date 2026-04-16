@@ -137,25 +137,28 @@ namespace GL.Application.Services
                 var code = kvp.Key;
                 var balance = kvp.Value;
 
-                if (code.StartsWith("1"))
+                // TT99/2025 account categorization
+                if (code.StartsWith("1") || code.StartsWith("21"))
                 {
                     totalAssets += balance;
                 }
-                else if (code.StartsWith("2") && !code.StartsWith("21"))
+                else if (code.StartsWith("3"))
                 {
                     totalLiabilities += balance;
                 }
-                else if (code == "411" || code == "4211" || code == "4212")
+                else if (code.StartsWith("4"))
                 {
                     totalEquity += balance;
                 }
             }
 
             var netWorth = totalAssets - totalLiabilities;
-            if (Math.Abs(netWorth - totalEquity) > 100)
+            var diff = Math.Abs(netWorth - totalEquity);
+
+            if (diff > 100)
             {
                 result.IsValid = false;
-                result.Messages.Add($"Chênh lệch: Tài sản {totalAssets:N0} - Nợ phải trả {totalLiabilities:N0} = Vốn chủ sở hữu {totalEquity:N0}");
+                result.Messages.Add($"Chênh lệch: {diff:N0}");
             }
 
             return result;

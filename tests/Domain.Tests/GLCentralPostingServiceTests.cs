@@ -75,7 +75,7 @@ namespace GL.Domain.Tests
             var result = _service.CheckDayEndBalances(accountBalances, "2026-04-15");
 
             Assert.NotNull(result);
-            Assert.True(result.IsValid, "Số dư cuối ngày phải hợp lệ");
+            Assert.True(result.IsValid, result.Messages.FirstOrDefault() ?? "Số dư cuối ngày phải hợp lệ");
         }
 
         [Fact]
