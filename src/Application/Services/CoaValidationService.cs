@@ -106,6 +106,27 @@ namespace GL.Application.Services
         }
 
         /// <summary>
+        /// Kiểm tra tài khoản có thể ghi sổ không (cấp 3-4 theo TT99)
+        /// </summary>
+        public CoaValidationResult ValidateAccountIsPostable(string accountCode)
+        {
+            if (!_coaCache.TryGetValue(accountCode, out var account))
+            {
+                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account {accountCode} not found" };
+            }
+
+            if (!account.IsPostable)
+            {
+                return new CoaValidationResult { 
+                    IsValid = false, 
+                    ErrorMessage = $"Account {accountCode} ({account.Name}) is not postable. Only level 3-4 accounts can be used for journaling." 
+                };
+            }
+
+            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+        }
+
+        /// <summary>
         /// Kiểm tra chiều số dư bình thường có đúng không
         /// </summary>
         /// <param name="accountCode">Mã tài khoản</param>

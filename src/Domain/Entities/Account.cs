@@ -6,6 +6,7 @@ namespace GL.Domain.Entities
 {
     /// <summary>
     /// Đại diện cho một tài khoản kế toán trong hệ thống
+    /// Theo Thông tư 99/2025/TT-BTC
     /// </summary>
     public class Account
     {
@@ -18,6 +19,11 @@ namespace GL.Domain.Entities
         /// Tên tài khoản
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Cấp tài khoản (1, 2, 3, 4)
+        /// </summary>
+        public int Level { get; set; }
 
         /// <summary>
         /// Loại tài khoản (Asset, Liability, Equity, Revenue, Expense)
@@ -35,6 +41,12 @@ namespace GL.Domain.Entities
         public string ParentCode { get; set; }
 
         /// <summary>
+        /// Có thể ghi sổ (hạch toán) không
+        /// Chỉ tài khoản cấp 3 hoặc 4 mới được ghi sổ
+        /// </summary>
+        public bool IsPostable { get; set; }
+
+        /// <summary>
         /// Danh sách tài khoản con
         /// </summary>
         public List<Account> Children { get; set; } = new List<Account>();
@@ -42,7 +54,7 @@ namespace GL.Domain.Entities
         /// <summary>
         /// Xác định xem tài khoản có thể được sử dụng để hạch toán không
         /// </summary>
-        public bool AllowPosting => Children.Count == 0;
+        public bool AllowPosting => Children.Count == 0 || IsPostable;
 
         /// <summary>
         /// Kiểm tra xem tài khoản có hợp lệ trước khi hạch toán không
