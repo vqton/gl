@@ -624,4 +624,75 @@ namespace GL.Application.DTOs
         public string ProductId { get; set; }
         public string Method { get; set; }
     }
+
+    // ============== AUDIT TRAIL DTOs (AT01-AT03) ==============
+
+    public class CreateAuditLogRequest
+    {
+        public string UserId { get; set; }
+        public string Action { get; set; }
+        public string TableName { get; set; }
+        public string RecordId { get; set; }
+        public string OldValues { get; set; }
+        public string NewValues { get; set; }
+        public string IpAddress { get; set; }
+        public string Reason { get; set; }
+    }
+
+    public class AuditLogResult
+    {
+        public Guid Id { get; set; }
+        public string UserId { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Action { get; set; }
+        public string TableName { get; set; }
+        public string RecordId { get; set; }
+        public string OldValues { get; set; }
+        public string NewValues { get; set; }
+        public string IpAddress { get; set; }
+    }
+
+    public class QueryAuditRequest
+    {
+        public string RecordId { get; set; }
+        public string UserId { get; set; }
+        public string TableName { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+    }
+
+    public class AuditReportResult
+    {
+        public string PeriodId { get; set; }
+        public DateTime GeneratedAt { get; set; }
+        public int TotalEntries { get; set; }
+        public List<AuditLogResult> Entries { get; set; }
+    }
+
+    // ============== PERIOD LOCKING DTOs (PL01-PL03) ==============
+
+    public class OpenPeriodRequest
+    {
+        public string PeriodId { get; set; }
+        public string RequestedBy { get; set; }
+    }
+
+    public class ClosePeriodRequest
+    {
+        public string PeriodId { get; set; }
+        public string RequestedBy { get; set; }
+        public string Reason { get; set; }
+    }
+
+    public class ValidatePeriodRequest
+    {
+        public string PeriodId { get; set; }
+    }
+
+    public class PeriodValidationResult
+    {
+        public bool IsValid { get; set; }
+        public string Message { get; set; }
+        public string Status { get; set; }
+    }
 }

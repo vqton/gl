@@ -1,12 +1,14 @@
+using GL.Application.DTOs;
 using GL.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GL.Application.Services
 {
     /// <summary>
-    /// Service quản lý Audit Trail (Phase 3)
-    /// Theo dõi tất cả các thay đổi trong hệ thống
+    /// Service quản lý Audit Trail (Phase 4)
+    /// Theo dõi tất cả các thay đổi trong hệ thống theo TT99/2025 Điều 18
     /// </summary>
     public class AuditTrailService
     {
@@ -167,13 +169,113 @@ namespace GL.Application.Services
         /// </summary>
         public List<AuditEntry> GetEntriesByActionType(string actionType)
         {
-            var results = new List<AuditEntry>();
-            foreach (var entry in _auditEntries)
+            return _auditEntries.Where(e => e.ActionType == actionType).ToList();
+        }
+
+        /// <summary>
+        /// AT01: Log transaction entry (TT99/2025 Article 18)
+        /// </summary>
+        public AuditLogResult LogTransaction(CreateAuditLogRequest request)
+        {
+            var result = new AuditLogResult
             {
-                if (entry.ActionType == actionType)
-                    results.Add(entry);
+                Id = Guid.NewGuid(),
+                UserId = request.UserId,
+                Timestamp = DateTime.Now,
+                Action = request.Action,
+                TableName = request.TableName,
+                RecordId = request.RecordId,
+                OldValues = request.OldValues,
+                NewValues = request.NewValues,
+                IpAddress = request.IpAddress,
+            };
+
+            var entry = new AuditEntry
+            {
+                Id = result.Id.ToString(),
+                TransactionId = request.RecordId,
+                ActionType = request.Action,
+                ActionDate = result.Timestamp,
+                UserId = request.UserId,
+                OldValue = request.OldValues,
+                NewValue = request.NewValues,
+                Description = $"Audit: {request.Action} on {request.TableName}",
+            };
+            _auditEntries.Add(entry);
+
+            return result;
+        }
+
+        /// <summary>
+        /// AT02: Query audit history
+        /// </summary>
+        public List<AuditLogResult> QueryAuditHistory(QueryAuditRequest request)
+        {
+            var query = _auditEntries.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(request.RecordId))
+            {
+                query = query.Where(e => e.TransactionId == request.RecordId);
             }
-            return results;
+
+            if (!string.IsNullOrEmpty(request.UserId))
+            {
+                query = query.Where(e => e.UserId == request.UserId);
+            }
+
+            if (!string.IsNullOrEmpty(request.TableName))
+            {
+                query = query.Where(e => e.Description.Contains(request.TableName));
+            }
+
+            if (request.StartDate.HasValue)
+            {
+                query = query.Where(e => e.ActionDate >= request.StartDate.Value);
+            }
+
+            if (request.EndDate.HasValue)
+            {
+                query = query.Where(e => e.ActionDate <= request.EndDate.Value);
+            }
+
+            return query.Select(e => new AuditLogResult
+            {
+                Id = Guid.Parse(e.Id),
+                UserId = e.UserId,
+                Timestamp = e.ActionDate,
+                Action = e.ActionType,
+                RecordId = e.TransactionId,
+                OldValues = e.OldValue,
+                NewValues = e.NewValue,
+            }).ToList();
+        }
+
+        /// <summary>
+        /// AT03: Generate audit report for period
+        /// </summary>
+        public AuditReportResult GenerateAuditReport(string periodId)
+        {
+            var entries = _auditEntries.Where(e => 
+                e.ActionDate.Month.ToString() == periodId.Split('-')[1] &&
+                e.ActionDate.Year.ToString() == periodId.Split('-')[0]
+            ).ToList();
+
+            return new AuditReportResult
+            {
+                PeriodId = periodId,
+                GeneratedAt = DateTime.Now,
+                TotalEntries = entries.Count,
+                Entries = entries.Select(e => new AuditLogResult
+                {
+                    Id = Guid.Parse(e.Id),
+                    UserId = e.UserId,
+                    Timestamp = e.ActionDate,
+                    Action = e.ActionType,
+                    RecordId = e.TransactionId,
+                    OldValues = e.OldValue,
+                    NewValues = e.NewValue,
+                }).ToList(),
+            };
         }
     }
 }
