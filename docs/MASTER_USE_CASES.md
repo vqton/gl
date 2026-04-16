@@ -105,12 +105,14 @@
 | **Purchase P01-P05** | ✅ Full | - | Done |
 | Cash T01-T22 | ✅ Full | - | Done |
 | **Tax X01-X05** | ✅ Full | - | Done |
-| **Cash T01-T22** | ✅ Full | - | Done |
 | **Bank B01-B08** | ✅ Full | - | Done |
 | **Inventory I01-I07** | ✅ Full | - | Done |
 | Fixed Assets | ✅ Full | - | Done |
 | Payroll | ✅ Full | - | Done |
-| Period Closing | ✅ G01-G04 | G05-G08 | Later |
+| Period Closing | ✅ G01-G04 | - | Done |
+| **GL Central Posting** | ✅ G05 | New | Done |
+| **Cost Accounting** | ✅ C01 | New | Done |
+| **Subsidiary Ledgers** | ✅ S01-S03 | New | Done |
 
 ---
 
@@ -131,11 +133,24 @@
 | Document | Location |
 |----------|----------|
 | Master Use Cases | This document |
+| Complete Use Cases | docs/GL_USE_CASES_COMPLETE.md |
 | Sales Detail | docs/use_cases/sales_use_cases.md |
 | Payroll Detail | docs/use_cases/laodong_tienluong.md |
 | COA Detail | docs/use_cases/coa_use_cases.md |
 | Cash Detail | docs/use_cases/cash_use_cases.md |
+| Bank Detail | docs/use_cases/bank_use_cases.md |
+| Inventory Detail | docs/use_cases/inventory_use_cases.md |
 | TT99 Full Specs | docs/core_use_cases_TT99_2025_updated.md |
+
+---
+
+## 📋 NEW SERVICES (April 2026)
+
+| Service | File | Tests | Account Codes |
+|---------|------|-------|--------------|
+| GLCentralPostingService | src/Application/Services/GLCentralPostingService.cs | 6 | All |
+| CostAccountingService | src/Application/Services/CostAccountingService.cs | 6 | 154, 631 |
+| SubsidiaryLedgerService | src/Application/Services/SubsidiaryLedgerService.cs | 9 | 131, 331, 156 |
 
 ---
 

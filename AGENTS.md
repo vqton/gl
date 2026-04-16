@@ -65,4 +65,7 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
   - **COA Validation** ✅ Complete
   - **Bank** (B01-B08) ✅ Complete
   - **Inventory** (I01-I07) ✅ Complete
-- Tests: 277 passing (all modules)
+  - **GL Central Posting** (G05) ✅ New
+  - **Cost Accounting** (C01 - TK 154/631) ✅ New
+  - **Subsidiary Ledgers** (S01-S03 - 131/331/156) ✅ New
+- Tests: 297 passing (1 pending fix)

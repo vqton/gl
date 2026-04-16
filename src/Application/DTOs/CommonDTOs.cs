@@ -439,4 +439,189 @@ namespace GL.Application.DTOs
         public string Reason { get; set; }
         public string AccountingPeriodId { get; set; }
     }
+
+    // ============== COST ACCOUNTING DTOs (C01) ==============
+
+    /// <summary>
+    /// DTO cho chi phí nguyên vật liệu trực tiếp (C01a)
+    /// </summary>
+    public class DirectMaterialCostRequest
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public string WorkOrderId { get; set; }
+        public string ProductId { get; set; }
+        public decimal MaterialCostVnd { get; set; }
+        public string InventoryAccount { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho chi phí nhân công trực tiếp (C01b)
+    /// </summary>
+    public class DirectLaborCostRequest
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public string WorkOrderId { get; set; }
+        public decimal LaborCostVnd { get; set; }
+        public string SalaryAccount { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho chi phí sản xuất chung (C01c)
+    /// </summary>
+    public class ManufacturingOverheadRequest
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public string WorkOrderId { get; set; }
+        public decimal OverheadCostVnd { get; set; }
+        public string OverheadAccount { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho kết chuyển WIP (C01d)
+    /// </summary>
+    public class WIPClosingRequest
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public string WorkOrderId { get; set; }
+        public decimal TotalWipCostVnd { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho tính giá thành đơn vị (C01e)
+    /// </summary>
+    public class UnitCostCalculationRequest
+    {
+        public string ProductId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public decimal TotalCostVnd { get; set; }
+        public int TotalQuantity { get; set; }
+        public string Method { get; set; }
+    }
+
+    /// <summary>
+    /// Kết quả tính giá thành đơn vị
+    /// </summary>
+    public class UnitCostResult
+    {
+        public string ProductId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public decimal UnitCostVnd { get; set; }
+        public decimal TotalCostVnd { get; set; }
+        public int TotalQuantity { get; set; }
+    }
+
+    /// <summary>
+    /// DTO cho phân bổ chi phí SXC (C01f)
+    /// </summary>
+    public class OverheadAllocationRequest
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public decimal TotalOverheadVnd { get; set; }
+        public string AllocationBase { get; set; }
+    }
+
+    /// <summary>
+    /// Kết quả phân bổ chi phí SXC
+    /// </summary>
+    public class OverheadAllocationResult
+    {
+        public string TransactionId { get; set; }
+        public string AccountingPeriodId { get; set; }
+        public List<OverheadAllocation> Allocations { get; set; }
+    }
+
+    /// <summary>
+    /// Mục phân bổ chi phí SXC
+    /// </summary>
+    public class OverheadAllocation
+    {
+        public string ProductId { get; set; }
+        public decimal AllocatedAmount { get; set; }
+    }
+
+    // ============== SUBSIDIARY LEDGER DTOs (S01-S03) ==============
+
+    // --- Accounts Receivable (131) ---
+
+    public class CreateAREntryRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string CustomerId { get; set; }
+        public decimal AmountVnd { get; set; }
+        public decimal NetAmountVnd { get; set; }
+        public decimal VatAmountVnd { get; set; }
+    }
+
+    public class UpdateARPaymentRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public string CustomerId { get; set; }
+        public decimal PaymentAmountVnd { get; set; }
+    }
+
+    public class AginReport
+    {
+        public string CustomerId { get; set; }
+        public DateTime ReportDate { get; set; }
+        public List<AgingBucket> AgingDetails { get; set; }
+    }
+
+    public class AgingBucket
+    {
+        public string Bucket { get; set; }
+        public decimal AmountVnd { get; set; }
+    }
+
+    public class CreateBadDebtProvisionRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime ProvisionDate { get; set; }
+        public decimal ProvisionAmountVnd { get; set; }
+    }
+
+    // --- Accounts Payable (331) ---
+
+    public class CreateAPEntryRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string SupplierId { get; set; }
+        public decimal AmountVnd { get; set; }
+        public decimal VatAmountVnd { get; set; }
+        public decimal TotalAmountVnd { get; set; }
+    }
+
+    public class UpdateAPPaymentRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public string SupplierId { get; set; }
+        public decimal PaymentAmountVnd { get; set; }
+    }
+
+    // --- Inventory (156) ---
+
+    public class UpdateInventoryCardRequest
+    {
+        public string TransactionId { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string TransactionType { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal UnitCostVnd { get; set; }
+    }
+
+    public class CalculateIssueCostRequest
+    {
+        public string ProductId { get; set; }
+        public string Method { get; set; }
+    }
 }
