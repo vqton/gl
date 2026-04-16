@@ -8,8 +8,8 @@ src/
 │   ├── Enums/        # AccountType
 │   └── Interfaces/   # IAccountRepository, ITransactionRepository
 ├── Application/      # Business logic services, DTOs
-├── Infrastructure/   # Data access (MySqlConnector)
-└── WebApp/           # ASP.NET Core MVC (Bootstrap, jQuery, FastReport)
+├── Infrastructure/   # Data access (MariaDB + EF Core)
+└── WebApp/           # ASP.NET Core MVC
 
 tests/
 └── Domain.Tests/    # xUnit tests (TDD)
@@ -54,6 +54,12 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
 - Uses MySqlConnector package for MariaDB connectivity
 - Update connection string in `src/WebApp/appsettings.json` before running
 
+## Code Quality Standards
+- Follow: `docs/CODE_QUALITY_STANDARDS.md`
+- All public methods must have XML documentation
+- Use TDD approach (write tests first)
+- Commit messages: `type: description` format
+
 ## Current Status (All Core Modules Complete)
 - Core entities: Account, AccountType, Transaction, TransactionLine
 - Modules implemented:
@@ -68,4 +74,6 @@ dotnet run --project src/WebApp/GL.WebApp.csproj
   - **GL Central Posting** (G05) ✅ New
   - **Cost Accounting** (C01 - TK 154/631) ✅ New
   - **Subsidiary Ledgers** (S01-S03 - 131/331/156) ✅ New
-- Tests: 297 passing (1 pending fix)
+  - **Audit Trail** (AT01-AT03) ✅ New
+  - **Period Locking** (PL01-PL03) ✅ New
+- Tests: 310 passing (1 pending fix)
