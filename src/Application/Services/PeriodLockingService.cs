@@ -10,10 +10,18 @@ namespace GL.Application.Services
     /// Service quản lý Period Locking (Phase 4)
     /// Kiểm soát việc mở/đóng kỳ kế toán theo TT99/2025
     /// </summary>
+    /// <remarks>
+    /// PL01: Open period - Cho phép ghi bút toán trong kỳ
+    /// PL02: Close period - Khóa kỳ, ngăn ghi bổ sung
+    /// PL03: Validate period - Kiểm tra trước khi ghi bút toán
+    /// </remarks>
     public class PeriodLockingService
     {
-        private readonly Dictionary<string, AccountingPeriod> _periods = new Dictionary<string, AccountingPeriod>();
+        private readonly Dictionary<string, AccountingPeriod> _periods = new();
 
+        /// <summary>
+        /// Khởi tạo với kỳ hiện tại
+        /// </summary>
         public PeriodLockingService()
         {
             var currentPeriod = new AccountingPeriod
@@ -28,8 +36,12 @@ namespace GL.Application.Services
         }
 
         /// <summary>
-        /// PL01: Open accounting period
+        /// Mở kỳ kế toán cho phép ghi nhận nghiệp vụ
         /// </summary>
+        /// <param name="request">Yêu cầu mở kỳ</param>
+        /// <returns>Kết quả mở kỳ</returns>
+        /// <exception cref="ArgumentNullException">Khi request null</exception>
+        /// <exception cref="ArgumentException">Khi định dạng periodId không hợp lệ</exception>
         public PeriodValidationResult OpenPeriod(OpenPeriodRequest request)
         {
             if (_periods.ContainsKey(request.PeriodId))
@@ -70,8 +82,14 @@ namespace GL.Application.Services
         }
 
         /// <summary>
-        /// PL02: Close accounting period
+        /// Đóng kỳ kế toán, ngăn ghi bổ sung
         /// </summary>
+        /// <param name="request">Yêu cầu đóng kỳ</param>
+        /// <returns>Kết quả đóng kỳ</returns>
+        /// <remarks>
+        /// Chỉ đóng được kỳ đang ở trạng thái OPEN.
+        /// Sau khi đóng, không thể ghi bút toán mới vào kỳ này.
+        /// </remarks>
         public PeriodValidationResult ClosePeriod(ClosePeriodRequest request)
         {
             if (!_periods.ContainsKey(request.PeriodId))
