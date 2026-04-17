@@ -43,7 +43,7 @@ To provide a comprehensive, compliant accounting system that fully implements th
 - Implement budgeting and forecasting
 - Develop role-based access control
 - Add API for third-party integrations
-- Implement cloud deployment options
+- On-premises deployment (IIS/Nginx)
 
 ## New: Lao Động - Tiền Lương Module (2026)
 
