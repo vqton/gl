@@ -18,18 +18,17 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryReceiptEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InventoryReceiptRequest
-            {
-                ReceiptDate = new DateTime(2026, 1, 15),
-                InventoryAccount = "156",
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                Quantity = 10,
-                UnitPriceVnd = 100000,
-                VatRate = 0.1m,
-                SupplierId = "NCC001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryReceiptRequest(
+                new DateTime(2026, 1, 15),
+                "156",
+                "SP001",
+                "Hàng hóa A",
+                10,
+                100000,
+                0.1m,
+                "NCC001",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryReceiptEntry(request);
 
@@ -42,18 +41,17 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryReceiptEntry_ShouldCreateBalancedTransaction_ForRawMaterial()
         {
-            var request = new InventoryReceiptRequest
-            {
-                ReceiptDate = new DateTime(2026, 1, 20),
-                InventoryAccount = "152",
-                ProductId = "NVL001",
-                ProductName = "Nguyên vật liệu B",
-                Quantity = 50,
-                UnitPriceVnd = 50000,
-                VatRate = 0.1m,
-                SupplierId = "NCC002",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryReceiptRequest(
+                new DateTime(2026, 1, 20),
+                "152",
+                "NVL001",
+                "Nguyên vật liệu B",
+                50,
+                50000,
+                0.1m,
+                "NCC002",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryReceiptEntry(request);
 
@@ -65,17 +63,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryIssueEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InventoryIssueRequest
-            {
-                IssueDate = new DateTime(2026, 1, 25),
-                InventoryAccount = "156",
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                Quantity = 5,
-                UnitCostVnd = 100000,
-                Reason = "Bán hàng",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryIssueRequest(
+                new DateTime(2026, 1, 25),
+                "156",
+                "SP001",
+                "Hàng hóa A",
+                5,
+                100000,
+                "Bán hàng",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryIssueEntry(request);
 
@@ -88,17 +85,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryIssueEntry_ShouldCreateBalancedTransaction_ForProduction()
         {
-            var request = new InventoryIssueRequest
-            {
-                IssueDate = new DateTime(2026, 1, 28),
-                InventoryAccount = "152",
-                ProductId = "NVL001",
-                ProductName = "Nguyên vật liệu B",
-                Quantity = 20,
-                UnitCostVnd = 50000,
-                Reason = "Sản xuất",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryIssueRequest(
+                new DateTime(2026, 1, 28),
+                "152",
+                "NVL001",
+                "Nguyên vật liệu B",
+                20,
+                50000,
+                "Sản xuất",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryIssueEntry(request);
 
@@ -110,17 +106,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryTransferEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InventoryTransferRequest
-            {
-                TransferDate = new DateTime(2026, 1, 30),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                Quantity = 5,
-                UnitCostVnd = 100000,
-                FromWarehouse = "KHO A",
-                ToWarehouse = "KHO B",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryTransferRequest(
+                new DateTime(2026, 1, 30),
+                "SP001",
+                "Hàng hóa A",
+                5,
+                100000,
+                "KHO A",
+                "KHO B",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryTransferEntry(request);
 
@@ -131,16 +126,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryCountEntry_ShouldCreateBalancedTransaction_WhenOver()
         {
-            var request = new InventoryCountRequest
-            {
-                CountDate = new DateTime(2026, 1, 31),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                BookQuantity = 100,
-                ActualQuantity = 105,
-                Reason = "Thừa do đếm sai",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryCountRequest(
+                new DateTime(2026, 1, 31),
+                "SP001",
+                "Hàng hóa A",
+                100,
+                105,
+                "Thừa do đếm sai",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryCountEntry(request);
 
@@ -152,16 +146,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryCountEntry_ShouldCreateBalancedTransaction_WhenUnder()
         {
-            var request = new InventoryCountRequest
-            {
-                CountDate = new DateTime(2026, 1, 31),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                BookQuantity = 100,
-                ActualQuantity = 95,
-                Reason = "Thiếu do mất mát",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryCountRequest(
+                new DateTime(2026, 1, 31),
+                "SP001",
+                "Hàng hóa A",
+                100,
+                95,
+                "Thiếu do mất mát",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryCountEntry(request);
 
@@ -173,15 +166,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryRevaluationEntry_ShouldCreateBalancedTransaction_WhenDecline()
         {
-            var request = new InventoryRevaluationRequest
-            {
-                RevaluationDate = new DateTime(2026, 12, 31),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                BookValueVnd = 1000000,
-                MarketValueVnd = 800000,
-                AccountingPeriodId = "2026-12"
-            };
+            var request = new InventoryRevaluationRequest(
+                new DateTime(2026, 12, 31),
+                "SP001",
+                "Hàng hóa A",
+                1000000,
+                800000,
+                "2026-12"
+            );
 
             var result = _service.CreateInventoryRevaluationEntry(request);
 
@@ -194,13 +186,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryProvisionEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InventoryProvisionRequest
-            {
-                ProvisionDate = new DateTime(2026, 12, 31),
-                ProvisionAmountVnd = 200000,
-                Reason = "Trích lập dự phòng giảm giá hàng tồn kho",
-                AccountingPeriodId = "2026-12"
-            };
+            var request = new InventoryProvisionRequest(
+                new DateTime(2026, 12, 31),
+                200000,
+                "Trích lập dự phòng giảm giá hàng tồn kho",
+                "2026-12"
+            );
 
             var result = _service.CreateInventoryProvisionEntry(request);
 
@@ -211,17 +202,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryWriteOffEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InventoryWriteOffRequest
-            {
-                WriteOffDate = new DateTime(2026, 1, 31),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa hư hỏng",
-                WriteOffQuantity = 10,
-                UnitCostVnd = 100000,
-                VatRecoverableVnd = 100000,
-                Reason = "Hết hạn sử dụng",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryWriteOffRequest(
+                new DateTime(2026, 1, 31),
+                "SP001",
+                "Hàng hóa hư hỏng",
+                10,
+                100000,
+                100000,
+                "Hết hạn sử dụng",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryWriteOffEntry(request);
 
@@ -233,17 +223,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInventoryTransferEntry_ShouldNotCreateEntry_WhenZeroQuantity()
         {
-            var request = new InventoryTransferRequest
-            {
-                TransferDate = new DateTime(2026, 1, 30),
-                ProductId = "SP001",
-                ProductName = "Hàng hóa A",
-                Quantity = 0,
-                UnitCostVnd = 100000,
-                FromWarehouse = "KHO A",
-                ToWarehouse = "KHO B",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InventoryTransferRequest(
+                new DateTime(2026, 1, 30),
+                "SP001",
+                "Hàng hóa A",
+                0,
+                100000,
+                "KHO A",
+                "KHO B",
+                "2026-01"
+            );
 
             var result = _service.CreateInventoryTransferEntry(request);
 

@@ -136,31 +136,29 @@ namespace GL.Application.Services
         {
             var transactions = new List<Transaction>();
 
-            var revenueRequest = new DTOs.RevenueClosingRequest
-            {
-                ClosingPeriodId = periodCode,
-                ClosingDate = closingDate,
-                Revenue511 = revenue511,
-                Revenue515 = revenue515,
-                Revenue711 = revenue711,
-                ContraRevenue521 = contraRevenue521,
-                AccountingPeriodId = periodCode
-            };
+            var revenueRequest = new DTOs.RevenueClosingRequest(
+                periodCode,
+                closingDate,
+                revenue511,
+                revenue515,
+                revenue711,
+                contraRevenue521,
+                periodCode
+            );
             var revenueTransaction = _transactionService.CreateRevenueClosingEntry(revenueRequest);
             transactions.Add(revenueTransaction);
 
-            var expenseRequest = new DTOs.ExpenseClosingRequest
-            {
-                ClosingPeriodId = periodCode,
-                ClosingDate = closingDate,
-                Expense632 = expense632,
-                Expense635 = expense635,
-                Expense641 = expense641,
-                Expense642 = expense642,
-                Expense811 = expense811,
-                Expense821 = expense821,
-                AccountingPeriodId = periodCode
-            };
+            var expenseRequest = new DTOs.ExpenseClosingRequest(
+                periodCode,
+                closingDate,
+                expense632,
+                expense635,
+                expense641,
+                expense642,
+                expense811,
+                expense821,
+                periodCode
+            );
             var expenseTransaction = _transactionService.CreateExpenseClosingEntry(expenseRequest);
             transactions.Add(expenseTransaction);
 

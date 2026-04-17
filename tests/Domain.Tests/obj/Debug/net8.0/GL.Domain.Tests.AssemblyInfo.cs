@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GL.Domain.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96fcedcb8671a0c98facc267c8d0df9d23cc6086")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7eb089903b1397ee1a162951d9354b0c6c83e98a")]
 [assembly: System.Reflection.AssemblyProductAttribute("GL.Domain.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GL.Domain.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

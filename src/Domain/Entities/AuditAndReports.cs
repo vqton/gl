@@ -321,4 +321,96 @@ namespace GL.Domain.Entities
         /// </summary>
         public decimal Amount { get; set; }
     }
+
+    /// <summary>
+    /// Báo cáo lưu chuyển tiền tệ (B03-BN)
+    /// Theo Thông tư 99/2025/TT-BTC
+    /// </summary>
+    public class CashFlowReport
+    {
+        /// <summary>
+        /// Mã kỳ báo cáo
+        /// </summary>
+        public string PeriodCode { get; set; }
+
+        /// <summary>
+        /// Ngày lập báo cáo
+        /// </summary>
+        public DateTime ReportDate { get; set; }
+
+        /// <summary>
+        /// Phương pháp: DIRECT hoặc INDIRECT
+        /// </summary>
+        public string Method { get; set; }
+
+        /// <summary>
+        /// Tiền đầu kỳ
+        /// </summary>
+        public decimal BeginningCash { get; set; }
+
+        /// <summary>
+        /// Lưu chuyển từ hoạt động kinh doanh
+        /// </summary>
+        public decimal OperatingCashFlow { get; set; }
+
+        /// <summary>
+        /// Lưu chuyển từ hoạt động đầu tư
+        /// </summary>
+        public decimal InvestingCashFlow { get; set; }
+
+        /// <summary>
+        /// Lưu chuyển từ hoạt động tài chính
+        /// </summary>
+        public decimal FinancingCashFlow { get; set; }
+
+        /// <summary>
+        /// Lưu chuyển tiền thuần trong kỳ
+        /// </summary>
+        public decimal NetCashFlow { get; set; }
+
+        /// <summary>
+        /// Tiền cuối kỳ
+        /// </summary>
+        public decimal EndingCash { get; set; }
+
+        /// <summary>
+        /// Thu từ bán hàng (mã 01)
+        /// </summary>
+        public decimal CashReceivedFromSales { get; set; }
+
+        /// <summary>
+        /// Thu từ cho vay, lãi cho vay (mã 02)
+        /// </summary>
+        public decimal CashReceivedFromInterest { get; set; }
+
+        /// <summary>
+        /// Tiền thanh toán cho NCC (mã 10)
+        /// </summary>
+        public decimal CashPaidToSuppliers { get; set; }
+
+        /// <summary>
+        /// Tiền thanh toán cho NLĐ (mã 11)
+        /// </summary>
+        public decimal CashPaidToEmployees { get; set; }
+
+        /// <summary>
+        /// Thuế TNDN đã nộp (mã 14)
+        /// </summary>
+        public decimal TaxPaid { get; set; }
+
+        /// <summary>
+        /// Mua TSCĐ (mã 21)
+        /// </summary>
+        public decimal CashPaidForFixedAssets { get; set; }
+
+        /// <summary>
+        /// Tiền vay ngắn hạn nhận được (mã 32)
+        /// </summary>
+        public decimal CashReceivedFromLoans { get; set; }
+
+        /// <summary>
+        /// Cổ tức đã trả (mã 36)
+        /// </summary>
+        public decimal DividendsPaid { get; set; }
+    }
 }

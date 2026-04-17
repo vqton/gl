@@ -1,698 +1,755 @@
 using System;
+using System.Collections.Generic;
 
 namespace GL.Application.DTOs
 {
-    /// <summary>
-    /// DTO cho yêu cầu kê khai và nộp thuế GTGT (X01)
-    /// </summary>
-    public class VatDeclarationRequest
-    {
-        public string DeclarationPeriodId { get; set; }
-        public DateTime DeclarationDate { get; set; }
-        public decimal OutputVatTotal { get; set; }
-        public decimal InputVatTotal { get; set; }
-        public string PaymentMethod { get; set; }
-        public string BankAccountId { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    #region TAX DTOs (X01-X05) - Thue
 
     /// <summary>
-    /// DTO cho yêu cầu hạch toán chi phí thuế TNDN (X02)
+    /// Yêu cầu kê khai và nộp thuế GTGT
     /// </summary>
-    public class CitTaxRequest
-    {
-        public string TaxPeriodId { get; set; }
-        public DateTime CalculationDate { get; set; }
-        public decimal TaxableIncomeVnd { get; set; }
-        public decimal CitRate { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>X01 - Tờ khai thuế GTGT</remarks>
+    public sealed record VatDeclarationRequest(
+        string DeclarationPeriodId,
+        DateTime DeclarationDate,
+        decimal OutputVatTotal,
+        decimal InputVatTotal,
+        string PaymentMethod,
+        string BankAccountId,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu hạch toán và nộp thuế TNCN (X03)
+    /// Yêu cầu hạch toán chi phí thuế TNDN
     /// </summary>
-    public class PitTaxRequest
-    {
-        public string PayrollPeriodId { get; set; }
-        public DateTime WithholdingDate { get; set; }
-        public decimal TotalPitWithheldVnd { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public string BankAccountId { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>X02 - Chi phí thuế TNDN</remarks>
+    public sealed record CitTaxRequest(
+        string TaxPeriodId,
+        DateTime CalculationDate,
+        decimal TaxableIncomeVnd,
+        decimal CitRate,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu tính lương và các khoản phải trả NLĐ (L01)
+    /// Yêu cầu hạch toán và nộp thuế TNCN
     /// </summary>
-    public class PayrollCalculationRequest
-    {
-        public string PayrollId { get; set; }
-        public DateTime PayrollMonth { get; set; }
-        public decimal TotalGrossVnd { get; set; }
-        public decimal EmployeeDeductionsVnd { get; set; }
-        public decimal NetPayVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>X03 - Thuế TNCN khấu trừ</remarks>
+    public sealed record PitTaxRequest(
+        string PayrollPeriodId,
+        DateTime WithholdingDate,
+        decimal TotalPitWithheldVnd,
+        DateTime PaymentDate,
+        string BankAccountId,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu trích bảo hiểm xã hội phần doanh nghiệp (L02)
+    /// Yêu cầu hạch toán VAT đầu vào không được khấu trừ
     /// </summary>
-    public class SocialInsuranceRequest
-    {
-        public string PayrollId { get; set; }
-        public DateTime CalculationDate { get; set; }
-        public decimal Bhxh175 { get; set; }
-        public decimal Bhyt30 { get; set; }
-        public decimal Bhtn10 { get; set; }
-        public decimal Kpcd20 { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>X04 - VAT không được khấu trừ</remarks>
+    public sealed record UnrecoverableVatRequest(
+        string InvoiceId,
+        DateTime RecognitionDate,
+        decimal VatAmountVnd,
+        string ExpenseAccountCode,
+        string Reason,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu chi lương cho người lao động (L03)
+    /// Yêu cầu ghi nhận thuế TNDN hoãn lại
     /// </summary>
-    public class PayrollPaymentRequest
-    {
-        public string PaymentBatchId { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public decimal TotalNetPayVnd { get; set; }
-        public string PaymentMethod { get; set; }
-        public string BankTransferFileRef { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>X05 - Thuế hoãn lại</remarks>
+    public sealed record DeferredTaxRequest(
+        string FiscalYearId,
+        DateTime RecognitionDate,
+        decimal DeferredTaxAssetVnd,
+        string TaxCode,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu mua tài sản cố định (A01)
+    /// Yêu cầu đảo thuế TNDN hoãn lại
     /// </summary>
-    public class FixedAssetPurchaseRequest
-    {
-        public string AssetHandoverId { get; set; }
-        public DateTime HandoverDate { get; set; }
-        public string AssetType { get; set; }
-        public decimal OriginalCostVnd { get; set; }
-        public decimal VatAmountVnd { get; set; }
-        public string SupplierId { get; set; }
-        public string PaymentMethod { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    public sealed record DeferredTaxReversalRequest(
+        DateTime ReversalDate,
+        decimal ReversalAmountVnd,
+        string OriginalDeferredTaxCode,
+        string Reason,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region PAYROLL DTOs (L01-L07) - Tien luong
 
     /// <summary>
-    /// DTO cho yêu cầu trích khấu hao TSCĐ hàng tháng (A02)
+    /// Yêu cầu tính lương và các khoản phải trả NLĐ
     /// </summary>
-    public class DepreciationRequest
-    {
-        public string DepreciationPeriodId { get; set; }
-        public DateTime CalculationDate { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>L01 - Tính lương</remarks>
+    public sealed record PayrollCalculationRequest(
+        string PayrollId,
+        DateTime PayrollMonth,
+        decimal TotalGrossVnd,
+        decimal EmployeeDeductionsVnd,
+        decimal NetPayVnd,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu kết chuyển doanh thu (G01)
+    /// Yêu cầu trích bảo hiểm xã hội phần doanh nghiệp
     /// </summary>
-    public class RevenueClosingRequest
-    {
-        public string ClosingPeriodId { get; set; }
-        public DateTime ClosingDate { get; set; }
-        public decimal Revenue511 { get; set; }
-        public decimal Revenue515 { get; set; }
-        public decimal Revenue711 { get; set; }
-        public decimal ContraRevenue521 { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>L02 - Trích BHXH doanh nghiệp</remarks>
+    public sealed record SocialInsuranceRequest(
+        string PayrollId,
+        DateTime CalculationDate,
+        decimal Bhxh175,
+        decimal Bhyt30,
+        decimal Bhtn10,
+        decimal Kpcd20,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu kết chuyển chi phí (G02)
+    /// Yêu cầu chi lương cho người lao động
     /// </summary>
-    public class ExpenseClosingRequest
-    {
-        public string ClosingPeriodId { get; set; }
-        public DateTime ClosingDate { get; set; }
-        public decimal Expense632 { get; set; }
-        public decimal Expense635 { get; set; }
-        public decimal Expense641 { get; set; }
-        public decimal Expense642 { get; set; }
-        public decimal Expense811 { get; set; }
-        public decimal Expense821 { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>L03 - Chi lương</remarks>
+    public sealed record PayrollPaymentRequest(
+        string PaymentBatchId,
+        DateTime PaymentDate,
+        decimal TotalNetPayVnd,
+        string PaymentMethod,
+        string BankTransferFileRef,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region FIXED ASSETS DTOs (A01-A06) - Tai san co dinh
 
     /// <summary>
-    /// DTO cho yêu cầu kết chuyển lợi nhuận sau thuế (G03)
+    /// Yêu cầu mua tài sản cố định
     /// </summary>
-    public class ProfitClosingRequest
-    {
-        public string FiscalYearId { get; set; }
-        public DateTime ClosingDate { get; set; }
-        public decimal ProfitAfterTaxVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>A01 - Mua TSCĐ</remarks>
+    public sealed record FixedAssetPurchaseRequest(
+        string AssetHandoverId,
+        DateTime HandoverDate,
+        string AssetType,
+        decimal OriginalCostVnd,
+        decimal VatAmountVnd,
+        string SupplierId,
+        string PaymentMethod,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu hạch toán VAT đầu vào không được khấu trừ (X04)
+    /// Yêu cầu trích khấu hao TSCĐ hàng tháng
     /// </summary>
-    public class UnrecoverableVatRequest
-    {
-        public string InvoiceId { get; set; }
-        public DateTime RecognitionDate { get; set; }
-        public decimal VatAmountVnd { get; set; }
-        public string ExpenseAccountCode { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>A02 - Khấu hao TSCĐ</remarks>
+    public sealed record DepreciationRequest(
+        string DepreciationPeriodId,
+        DateTime CalculationDate,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region PERIOD CLOSING DTOs (G01-G04) - Ket chuyen
 
     /// <summary>
-    /// DTO cho yêu cầu ghi nhận thuế TNDN hoãn lại (X05)
+    /// Yêu cầu kết chuyển doanh thu
     /// </summary>
-    public class DeferredTaxRequest
-    {
-        public string FiscalYearId { get; set; }
-        public DateTime RecognitionDate { get; set; }
-        public decimal DeferredTaxAssetVnd { get; set; }
-        public string TaxCode { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>G01 - Kết chuyển doanh thu</remarks>
+    public sealed record RevenueClosingRequest(
+        string ClosingPeriodId,
+        DateTime ClosingDate,
+        decimal Revenue511,
+        decimal Revenue515,
+        decimal Revenue711,
+        decimal ContraRevenue521,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu đảo thuế TNDN hoãn lại
+    /// Yêu cầu kết chuyển chi phí
     /// </summary>
-    public class DeferredTaxReversalRequest
-    {
-        public DateTime ReversalDate { get; set; }
-        public decimal ReversalAmountVnd { get; set; }
-        public string OriginalDeferredTaxCode { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>G02 - Kết chuyển chi phí</remarks>
+    public sealed record ExpenseClosingRequest(
+        string ClosingPeriodId,
+        DateTime ClosingDate,
+        decimal Expense632,
+        decimal Expense635,
+        decimal Expense641,
+        decimal Expense642,
+        decimal Expense811,
+        decimal Expense821,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu tạo hóa đơn điện tử (FCT)
+    /// Yêu cầu kết chuyển lợi nhuận sau thuế
     /// </summary>
-    public class FctInvoiceRequest
-    {
-        public string InvoiceId { get; set; }
-        public DateTime InvoiceDate { get; set; }
-        public string SellerTaxCode { get; set; }
-        public string BuyerTaxCode { get; set; }
-        public decimal TotalBeforeVatVnd { get; set; }
-        public decimal VatRate { get; set; }
-        public decimal VatAmountVnd { get; set; }
-        public string PaymentStatus { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>G03 - Kết chuyển lợi nhuận</remarks>
+    public sealed record ProfitClosingRequest(
+        string FiscalYearId,
+        DateTime ClosingDate,
+        decimal ProfitAfterTaxVnd,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu phân bổ chi phí trả trước (G04)
+    /// Yêu cầu phân bổ chi phí trả trước
     /// </summary>
-    public class PrepaidExpenseAllocationRequest
-    {
-        public string AllocationPeriodId { get; set; }
-        public DateTime AllocationDate { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>G04 - Phân bổ CPPT</remarks>
+    public sealed record PrepaidExpenseAllocationRequest(
+        string AllocationPeriodId,
+        DateTime AllocationDate,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region BANK DTOs (B01-B08) - Ngan hang
 
     /// <summary>
-    /// DTO cho yêu cầu kiểm tra COA đầy đủ
+    /// Yêu cầu đối chiếu sao kê ngân hàng
     /// </summary>
-    public class CoaValidationRequest
-    {
-        public string AccountCode { get; set; }
-        public GL.Domain.Enums.AccountType AccountType { get; set; }
-        public decimal DebitAmount { get; set; }
-        public decimal CreditAmount { get; set; }
-        public string ParentCode { get; set; }
-    }
+    /// <remarks>B01 - Đối chiếu NH</remarks>
+    public sealed record BankReconciliationRequest(
+        DateTime ReconciliationDate,
+        string BankAccountCode,
+        decimal BookBalance,
+        decimal BankStatementBalance,
+        string DifferenceReason,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// Kết quả kiểm tra COA
+    /// Yêu cầu chuyển khoản thanh toán
     /// </summary>
-    public class CoaValidationResult
-    {
-        public bool IsValid { get; set; }
-        public string ErrorMessage { get; set; }
-    }
+    /// <remarks>B02 - Chuyển khoản</remarks>
+    public sealed record WirePaymentRequest(
+        DateTime PaymentDate,
+        string SupplierId,
+        string SupplierName,
+        decimal AmountVnd,
+        decimal VatAmountVnd,
+        string BankAccountCode,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu đốichiếu sao kê ngân hàng (B01)
+    /// Yêu cầu giải ngân vay ngân hàng
     /// </summary>
-    public class BankReconciliationRequest
-    {
-        public DateTime ReconciliationDate { get; set; }
-        public string BankAccountCode { get; set; }
-        public decimal BookBalance { get; set; }
-        public decimal BankStatementBalance { get; set; }
-        public string DifferenceReason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B03 - Giải ngân</remarks>
+    public sealed record LoanDrawdownRequest(
+        DateTime DrawdownDate,
+        decimal LoanAmountVnd,
+        string LoanAccountCode,
+        string BankName,
+        decimal InterestRate,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu chuyển khoản thanh toán (B02)
+    /// Yêu cầu trả nợ vay
     /// </summary>
-    public class WirePaymentRequest
-    {
-        public DateTime PaymentDate { get; set; }
-        public string SupplierId { get; set; }
-        public string SupplierName { get; set; }
-        public decimal AmountVnd { get; set; }
-        public decimal VatAmountVnd { get; set; }
-        public string BankAccountCode { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B04 - Trả nợ vay</remarks>
+    public sealed record LoanRepaymentRequest(
+        DateTime RepaymentDate,
+        decimal PrincipalAmountVnd,
+        decimal InterestAmountVnd,
+        string LoanAccountCode,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu giải ngân vay ngân hàng (B03)
+    /// Yêu cầu phí ngân hàng
     /// </summary>
-    public class LoanDrawdownRequest
-    {
-        public DateTime DrawdownDate { get; set; }
-        public decimal LoanAmountVnd { get; set; }
-        public string LoanAccountCode { get; set; }
-        public string BankName { get; set; }
-        public decimal InterestRate { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B05 - Phí NH</remarks>
+    public sealed record BankFeeRequest(
+        DateTime FeeDate,
+        decimal FeeAmountVnd,
+        string FeeDescription,
+        string ExpenseAccountCode,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu trả nợ vay (B04)
+    /// Yêu cầu lãi tiền gửi
     /// </summary>
-    public class LoanRepaymentRequest
-    {
-        public DateTime RepaymentDate { get; set; }
-        public decimal PrincipalAmountVnd { get; set; }
-        public decimal InterestAmountVnd { get; set; }
-        public string LoanAccountCode { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B06 - Lãi tiền gửi</remarks>
+    public sealed record InterestIncomeRequest(
+        DateTime InterestDate,
+        decimal InterestAmountVnd,
+        string BankAccountCode,
+        decimal TaxWithheldVnd,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu phí ngân hàng (B05)
+    /// Yêu cầu đánh giá lại ngoại hối
     /// </summary>
-    public class BankFeeRequest
-    {
-        public DateTime FeeDate { get; set; }
-        public decimal FeeAmountVnd { get; set; }
-        public string FeeDescription { get; set; }
-        public string ExpenseAccountCode { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B07 - Đánh giá FX</remarks>
+    public sealed record FxRevaluationRequest(
+        DateTime RevaluationDate,
+        string BankAccountCode,
+        decimal OriginalAmountVnd,
+        decimal NewAmountVnd,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu lãi tiền gửi (B06)
+    /// Yêu cầu mở LC
     /// </summary>
-    public class InterestIncomeRequest
-    {
-        public DateTime InterestDate { get; set; }
-        public decimal InterestAmountVnd { get; set; }
-        public string BankAccountCode { get; set; }
-        public decimal TaxWithheldVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>B08 - Mở LC</remarks>
+    public sealed record LcOpeningRequest(
+        DateTime LcIssueDate,
+        decimal LcAmountVnd,
+        string BankName,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu đánh giá lại ngoại hối (B07)
+    /// Yêu cầu thanh toán LC
     /// </summary>
-    public class FxRevaluationRequest
-    {
-        public DateTime RevaluationDate { get; set; }
-        public string BankAccountCode { get; set; }
-        public decimal OriginalAmountVnd { get; set; }
-        public decimal NewAmountVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    public sealed record LcSettlementRequest(
+        DateTime SettlementDate,
+        decimal OriginalLcAmountVnd,
+        decimal PaymentAmountVnd,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region INVENTORY DTOs (I01-I07) - Ton kho
 
     /// <summary>
-    /// DTO cho yêu cầu mở LC (B07)
+    /// Yêu cầu nhập kho hàng mua
     /// </summary>
-    public class LcOpeningRequest
-    {
-        public DateTime LcIssueDate { get; set; }
-        public decimal LcAmountVnd { get; set; }
-        public string BankName { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I01 - Nhập kho</remarks>
+    public sealed record InventoryReceiptRequest(
+        DateTime ReceiptDate,
+        string InventoryAccount,
+        string ProductId,
+        string ProductName,
+        decimal Quantity,
+        decimal UnitPriceVnd,
+        decimal VatRate,
+        string SupplierId,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu thanh toán LC
+    /// Yêu cầu xuất kho hàng bán/sử dụng
     /// </summary>
-    public class LcSettlementRequest
-    {
-        public DateTime SettlementDate { get; set; }
-        public decimal OriginalLcAmountVnd { get; set; }
-        public decimal PaymentAmountVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I02 - Xuất kho</remarks>
+    public sealed record InventoryIssueRequest(
+        DateTime IssueDate,
+        string InventoryAccount,
+        string ProductId,
+        string ProductName,
+        decimal Quantity,
+        decimal UnitCostVnd,
+        string Reason,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu nhập kho hàng mua (I01)
+    /// Yêu cầu chuyển kho nội bộ
     /// </summary>
-    public class InventoryReceiptRequest
-    {
-        public DateTime ReceiptDate { get; set; }
-        public string InventoryAccount { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal UnitPriceVnd { get; set; }
-        public decimal VatRate { get; set; }
-        public string SupplierId { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I03 - Chuyển kho</remarks>
+    public sealed record InventoryTransferRequest(
+        DateTime TransferDate,
+        string ProductId,
+        string ProductName,
+        decimal Quantity,
+        decimal UnitCostVnd,
+        string FromWarehouse,
+        string ToWarehouse,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu xuất kho hàng bán/sử dụng (I02)
+    /// Yêu cầu kiểm kê hàng tồn kho
     /// </summary>
-    public class InventoryIssueRequest
-    {
-        public DateTime IssueDate { get; set; }
-        public string InventoryAccount { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal UnitCostVnd { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I04 - Kiểm kê</remarks>
+    public sealed record InventoryCountRequest(
+        DateTime CountDate,
+        string ProductId,
+        string ProductName,
+        decimal BookQuantity,
+        decimal ActualQuantity,
+        string Reason,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu chuyển kho nội bộ (I03)
+    /// Yêu cầu đánh giá hàng tồn kho
     /// </summary>
-    public class InventoryTransferRequest
-    {
-        public DateTime TransferDate { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal UnitCostVnd { get; set; }
-        public string FromWarehouse { get; set; }
-        public string ToWarehouse { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I05 - Đánh giá</remarks>
+    public sealed record InventoryRevaluationRequest(
+        DateTime RevaluationDate,
+        string ProductId,
+        string ProductName,
+        decimal BookValueVnd,
+        decimal MarketValueVnd,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu kiểm kê hàng tồn kho (I04)
+    /// Yêu cầu trích lập dự phòng
     /// </summary>
-    public class InventoryCountRequest
-    {
-        public DateTime CountDate { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal BookQuantity { get; set; }
-        public decimal ActualQuantity { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I06 - Dự phòng</remarks>
+    public sealed record InventoryProvisionRequest(
+        DateTime ProvisionDate,
+        decimal ProvisionAmountVnd,
+        string Reason,
+        string AccountingPeriodId
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu đánh giá hàng tồn kho (I05)
+    /// Yêu cầu xử lý hàng hư hỏng
     /// </summary>
-    public class InventoryRevaluationRequest
-    {
-        public DateTime RevaluationDate { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal BookValueVnd { get; set; }
-        public decimal MarketValueVnd { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    /// <remarks>I07 - Xử lý hàng</remarks>
+    public sealed record InventoryWriteOffRequest(
+        DateTime WriteOffDate,
+        string ProductId,
+        string ProductName,
+        decimal WriteOffQuantity,
+        decimal UnitCostVnd,
+        decimal VatRecoverableVnd,
+        string Reason,
+        string AccountingPeriodId
+    );
+
+    #endregion
+
+    #region COST ACCOUNTING DTOs (C01) - Gia thanh
 
     /// <summary>
-    /// DTO cho yêu cầu trích lập dự phòng (I06)
+    /// Yêu cầu chi phí nguyên vật liệu trực tiếp
     /// </summary>
-    public class InventoryProvisionRequest
-    {
-        public DateTime ProvisionDate { get; set; }
-        public decimal ProvisionAmountVnd { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
+    public sealed record DirectMaterialCostRequest(
+        string TransactionId,
+        string AccountingPeriodId,
+        string WorkOrderId,
+        string ProductId,
+        decimal MaterialCostVnd,
+        string InventoryAccount
+    );
 
     /// <summary>
-    /// DTO cho yêu cầu xử lý hàng hư hỏng (I07)
+    /// Yêu cầu chi phí nhân công trực tiếp
     /// </summary>
-    public class InventoryWriteOffRequest
-    {
-        public DateTime WriteOffDate { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public decimal WriteOffQuantity { get; set; }
-        public decimal UnitCostVnd { get; set; }
-        public decimal VatRecoverableVnd { get; set; }
-        public string Reason { get; set; }
-        public string AccountingPeriodId { get; set; }
-    }
-
-    // ============== COST ACCOUNTING DTOs (C01) ==============
+    public sealed record DirectLaborCostRequest(
+        string TransactionId,
+        string AccountingPeriodId,
+        string WorkOrderId,
+        decimal LaborCostVnd,
+        string SalaryAccount
+    );
 
     /// <summary>
-    /// DTO cho chi phí nguyên vật liệu trực tiếp (C01a)
+    /// Yêu cầu chi phí sản xuất chung
     /// </summary>
-    public class DirectMaterialCostRequest
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public string WorkOrderId { get; set; }
-        public string ProductId { get; set; }
-        public decimal MaterialCostVnd { get; set; }
-        public string InventoryAccount { get; set; }
-    }
+    public sealed record ManufacturingOverheadRequest(
+        string TransactionId,
+        string AccountingPeriodId,
+        string WorkOrderId,
+        decimal OverheadCostVnd,
+        string OverheadAccount
+    );
 
     /// <summary>
-    /// DTO cho chi phí nhân công trực tiếp (C01b)
+    /// Yêu cầu kết chuyển WIP
     /// </summary>
-    public class DirectLaborCostRequest
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public string WorkOrderId { get; set; }
-        public decimal LaborCostVnd { get; set; }
-        public string SalaryAccount { get; set; }
-    }
+    public sealed record WIPClosingRequest(
+        string TransactionId,
+        string AccountingPeriodId,
+        string WorkOrderId,
+        decimal TotalWipCostVnd
+    );
 
     /// <summary>
-    /// DTO cho chi phí sản xuất chung (C01c)
+    /// Yêu cầu tính giá thành đơn vị
     /// </summary>
-    public class ManufacturingOverheadRequest
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public string WorkOrderId { get; set; }
-        public decimal OverheadCostVnd { get; set; }
-        public string OverheadAccount { get; set; }
-    }
-
-    /// <summary>
-    /// DTO cho kết chuyển WIP (C01d)
-    /// </summary>
-    public class WIPClosingRequest
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public string WorkOrderId { get; set; }
-        public decimal TotalWipCostVnd { get; set; }
-    }
-
-    /// <summary>
-    /// DTO cho tính giá thành đơn vị (C01e)
-    /// </summary>
-    public class UnitCostCalculationRequest
-    {
-        public string ProductId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public decimal TotalCostVnd { get; set; }
-        public int TotalQuantity { get; set; }
-        public string Method { get; set; }
-    }
+    public sealed record UnitCostCalculationRequest(
+        string ProductId,
+        string AccountingPeriodId,
+        decimal TotalCostVnd,
+        int TotalQuantity,
+        string Method
+    );
 
     /// <summary>
     /// Kết quả tính giá thành đơn vị
     /// </summary>
-    public class UnitCostResult
-    {
-        public string ProductId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public decimal UnitCostVnd { get; set; }
-        public decimal TotalCostVnd { get; set; }
-        public int TotalQuantity { get; set; }
-    }
+    public sealed record UnitCostResult(
+        string ProductId,
+        string AccountingPeriodId,
+        decimal UnitCostVnd,
+        decimal TotalCostVnd,
+        int TotalQuantity
+    );
 
     /// <summary>
-    /// DTO cho phân bổ chi phí SXC (C01f)
+    /// Yêu cầu phân bổ chi phí SXC
     /// </summary>
-    public class OverheadAllocationRequest
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public decimal TotalOverheadVnd { get; set; }
-        public string AllocationBase { get; set; }
-    }
+    public sealed record OverheadAllocationRequest(
+        string TransactionId,
+        string AccountingPeriodId,
+        decimal TotalOverheadVnd,
+        string AllocationBase
+    );
 
     /// <summary>
     /// Kết quả phân bổ chi phí SXC
     /// </summary>
-    public class OverheadAllocationResult
-    {
-        public string TransactionId { get; set; }
-        public string AccountingPeriodId { get; set; }
-        public List<OverheadAllocation> Allocations { get; set; }
-    }
+    public sealed record OverheadAllocationResult(
+        string TransactionId,
+        string AccountingPeriodId,
+        List<OverheadAllocationItem> Allocations
+    );
 
     /// <summary>
     /// Mục phân bổ chi phí SXC
     /// </summary>
-    public class OverheadAllocation
-    {
-        public string ProductId { get; set; }
-        public decimal AllocatedAmount { get; set; }
-    }
+    public sealed record OverheadAllocationItem(
+        string ProductId,
+        decimal AllocatedAmount
+    );
 
-    // ============== SUBSIDIARY LEDGER DTOs (S01-S03) ==============
+    #endregion
+
+    #region SUBSIDIARY LEDGER DTOs (S01-S03) - So chi tiet
 
     // --- Accounts Receivable (131) ---
 
-    public class CreateAREntryRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string CustomerId { get; set; }
-        public decimal AmountVnd { get; set; }
-        public decimal NetAmountVnd { get; set; }
-        public decimal VatAmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu tạo dòng phải thu (131)
+    /// </summary>
+    public sealed record CreateAREntryRequest(
+        string TransactionId,
+        DateTime TransactionDate,
+        string CustomerId,
+        decimal AmountVnd,
+        decimal NetAmountVnd,
+        decimal VatAmountVnd
+    );
 
-    public class UpdateARPaymentRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public string CustomerId { get; set; }
-        public decimal PaymentAmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu cập nhật thanh toán phải thu
+    /// </summary>
+    public sealed record UpdateARPaymentRequest(
+        string TransactionId,
+        DateTime PaymentDate,
+        string CustomerId,
+        decimal PaymentAmountVnd
+    );
 
-    public class AginReport
-    {
-        public string CustomerId { get; set; }
-        public DateTime ReportDate { get; set; }
-        public List<AgingBucket> AgingDetails { get; set; }
-    }
+    /// <summary>
+    /// Báo cáo công nợ phải thu theo kỳ hạn
+    /// </summary>
+    public sealed record AgingReport(
+        string CustomerId,
+        DateTime ReportDate,
+        List<AgingBucketItem> AgingDetails
+    );
 
-    public class AgingBucket
-    {
-        public string Bucket { get; set; }
-        public decimal AmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Khoản công nợ theo kỳ hạn
+    /// </summary>
+    public sealed record AgingBucketItem(
+        string Bucket,
+        decimal AmountVnd
+    );
 
-    public class CreateBadDebtProvisionRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime ProvisionDate { get; set; }
-        public decimal ProvisionAmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu trích lập dự phòng phải thu khó đòi
+    /// </summary>
+    public sealed record CreateBadDebtProvisionRequest(
+        string TransactionId,
+        DateTime ProvisionDate,
+        decimal ProvisionAmountVnd
+    );
 
     // --- Accounts Payable (331) ---
 
-    public class CreateAPEntryRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string SupplierId { get; set; }
-        public decimal AmountVnd { get; set; }
-        public decimal VatAmountVnd { get; set; }
-        public decimal TotalAmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu tạo dòng phải trả (331)
+    /// </summary>
+    public sealed record CreateAPEntryRequest(
+        string TransactionId,
+        DateTime TransactionDate,
+        string SupplierId,
+        decimal AmountVnd,
+        decimal VatAmountVnd,
+        decimal TotalAmountVnd
+    );
 
-    public class UpdateAPPaymentRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public string SupplierId { get; set; }
-        public decimal PaymentAmountVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu cập nhật thanh toán phải trả
+    /// </summary>
+    public sealed record UpdateAPPaymentRequest(
+        string TransactionId,
+        DateTime PaymentDate,
+        string SupplierId,
+        decimal PaymentAmountVnd
+    );
 
     // --- Inventory (156) ---
 
-    public class UpdateInventoryCardRequest
-    {
-        public string TransactionId { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string ProductId { get; set; }
-        public string ProductName { get; set; }
-        public string TransactionType { get; set; }
-        public decimal Quantity { get; set; }
-        public decimal UnitCostVnd { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu cập nhật thẻ kho (156)
+    /// </summary>
+    public sealed record UpdateInventoryCardRequest(
+        string TransactionId,
+        DateTime TransactionDate,
+        string ProductId,
+        string ProductName,
+        string TransactionType,
+        decimal Quantity,
+        decimal UnitCostVnd
+    );
 
-    public class CalculateIssueCostRequest
-    {
-        public string ProductId { get; set; }
-        public string Method { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu tính giá xuất kho
+    /// </summary>
+    public sealed record CalculateIssueCostRequest(
+        string ProductId,
+        string Method
+    );
 
-    // ============== AUDIT TRAIL DTOs (AT01-AT03) ==============
+    #endregion
 
-    public class CreateAuditLogRequest
-    {
-        public string UserId { get; set; }
-        public string Action { get; set; }
-        public string TableName { get; set; }
-        public string RecordId { get; set; }
-        public string OldValues { get; set; }
-        public string NewValues { get; set; }
-        public string IpAddress { get; set; }
-        public string Reason { get; set; }
-    }
+    #region AUDIT TRAIL DTOs (AT01-AT03) - Kiem toan
 
-    public class AuditLogResult
-    {
-        public Guid Id { get; set; }
-        public string UserId { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string Action { get; set; }
-        public string TableName { get; set; }
-        public string RecordId { get; set; }
-        public string OldValues { get; set; }
-        public string NewValues { get; set; }
-        public string IpAddress { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu tạo log kiểm toán
+    /// </summary>
+    public sealed record CreateAuditLogRequest(
+        string UserId,
+        string Action,
+        string TableName,
+        string RecordId,
+        string? OldValues,
+        string? NewValues,
+        string? IpAddress,
+        string? Reason
+    );
 
-    public class QueryAuditRequest
-    {
-        public string RecordId { get; set; }
-        public string UserId { get; set; }
-        public string TableName { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
-    }
+    /// <summary>
+    /// Kết quả log kiểm toán
+    /// </summary>
+    public sealed record AuditLogResult(
+        Guid Id,
+        string UserId,
+        DateTime Timestamp,
+        string Action,
+        string TableName,
+        string RecordId,
+        string? OldValues,
+        string? NewValues,
+        string? IpAddress
+    );
 
-    public class AuditReportResult
-    {
-        public string PeriodId { get; set; }
-        public DateTime GeneratedAt { get; set; }
-        public int TotalEntries { get; set; }
-        public List<AuditLogResult> Entries { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu truy vấn audit trail
+    /// </summary>
+    public sealed record QueryAuditRequest(
+        string? RecordId,
+        string? UserId,
+        string? TableName,
+        DateTime? StartDate,
+        DateTime? EndDate
+    );
 
-    // ============== PERIOD LOCKING DTOs (PL01-PL03) ==============
+    /// <summary>
+    /// Kết quả báo cáo audit
+    /// </summary>
+    public sealed record AuditReportResult(
+        string? PeriodId,
+        DateTime GeneratedAt,
+        int TotalEntries,
+        List<AuditLogResult> Entries
+    );
 
-    public class OpenPeriodRequest
-    {
-        public string PeriodId { get; set; }
-        public string RequestedBy { get; set; }
-    }
+    #endregion
 
-    public class ClosePeriodRequest
-    {
-        public string PeriodId { get; set; }
-        public string RequestedBy { get; set; }
-        public string Reason { get; set; }
-    }
+    #region PERIOD LOCKING DTOs (PL01-PL03) - Khoa ky
 
-    public class ValidatePeriodRequest
-    {
-        public string PeriodId { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu mở kỳ kế toán
+    /// </summary>
+    public sealed record OpenPeriodRequest(
+        string PeriodId,
+        string RequestedBy
+    );
 
-    public class PeriodValidationResult
-    {
-        public bool IsValid { get; set; }
-        public string Message { get; set; }
-        public string Status { get; set; }
-    }
+    /// <summary>
+    /// Yêu cầu đóng kỳ kế toán
+    /// </summary>
+    public sealed record ClosePeriodRequest(
+        string PeriodId,
+        string RequestedBy,
+        string? Reason
+    );
+
+    /// <summary>
+    /// Yêu cầu kiểm tra kỳ kế toán
+    /// </summary>
+    public sealed record ValidatePeriodRequest(
+        string PeriodId
+    );
+
+    /// <summary>
+    /// Kết quả kiểm tra kỳ kế toán
+    /// </summary>
+    public sealed record PeriodValidationResult(
+        bool IsValid,
+        string Message,
+        string Status
+    );
+
+    #endregion
+
+    #region GENERAL DTOs - Chung
+
+    /// <summary>
+    /// Yêu cầu tạo hóa đơn điện tử (FCT)
+    /// </summary>
+    public sealed record FctInvoiceRequest(
+        string InvoiceId,
+        DateTime InvoiceDate,
+        string SellerTaxCode,
+        string BuyerTaxCode,
+        decimal TotalBeforeVatVnd,
+        decimal VatRate,
+        decimal VatAmountVnd,
+        string PaymentStatus,
+        string AccountingPeriodId
+    );
+
+    /// <summary>
+    /// Yêu cầu kiểm tra COA đầy đủ
+    /// </summary>
+    public sealed record CoaValidationRequest(
+        string AccountCode,
+        GL.Domain.Enums.AccountType AccountType,
+        decimal DebitAmount,
+        decimal CreditAmount,
+        string? ParentCode
+    );
+
+    /// <summary>
+    /// Kết quả kiểm tra COA
+    /// </summary>
+    public sealed record CoaValidationResult(
+        bool IsValid,
+        string? ErrorMessage
+    );
+
+    #endregion
 }

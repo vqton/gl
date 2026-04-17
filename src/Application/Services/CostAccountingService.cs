@@ -92,14 +92,13 @@ namespace GL.Application.Services
         {
             var unitCost = request.TotalCostVnd / request.TotalQuantity;
 
-            return new DTOs.UnitCostResult
-            {
-                ProductId = request.ProductId,
-                AccountingPeriodId = request.AccountingPeriodId,
-                UnitCostVnd = unitCost,
-                TotalCostVnd = request.TotalCostVnd,
-                TotalQuantity = request.TotalQuantity,
-            };
+            return new DTOs.UnitCostResult(
+                request.ProductId,
+                request.AccountingPeriodId,
+                unitCost,
+                request.TotalCostVnd,
+                request.TotalQuantity
+            );
         }
 
         /// <summary>
@@ -107,26 +106,24 @@ namespace GL.Application.Services
         /// </summary>
         public DTOs.OverheadAllocationResult AllocateOverhead(DTOs.OverheadAllocationRequest request)
         {
-            var result = new DTOs.OverheadAllocationResult
-            {
-                TransactionId = request.TransactionId,
-                AccountingPeriodId = request.AccountingPeriodId,
-                Allocations = new List<DTOs.OverheadAllocation>(),
-            };
+            var allocations = new List<DTOs.OverheadAllocationItem>();
 
             var totalProducts = 3;
             var amountPerProduct = request.TotalOverheadVnd / totalProducts;
 
             for (int i = 1; i <= totalProducts; i++)
             {
-                result.Allocations.Add(new DTOs.OverheadAllocation
-                {
-                    ProductId = $"SP-{i:D3}",
-                    AllocatedAmount = amountPerProduct,
-                });
+                allocations.Add(new DTOs.OverheadAllocationItem(
+                    $"SP-{i:D3}",
+                    amountPerProduct
+                ));
             }
 
-            return result;
+            return new DTOs.OverheadAllocationResult(
+                request.TransactionId,
+                request.AccountingPeriodId,
+                allocations
+            );
         }
     }
 }

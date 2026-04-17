@@ -18,15 +18,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateBankReconciliationEntry_ShouldCreateBalancedTransaction_WhenAdjustDifference()
         {
-            var request = new BankReconciliationRequest
-            {
-                ReconciliationDate = new DateTime(2026, 1, 31),
-                BankAccountCode = "112",
-                BookBalance = 1000000,
-                BankStatementBalance = 1000500,
-                DifferenceReason = "Bank fee not recorded",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new BankReconciliationRequest(
+                new DateTime(2026, 1, 31),
+                "112",
+                1000000,
+                1000500,
+                "Bank fee not recorded",
+                "2026-01"
+            );
 
             var result = _service.CreateBankReconciliationEntry(request);
 
@@ -37,15 +36,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateBankReconciliationEntry_ShouldCreateBalancedTransaction_WhenNoDifference()
         {
-            var request = new BankReconciliationRequest
-            {
-                ReconciliationDate = new DateTime(2026, 1, 31),
-                BankAccountCode = "112",
-                BookBalance = 1000000,
-                BankStatementBalance = 1000000,
-                DifferenceReason = null,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new BankReconciliationRequest(
+                new DateTime(2026, 1, 31),
+                "112",
+                1000000,
+                1000000,
+                null,
+                "2026-01"
+            );
 
             var result = _service.CreateBankReconciliationEntry(request);
 
@@ -56,16 +54,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateWirePaymentEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new WirePaymentRequest
-            {
-                PaymentDate = new DateTime(2026, 1, 15),
-                SupplierId = "NCC001",
-                SupplierName = "Công ty ABC",
-                AmountVnd = 1100000,
-                VatAmountVnd = 100000,
-                BankAccountCode = "112",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new WirePaymentRequest(
+                new DateTime(2026, 1, 15),
+                "NCC001",
+                "Công ty ABC",
+                1100000,
+                100000,
+                "112",
+                "2026-01"
+            );
 
             var result = _service.CreateWirePaymentEntry(request);
 
@@ -78,15 +75,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateLoanDrawdownEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new LoanDrawdownRequest
-            {
-                DrawdownDate = new DateTime(2026, 1, 10),
-                LoanAmountVnd = 10000000,
-                LoanAccountCode = "311",
-                BankName = "Vietcombank",
-                InterestRate = 0.08m,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new LoanDrawdownRequest(
+                new DateTime(2026, 1, 10),
+                10000000,
+                "311",
+                "Vietcombank",
+                0.08m,
+                "2026-01"
+            );
 
             var result = _service.CreateLoanDrawdownEntry(request);
 
@@ -99,14 +95,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateLoanRepaymentEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new LoanRepaymentRequest
-            {
-                RepaymentDate = new DateTime(2026, 1, 20),
-                PrincipalAmountVnd = 10000000,
-                InterestAmountVnd = 800000,
-                LoanAccountCode = "311",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new LoanRepaymentRequest(
+                new DateTime(2026, 1, 20),
+                10000000,
+                800000,
+                "311",
+                "2026-01"
+            );
 
             var result = _service.CreateLoanRepaymentEntry(request);
 
@@ -119,14 +114,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateBankFeeEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new BankFeeRequest
-            {
-                FeeDate = new DateTime(2026, 1, 5),
-                FeeAmountVnd = 55000,
-                FeeDescription = "Phí quản lý tài khoản tháng 1/2026",
-                ExpenseAccountCode = "6421",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new BankFeeRequest(
+                new DateTime(2026, 1, 5),
+                55000,
+                "Phí quản lý tài khoản tháng 1/2026",
+                "6421",
+                "2026-01"
+            );
 
             var result = _service.CreateBankFeeEntry(request);
 
@@ -137,14 +131,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateInterestIncomeEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new InterestIncomeRequest
-            {
-                InterestDate = new DateTime(2026, 1, 31),
-                InterestAmountVnd = 120000,
-                BankAccountCode = "112",
-                TaxWithheldVnd = 12000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new InterestIncomeRequest(
+                new DateTime(2026, 1, 31),
+                120000,
+                "112",
+                12000,
+                "2026-01"
+            );
 
             var result = _service.CreateInterestIncomeEntry(request);
 
@@ -155,14 +148,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateFxRevaluationEntry_ShouldCreateBalancedTransaction_WhenGain()
         {
-            var request = new FxRevaluationRequest
-            {
-                RevaluationDate = new DateTime(2026, 1, 31),
-                BankAccountCode = "112",
-                OriginalAmountVnd = 1000000,
-                NewAmountVnd = 1020000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new FxRevaluationRequest(
+                new DateTime(2026, 1, 31),
+                "112",
+                1000000,
+                1020000,
+                "2026-01"
+            );
 
             var result = _service.CreateFxRevaluationEntry(request);
 
@@ -173,14 +165,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateFxRevaluationEntry_ShouldCreateBalancedTransaction_WhenLoss()
         {
-            var request = new FxRevaluationRequest
-            {
-                RevaluationDate = new DateTime(2026, 1, 31),
-                BankAccountCode = "112",
-                OriginalAmountVnd = 1000000,
-                NewAmountVnd = 980000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new FxRevaluationRequest(
+                new DateTime(2026, 1, 31),
+                "112",
+                1000000,
+                980000,
+                "2026-01"
+            );
 
             var result = _service.CreateFxRevaluationEntry(request);
 
@@ -191,13 +182,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateLcOpeningEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new LcOpeningRequest
-            {
-               LcIssueDate = new DateTime(2026, 1, 15),
-               LcAmountVnd = 5000000,
-                BankName = "BIDV",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new LcOpeningRequest(
+                new DateTime(2026, 1, 15),
+                5000000,
+                "BIDV",
+                "2026-01"
+            );
 
             var result = _service.CreateLcOpeningEntry(request);
 
@@ -208,13 +198,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateLcSettlementEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new LcSettlementRequest
-            {
-                SettlementDate = new DateTime(2026, 2, 15),
-                OriginalLcAmountVnd = 5000000,
-                PaymentAmountVnd = 5000000,
-                AccountingPeriodId = "2026-02"
-            };
+            var request = new LcSettlementRequest(
+                new DateTime(2026, 2, 15),
+                5000000,
+                5000000,
+                "2026-02"
+            );
 
             var result = _service.CreateLcSettlementEntry(request);
 

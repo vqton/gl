@@ -358,8 +358,8 @@ main (production-ready)
 | Environment | Configuration |
 |-------------|---------------|
 | Development | Local MariaDB, debug logging |
-| Staging | Cloud DB, structured logging |
-| Production | HA DB, minimal logging, monitoring enabled |
+| Staging | Local HA MariaDB, structured logging |
+| Production | On-premises MariaDB, minimal logging, monitoring enabled |
 
 ### 9.2 Release Checklist
 

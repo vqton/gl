@@ -158,14 +158,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void ValidateFullAccount_ShouldPassAllChecks()
         {
-            var request = new CoaValidationRequest
-            {
-                AccountCode = "111",
-                AccountType = GL.Domain.Enums.AccountType.Asset,
-                DebitAmount = 1000,
-                CreditAmount = 0,
-                ParentCode = null
-            };
+            var request = new CoaValidationRequest(
+                "111",
+                GL.Domain.Enums.AccountType.Asset,
+                1000,
+                0,
+                null
+            );
 
             var result = _service.ValidateFullAccount(request);
 
@@ -175,14 +174,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void ValidateFullAccount_ShouldFail_WhenCodeInvalid()
         {
-            var request = new CoaValidationRequest
-            {
-                AccountCode = "1A1",
-                AccountType = GL.Domain.Enums.AccountType.Asset,
-                DebitAmount = 1000,
-                CreditAmount = 0,
-                ParentCode = null
-            };
+            var request = new CoaValidationRequest(
+                "1A1",
+                GL.Domain.Enums.AccountType.Asset,
+                1000,
+                0,
+                null
+            );
 
             var result = _service.ValidateFullAccount(request);
 
@@ -192,14 +190,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void ValidateFullAccount_ShouldFail_WhenTypeMismatch()
         {
-            var request = new CoaValidationRequest
-            {
-                AccountCode = "331",
-                AccountType = GL.Domain.Enums.AccountType.Asset,
-                DebitAmount = 1000,
-                CreditAmount = 0,
-                ParentCode = null
-            };
+            var request = new CoaValidationRequest(
+                "331",
+                GL.Domain.Enums.AccountType.Asset,
+                1000,
+                0,
+                null
+            );
 
             var result = _service.ValidateFullAccount(request);
 

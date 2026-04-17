@@ -177,18 +177,17 @@ namespace GL.Application.Services
         /// </summary>
         public AuditLogResult LogTransaction(CreateAuditLogRequest request)
         {
-            var result = new AuditLogResult
-            {
-                Id = Guid.NewGuid(),
-                UserId = request.UserId,
-                Timestamp = DateTime.Now,
-                Action = request.Action,
-                TableName = request.TableName,
-                RecordId = request.RecordId,
-                OldValues = request.OldValues,
-                NewValues = request.NewValues,
-                IpAddress = request.IpAddress,
-            };
+            var result = new AuditLogResult(
+                Guid.NewGuid(),
+                request.UserId,
+                DateTime.Now,
+                request.Action,
+                request.TableName,
+                request.RecordId,
+                request.OldValues,
+                request.NewValues,
+                request.IpAddress
+            );
 
             var entry = new AuditEntry
             {
@@ -238,16 +237,17 @@ namespace GL.Application.Services
                 query = query.Where(e => e.ActionDate <= request.EndDate.Value);
             }
 
-            return query.Select(e => new AuditLogResult
-            {
-                Id = Guid.Parse(e.Id),
-                UserId = e.UserId,
-                Timestamp = e.ActionDate,
-                Action = e.ActionType,
-                RecordId = e.TransactionId,
-                OldValues = e.OldValue,
-                NewValues = e.NewValue,
-            }).ToList();
+            return query.Select(e => new AuditLogResult(
+                Guid.Parse(e.Id),
+                e.UserId,
+                e.ActionDate,
+                e.ActionType,
+                null,
+                e.TransactionId,
+                e.OldValue,
+                e.NewValue,
+                null
+            )).ToList();
         }
 
         /// <summary>
@@ -260,22 +260,22 @@ namespace GL.Application.Services
                 e.ActionDate.Year.ToString() == periodId.Split('-')[0]
             ).ToList();
 
-            return new AuditReportResult
-            {
-                PeriodId = periodId,
-                GeneratedAt = DateTime.Now,
-                TotalEntries = entries.Count,
-                Entries = entries.Select(e => new AuditLogResult
-                {
-                    Id = Guid.Parse(e.Id),
-                    UserId = e.UserId,
-                    Timestamp = e.ActionDate,
-                    Action = e.ActionType,
-                    RecordId = e.TransactionId,
-                    OldValues = e.OldValue,
-                    NewValues = e.NewValue,
-                }).ToList(),
-            };
+            return new AuditReportResult(
+                periodId,
+                DateTime.Now,
+                entries.Count,
+                entries.Select(e => new AuditLogResult(
+                    Guid.Parse(e.Id),
+                    e.UserId,
+                    e.ActionDate,
+                    e.ActionType,
+                    null,
+                    e.TransactionId,
+                    e.OldValue,
+                    e.NewValue,
+                    null
+                )).ToList()
+            );
         }
     }
 }

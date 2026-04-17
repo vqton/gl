@@ -18,16 +18,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateVatDeclarationEntry_ShouldCreateBalancedTransaction_WhenOutputVatGreater()
         {
-            var request = new VatDeclarationRequest
-            {
-                DeclarationPeriodId = "2026-01",
-                DeclarationDate = new DateTime(2026, 2, 20),
-                OutputVatTotal = 100000,
-                InputVatTotal = 70000,
-                PaymentMethod = "BANK_TRANSFER",
-                BankAccountId = "BANK001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new VatDeclarationRequest(
+                "2026-01",
+                new DateTime(2026, 2, 20),
+                100000,
+                70000,
+                "BANK_TRANSFER",
+                "BANK001",
+                "2026-01"
+            );
 
             var result = _service.CreateVatDeclarationEntry(request);
 
@@ -38,16 +37,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateVatDeclarationEntry_ShouldCreateBalancedTransaction_WhenInputVatGreater()
         {
-            var request = new VatDeclarationRequest
-            {
-                DeclarationPeriodId = "2026-01",
-                DeclarationDate = new DateTime(2026, 2, 20),
-                OutputVatTotal = 50000,
-                InputVatTotal = 80000,
-                PaymentMethod = "BANK_TRANSFER",
-                BankAccountId = "BANK001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new VatDeclarationRequest(
+                "2026-01",
+                new DateTime(2026, 2, 20),
+                50000,
+                80000,
+                "BANK_TRANSFER",
+                "BANK001",
+                "2026-01"
+            );
 
             var result = _service.CreateVatDeclarationEntry(request);
 
@@ -58,16 +56,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateVatDeclarationEntry_ShouldCreateBalancedTransaction_WhenEqual()
         {
-            var request = new VatDeclarationRequest
-            {
-                DeclarationPeriodId = "2026-01",
-                DeclarationDate = new DateTime(2026, 2, 20),
-                OutputVatTotal = 100000,
-                InputVatTotal = 100000,
-                PaymentMethod = "BANK_TRANSFER",
-                BankAccountId = "BANK001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new VatDeclarationRequest(
+                "2026-01",
+                new DateTime(2026, 2, 20),
+                100000,
+                100000,
+                "BANK_TRANSFER",
+                "BANK001",
+                "2026-01"
+            );
 
             var result = _service.CreateVatDeclarationEntry(request);
 
@@ -78,14 +75,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateCitTaxEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new CitTaxRequest
-            {
-                TaxPeriodId = "2026-01",
-                CalculationDate = new DateTime(2026, 1, 31),
-                TaxableIncomeVnd = 1000000,
-                CitRate = 0.2m,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new CitTaxRequest(
+                "2026-01",
+                new DateTime(2026, 1, 31),
+                1000000,
+                0.2m,
+                "2026-01"
+            );
 
             var result = _service.CreateCitTaxEntry(request);
 
@@ -97,15 +93,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreatePitTaxEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new PitTaxRequest
-            {
-                PayrollPeriodId = "2026-01",
-                WithholdingDate = new DateTime(2026, 1, 31),
-                TotalPitWithheldVnd = 150000,
-                PaymentDate = new DateTime(2026, 2, 15),
-                BankAccountId = "BANK001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new PitTaxRequest(
+                "2026-01",
+                new DateTime(2026, 1, 31),
+                150000,
+                new DateTime(2026, 2, 15),
+                "BANK001",
+                "2026-01"
+            );
 
             var result = _service.CreatePitTaxEntry(request);
 
@@ -117,15 +112,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateUnrecoverableVatEntry_ShouldCreateBalancedTransaction_ToExpenseAccount()
         {
-            var request = new UnrecoverableVatRequest
-            {
-                InvoiceId = "INV001",
-                RecognitionDate = new DateTime(2026, 1, 15),
-                VatAmountVnd = 100000,
-                ExpenseAccountCode = "6411",
-                Reason = "Hoa don khong hop le",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new UnrecoverableVatRequest(
+                "INV001",
+                new DateTime(2026, 1, 15),
+                100000,
+                "6411",
+                "Hoa don khong hop le",
+                "2026-01"
+            );
 
             var result = _service.CreateUnrecoverableVatEntry(request);
 
@@ -138,15 +132,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateUnrecoverableVatEntry_ShouldCreateBalancedTransaction_ToAdminExpense()
         {
-            var request = new UnrecoverableVatRequest
-            {
-                InvoiceId = "INV002",
-                RecognitionDate = new DateTime(2026, 1, 20),
-                VatAmountVnd = 50000,
-                ExpenseAccountCode = "6421",
-                Reason = "Hang khong dung cho SXKD",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new UnrecoverableVatRequest(
+                "INV002",
+                new DateTime(2026, 1, 20),
+                50000,
+                "6421",
+                "Hang khong dung cho SXKD",
+                "2026-01"
+            );
 
             var result = _service.CreateUnrecoverableVatEntry(request);
 
@@ -157,14 +150,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateDeferredTaxAssetEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new DeferredTaxRequest
-            {
-                FiscalYearId = "2026",
-                RecognitionDate = new DateTime(2026, 12, 31),
-                DeferredTaxAssetVnd = 50000000,
-                TaxCode = "243",
-                AccountingPeriodId = "2026-12"
-            };
+            var request = new DeferredTaxRequest(
+                "2026",
+                new DateTime(2026, 12, 31),
+                50000000,
+                "243",
+                "2026-12"
+            );
 
             var result = _service.CreateDeferredTaxAssetEntry(request);
 
@@ -177,14 +169,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateDeferredTaxLiabilityEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new DeferredTaxRequest
-            {
-                FiscalYearId = "2026",
-                RecognitionDate = new DateTime(2026, 12, 31),
-                DeferredTaxAssetVnd = 30000000,
-                TaxCode = "347",
-                AccountingPeriodId = "2026-12"
-            };
+            var request = new DeferredTaxRequest(
+                "2026",
+                new DateTime(2026, 12, 31),
+                30000000,
+                "347",
+                "2026-12"
+            );
 
             var result = _service.CreateDeferredTaxLiabilityEntry(request);
 
@@ -197,14 +188,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateDeferredTaxReversalEntry_ShouldReverseDeferredTaxAsset()
         {
-            var request = new DeferredTaxReversalRequest
-            {
-                ReversalDate = new DateTime(2027, 6, 30),
-                ReversalAmountVnd = 20000000,
-                OriginalDeferredTaxCode = "243",
-                Reason = "Chenh lech giai toa",
-                AccountingPeriodId = "2027-06"
-            };
+            var request = new DeferredTaxReversalRequest(
+                new DateTime(2027, 6, 30),
+                20000000,
+                "243",
+                "Chenh lech giai toa",
+                "2027-06"
+            );
 
             var result = _service.CreateDeferredTaxReversalEntry(request);
 
@@ -215,18 +205,17 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateFctInvoiceEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new FctInvoiceRequest
-            {
-                InvoiceId = "FCT001",
-                InvoiceDate = new DateTime(2026, 1, 15),
-                SellerTaxCode = "0123456789",
-                BuyerTaxCode = "9876543210",
-                TotalBeforeVatVnd = 1000000,
-                VatRate = 0.1m,
-                VatAmountVnd = 100000,
-                PaymentStatus = "PAID",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new FctInvoiceRequest(
+                "FCT001",
+                new DateTime(2026, 1, 15),
+                "0123456789",
+                "9876543210",
+                1000000,
+                0.1m,
+                100000,
+                "PAID",
+                "2026-01"
+            );
 
             var result = _service.CreateFctInvoiceEntry(request);
 
@@ -237,18 +226,17 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateFctInvoiceEntry_WithMultipleVatRates_ShouldCreateBalancedTransaction()
         {
-            var request = new FctInvoiceRequest
-            {
-                InvoiceId = "FCT002",
-                InvoiceDate = new DateTime(2026, 1, 20),
-                SellerTaxCode = "0123456789",
-                BuyerTaxCode = "9876543210",
-                TotalBeforeVatVnd = 2000000,
-                VatRate = 0.05m,
-                VatAmountVnd = 100000,
-                PaymentStatus = "UNPAID",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new FctInvoiceRequest(
+                "FCT002",
+                new DateTime(2026, 1, 20),
+                "0123456789",
+                "9876543210",
+                2000000,
+                0.05m,
+                100000,
+                "UNPAID",
+                "2026-01"
+            );
 
             var result = _service.CreateFctInvoiceEntry(request);
 

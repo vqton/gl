@@ -11,6 +11,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />
@@ -18,5 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Domain\GL.Domain.csproj" />
     <ProjectReference Include="..\..\src\Application\GL.Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\GL.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

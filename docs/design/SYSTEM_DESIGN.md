@@ -15,7 +15,8 @@ This document outlines the comprehensive system design for GL Accounting System 
 
 ### 2.1 Technology Stack
 - **Framework**: .NET 10 (LTS)
-- **Database**: MariaDB 10.x with MySqlConnector
+- **Database**: SQL Server 2022 (Primary) / MariaDB 10.x / PostgreSQL 16+ (Supported)
+- **ORM**: Entity Framework Core 10 with provider switching
 - **Frontend**: ASP.NET Core MVC + Bootstrap 5 + jQuery
 - **Reporting**: FastReport.OpenSource 2026.2
 - **Architecture**: Clean Architecture (3-layer)

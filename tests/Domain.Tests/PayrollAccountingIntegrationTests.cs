@@ -57,14 +57,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreatePayrollEntry_ShouldUseCorrectAccounts()
         {
-            var request = new DTOs.PayrollCalculationRequest
-            {
-                PayrollId = "PY001",
-                PayrollMonth = new DateTime(2026, 1, 31),
-                TotalGrossVnd = 50000000,
-                EmployeeDeductionsVnd = 5000000,
-                NetPayVnd = 45000000
-            };
+            var request = new DTOs.PayrollCalculationRequest(
+                "PY001",
+                new DateTime(2026, 1, 31),
+                50000000,
+                5000000,
+                45000000,
+                "2026-01"
+            );
 
             var result = _transactionService.CreatePayrollEntry(request);
 
@@ -77,15 +77,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateSocialInsuranceEntry_ShouldUseCorrectAccounts()
         {
-            var request = new DTOs.SocialInsuranceRequest
-            {
-                PayrollId = "PY001",
-                CalculationDate = new DateTime(2026, 1, 31),
-                Bhxh175 = 7000000,
-                Bhyt30 = 1000000,
-                Bhtn10 = 500000,
-                Kpcd20 = 1000000
-            };
+            var request = new DTOs.SocialInsuranceRequest(
+                "PY001",
+                new DateTime(2026, 1, 31),
+                7000000,
+                1000000,
+                500000,
+                1000000,
+                "2026-01"
+            );
 
             var result = _transactionService.CreateSocialInsuranceEntry(request);
 
@@ -98,13 +98,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreatePayrollPaymentEntry_ShouldUseCorrectAccounts()
         {
-            var request = new DTOs.PayrollPaymentRequest
-            {
-                PaymentBatchId = "BATCH001",
-                PaymentDate = new DateTime(2026, 1, 31),
-                TotalNetPayVnd = 45000000,
-                PaymentMethod = "BANK"
-            };
+            var request = new DTOs.PayrollPaymentRequest(
+                "BATCH001",
+                new DateTime(2026, 1, 31),
+                45000000,
+                "BANK",
+                null,
+                "2026-01"
+            );
 
             var result = _transactionService.CreatePayrollPaymentEntry(request);
 
@@ -117,13 +118,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreatePitTaxEntry_ShouldUseCorrectAccounts()
         {
-            var request = new DTOs.PitTaxRequest
-            {
-                PayrollPeriodId = "PY001",
-                WithholdingDate = new DateTime(2026, 1, 31),
-                TotalPitWithheldVnd = 2000000,
-                PaymentDate = new DateTime(2026, 2, 10)
-            };
+            var request = new DTOs.PitTaxRequest(
+                "PY001",
+                new DateTime(2026, 1, 31),
+                2000000,
+                new DateTime(2026, 2, 10),
+                null,
+                "2026-01"
+            );
 
             var result = _transactionService.CreatePitTaxEntry(request);
 
@@ -137,14 +139,14 @@ namespace GL.Domain.Tests
         public void ProcessPayroll_ShouldCallIntegrationService()
         {
             var integrationService = new IntegrationService();
-            var request = new DTOs.PayrollCalculationRequest
-            {
-                PayrollId = "PY001",
-                PayrollMonth = new DateTime(2026, 1, 31),
-                TotalGrossVnd = 50000000,
-                EmployeeDeductionsVnd = 5000000,
-                NetPayVnd = 45000000
-            };
+            var request = new DTOs.PayrollCalculationRequest(
+                "PY001",
+                new DateTime(2026, 1, 31),
+                50000000,
+                5000000,
+                45000000,
+                "2026-01"
+            );
 
             var result = integrationService.ProcessPayroll(request);
 

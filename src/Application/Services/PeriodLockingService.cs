@@ -49,12 +49,7 @@ namespace GL.Application.Services
                 var existing = _periods[request.PeriodId];
                 if (existing.Status == "OPEN")
                 {
-                    return new PeriodValidationResult
-                    {
-                        IsValid = false,
-                        Message = $"Period {request.PeriodId} is already open",
-                        Status = existing.Status
-                    };
+                    return new PeriodValidationResult(false, $"Period {request.PeriodId} is already open", existing.Status);
                 }
             }
 
@@ -73,12 +68,7 @@ namespace GL.Application.Services
 
             _periods[request.PeriodId] = period;
 
-            return new PeriodValidationResult
-            {
-                IsValid = true,
-                Message = $"Period {request.PeriodId} opened successfully",
-                Status = "OPEN"
-            };
+            return new PeriodValidationResult(true, $"Period {request.PeriodId} opened successfully", "OPEN");
         }
 
         /// <summary>
@@ -94,45 +84,25 @@ namespace GL.Application.Services
         {
             if (!_periods.ContainsKey(request.PeriodId))
             {
-                return new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} not found",
-                    Status = "NOT_FOUND"
-                };
+                return new PeriodValidationResult(false, $"Period {request.PeriodId} not found", "NOT_FOUND");
             }
 
             var period = _periods[request.PeriodId];
             
             if (period.Status == "CLOSED")
             {
-                return new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} is already closed",
-                    Status = "CLOSED"
-                };
+                return new PeriodValidationResult(false, $"Period {request.PeriodId} is already closed", "CLOSED");
             }
 
             if (period.Status != "OPEN")
             {
-                return new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} cannot be closed from status {period.Status}",
-                    Status = period.Status
-                };
+                return new PeriodValidationResult(false, $"Period {request.PeriodId} cannot be closed from status {period.Status}", period.Status);
             }
 
             period.Status = "CLOSED";
             _periods[request.PeriodId] = period;
 
-            return new PeriodValidationResult
-            {
-                IsValid = true,
-                Message = $"Period {request.PeriodId} closed successfully. Reason: {request.Reason ?? "N/A"}",
-                Status = "CLOSED"
-            };
+            return new PeriodValidationResult(true, $"Period {request.PeriodId} closed successfully. Reason: {request.Reason ?? "N/A"}", "CLOSED");
         }
 
         /// <summary>
@@ -142,42 +112,17 @@ namespace GL.Application.Services
         {
             if (!_periods.ContainsKey(request.PeriodId))
             {
-                return new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} does not exist. Please create the period first.",
-                    Status = "NOT_FOUND"
-                };
+                return new PeriodValidationResult(false, $"Period {request.PeriodId} does not exist. Please create the period first.", "NOT_FOUND");
             }
 
             var period = _periods[request.PeriodId];
 
             return period.Status switch
             {
-                "OPEN" => new PeriodValidationResult
-                {
-                    IsValid = true,
-                    Message = $"Period {request.PeriodId} is OPEN. Posting allowed.",
-                    Status = "OPEN"
-                },
-                "CLOSED" => new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} is CLOSED. Posting not allowed.",
-                    Status = "CLOSED"
-                },
-                "LOCKED" => new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} is LOCKED. Contact administrator.",
-                    Status = "LOCKED"
-                },
-                _ => new PeriodValidationResult
-                {
-                    IsValid = false,
-                    Message = $"Period {request.PeriodId} has unknown status: {period.Status}",
-                    Status = period.Status
-                }
+                "OPEN" => new PeriodValidationResult(true, $"Period {request.PeriodId} is OPEN. Posting allowed.", "OPEN"),
+                "CLOSED" => new PeriodValidationResult(false, $"Period {request.PeriodId} is CLOSED. Posting not allowed.", "CLOSED"),
+                "LOCKED" => new PeriodValidationResult(false, $"Period {request.PeriodId} is LOCKED. Contact administrator.", "LOCKED"),
+                _ => new PeriodValidationResult(false, $"Period {request.PeriodId} has unknown status: {period.Status}", period.Status)
             };
         }
 

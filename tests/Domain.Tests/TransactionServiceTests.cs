@@ -18,16 +18,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateRevenueClosingEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new RevenueClosingRequest
-            {
-                ClosingPeriodId = "2026-01",
-                ClosingDate = new DateTime(2026, 1, 31),
-                Revenue511 = 1000000,
-                Revenue515 = 50000,
-                Revenue711 = 0,
-                ContraRevenue521 = 50000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new RevenueClosingRequest(
+                "2026-01",
+                new DateTime(2026, 1, 31),
+                1000000,
+                50000,
+                0,
+                50000,
+                "2026-01"
+            );
 
             var result = _service.CreateRevenueClosingEntry(request);
 
@@ -38,18 +37,17 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateExpenseClosingEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new ExpenseClosingRequest
-            {
-                ClosingPeriodId = "2026-01",
-                ClosingDate = new DateTime(2026, 1, 31),
-                Expense632 = 700000,
-                Expense635 = 10000,
-                Expense641 = 50000,
-                Expense642 = 80000,
-                Expense811 = 0,
-                Expense821 = 50000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new ExpenseClosingRequest(
+                "2026-01",
+                new DateTime(2026, 1, 31),
+                700000,
+                10000,
+                50000,
+                80000,
+                0,
+                50000,
+                "2026-01"
+            );
 
             var result = _service.CreateExpenseClosingEntry(request);
 
@@ -60,13 +58,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateProfitClosingEntry_ShouldCreateTransaction_WhenProfitIsPositive()
         {
-            var request = new ProfitClosingRequest
-            {
-                FiscalYearId = "2026",
-                ClosingDate = new DateTime(2026, 12, 31),
-                ProfitAfterTaxVnd = 150000,
-                AccountingPeriodId = "2026-12"
-            };
+            var request = new ProfitClosingRequest(
+                "2026",
+                new DateTime(2026, 12, 31),
+                150000,
+                "2026-12"
+            );
 
             var result = _service.CreateProfitClosingEntry(request);
 
@@ -77,16 +74,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateVatDeclarationEntry_ShouldCreateBalancedTransaction_WhenOutputVatGreater()
         {
-            var request = new VatDeclarationRequest
-            {
-                DeclarationPeriodId = "2026-01",
-                DeclarationDate = new DateTime(2026, 2, 20),
-                OutputVatTotal = 100000,
-                InputVatTotal = 70000,
-                PaymentMethod = "BANK_TRANSFER",
-                BankAccountId = "BANK001",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new VatDeclarationRequest(
+                "2026-01",
+                new DateTime(2026, 2, 20),
+                100000,
+                70000,
+                "BANK_TRANSFER",
+                "BANK001",
+                "2026-01"
+            );
 
             var result = _service.CreateVatDeclarationEntry(request);
 
@@ -97,15 +93,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreatePayrollEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new PayrollCalculationRequest
-            {
-                PayrollId = "PAY001",
-                PayrollMonth = new DateTime(2026, 1, 31),
-                TotalGrossVnd = 1000000,
-                EmployeeDeductionsVnd = 100000,
-                NetPayVnd = 900000,
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new PayrollCalculationRequest(
+                "PAY001",
+                new DateTime(2026, 1, 31),
+                1000000,
+                100000,
+                900000,
+                "2026-01"
+            );
 
             var result = _service.CreatePayrollEntry(request);
 
@@ -116,17 +111,16 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateFixedAssetPurchaseEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new FixedAssetPurchaseRequest
-            {
-                AssetHandoverId = "AST001",
-                HandoverDate = new DateTime(2026, 1, 15),
-                AssetType = "TANGIBLE",
-                OriginalCostVnd = 120000000,
-                VatAmountVnd = 12000000,
-                SupplierId = "SUP001",
-                PaymentMethod = "BANK_TRANSFER",
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new FixedAssetPurchaseRequest(
+                "AST001",
+                new DateTime(2026, 1, 15),
+                "TANGIBLE",
+                120000000,
+                12000000,
+                "SUP001",
+                "BANK_TRANSFER",
+                "2026-01"
+            );
 
             var result = _service.CreateFixedAssetPurchaseEntry(request);
 
@@ -137,12 +131,11 @@ namespace GL.Domain.Tests
         [Fact]
         public void CreateDepreciationEntry_ShouldCreateBalancedTransaction()
         {
-            var request = new DepreciationRequest
-            {
-                DepreciationPeriodId = "2026-01",
-                CalculationDate = new DateTime(2026, 1, 31),
-                AccountingPeriodId = "2026-01"
-            };
+            var request = new DepreciationRequest(
+                "2026-01",
+                new DateTime(2026, 1, 31),
+                "2026-01"
+            );
 
             var result = _service.CreateDepreciationEntry(request, 1000000, "ADMIN");
 

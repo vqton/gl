@@ -83,35 +83,25 @@ namespace GL.Application.Services
         /// <summary>
         /// Tính tuổi nợ (S01c)
         /// </summary>
-        public AginReport CalculateARAging(string customerId, DateTime reportDate)
+        public AgingReport CalculateARAging(string customerId, DateTime reportDate)
         {
-            var report = new AginReport
-            {
-                CustomerId = customerId,
-                ReportDate = reportDate,
-                AgingDetails = new List<AgingBucket>(),
-            };
+            var agingDetails = new List<AgingBucketItem>();
 
-            if (_arLedger.ContainsKey(customerId))
+            if (_arLedger.TryGetValue(customerId, out var transactions))
             {
-                foreach (var tx in _arLedger[customerId])
+                foreach (var tx in transactions)
                 {
                     var days = (reportDate - tx.TransactionDate).Days;
-                    string bucket;
-                    if (days <= 30) bucket = "Current";
-                    else if (days <= 60) bucket = "1-30 days";
-                    else if (days <= 90) bucket = "31-60 days";
-                    else bucket = "Over 90 days";
+                    var bucket = days <= 30 ? "Current" 
+                        : days <= 60 ? "1-30 days" 
+                        : days <= 90 ? "31-60 days" 
+                        : "Over 90 days";
 
-                    report.AgingDetails.Add(new AgingBucket
-                    {
-                        Bucket = bucket,
-                        AmountVnd = tx.BalanceVnd,
-                    });
+                    agingDetails.Add(new AgingBucketItem(bucket, tx.BalanceVnd));
                 }
             }
 
-            return report;
+            return new AgingReport(customerId, reportDate, agingDetails);
         }
 
         /// <summary>

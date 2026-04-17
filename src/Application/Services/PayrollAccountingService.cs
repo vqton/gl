@@ -54,14 +54,14 @@ namespace GL.Application.Services
 
         private Transaction CreatePayrollEntry(PayrollLine line, DateTime postingDate)
         {
-            var request = new PayrollCalculationRequest
-            {
-                PayrollId = "",
-                PayrollMonth = postingDate,
-                TotalGrossVnd = line.GrossSalary,
-                EmployeeDeductionsVnd = line.SocialInsuranceDeduction + line.HealthInsuranceDeduction + line.UnemploymentInsuranceDeduction,
-                NetPayVnd = line.NetSalary
-            };
+            var request = new PayrollCalculationRequest(
+                "",
+                postingDate,
+                line.GrossSalary,
+                line.SocialInsuranceDeduction + line.HealthInsuranceDeduction + line.UnemploymentInsuranceDeduction,
+                line.NetSalary,
+                ""
+            );
 
             return _transactionService.CreatePayrollEntry(request);
         }
@@ -77,15 +77,15 @@ namespace GL.Application.Services
 
             if (employerShare <= 0) return null;
 
-            var request = new SocialInsuranceRequest
-            {
-                PayrollId = "",
-                CalculationDate = postingDate,
-                Bhxh175 = insuranceSalary * 0.14m,  // 14%
-                Bhyt30 = insuranceSalary * 0.02m,   // 2%
-                Bhtn10 = insuranceSalary * 0.005m,   // 0.5%
-                Kpcd20 = insuranceSalary * 0.02m    // 2%
-            };
+            var request = new SocialInsuranceRequest(
+                "",
+                postingDate,
+                insuranceSalary * 0.14m,  // 14%
+                insuranceSalary * 0.02m,   // 2%
+                insuranceSalary * 0.005m,   // 0.5%
+                insuranceSalary * 0.02m,    // 2%
+                ""
+            );
 
             return _transactionService.CreateSocialInsuranceEntry(request);
         }
@@ -94,26 +94,28 @@ namespace GL.Application.Services
         {
             if (line.NetSalary <= 0) return null;
 
-            var request = new PayrollPaymentRequest
-            {
-                PaymentBatchId = "",
-                PaymentDate = postingDate,
-                TotalNetPayVnd = line.NetSalary,
-                PaymentMethod = "BANK"
-            };
+            var request = new PayrollPaymentRequest(
+                "",
+                postingDate,
+                line.NetSalary,
+                "BANK",
+                "",
+                ""
+            );
 
             return _transactionService.CreatePayrollPaymentEntry(request);
         }
 
         private Transaction CreatePITEntry(PayrollLine line, DateTime postingDate)
         {
-            var request = new PitTaxRequest
-            {
-                PayrollPeriodId = "",
-                WithholdingDate = postingDate,
-                TotalPitWithheldVnd = line.PersonalIncomeTax,
-                PaymentDate = postingDate
-            };
+            var request = new PitTaxRequest(
+                "",
+                postingDate,
+                line.PersonalIncomeTax,
+                postingDate,
+                "",
+                ""
+            );
 
             return _transactionService.CreatePitTaxEntry(request);
         }

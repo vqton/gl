@@ -1,5 +1,5 @@
 # GL Accounting System - Implementation Roadmap & Execution Plan
-*Updated: April 2026 | Version 2.0*
+*Updated: April 2026 | Version 3.0*
 
 ---
 
@@ -7,15 +7,16 @@
 
 | Status | Description |
 |--------|-------------|
-| ✅ **Phase 1-2** | Core Modules (24 services) - **COMPLETED** |
+| ✅ **Phase 1-2** | Core Modules (28 services) - **COMPLETED** |
+| ✅ **Phase 3** | Use Cases - **COMPLETED** (50+ UCs) |
 | ⚠️ **Current State** | Demo/PoC - Not production ready |
 | 🔧 **Required** | Database, Audit, Reporting, Integration |
 
 ---
 
-## 📊 COMPLETED MODULES (Phase 1-2)
+## 📊 COMPLETED MODULES (Phase 1-3)
 
-### All Services Implemented
+### All Services Implemented (28 Services)
 
 | # | Module | Code | Service | Tests | Status |
 |---|--------|------|---------|-------|--------|
@@ -31,8 +32,29 @@
 | 10 | GL Central Posting | G05 | GLCentralPostingService.cs | 6 | ✅ |
 | 11 | Cost Accounting | C01 | CostAccountingService.cs | 6 | ✅ |
 | 12 | Subsidiary Ledgers | S01-S03 | SubsidiaryLedgerService.cs | 9 | ✅ |
+| 13 | Audit Trail | AT01-AT03 | AuditTrailService.cs | ✅ |
+| 14 | Period Locking | PL01-PL03 | PeriodLockingService.cs | ✅ |
+| 15 | COA Validation | - | CoaValidationService.cs | ✅ |
+| 16 | Reporting | - | ReportService.cs | ✅ |
 
-**Total: 297 tests passing**
+### Use Cases Documents (50+ UCs)
+
+| Domain | Files | Status |
+|--------|-------|--------|
+| COA | coa_use_cases.md | ✅ |
+| NKC | usecases_so_nhat_ky_chung | ✅ |
+| Sổ Cái | usecases_so_cai_tai_khoan | ✅ |
+| Quỹ TM | usecases_so_quy_tien_mat | ✅ |
+| TGNH | usecases_so_tien_gui_ngan_hang | ✅ |
+| Bảng CĐPS | usecases_bang_can_doi_so_phat_sinh | ✅ |
+| AR/AP | usecases_so_chi_tiet_thanh_toan | ✅ |
+| Inventory | inventory_use_cases + extended | ✅ |
+| Fixed Assets | inventory_use_cases + extended | ✅ |
+| Payroll | laodong_tienluong + usecases_payroll | ✅ |
+| Báo cáo tài chính | usecases_bao_cao_tai_chinh | ✅ |
+| Audit/Period | phase4_audit_period | ✅ |
+
+**Total: 297 tests passing | 50+ Use Cases | 16 Use Case Documents**
 
 ---
 
@@ -61,14 +83,17 @@
 | Week | Task | Deliverable | Owner |
 |------|------|--------------|-------|
 | 1 | Add EF Core | DbContext, entities mapping | Dev |
-| 1 | MariaDB provider | Connection string, pooling | Dev |
+| 1 | SQL Server provider | Primary DB (2022) | Dev |
+| 1 | MariaDB/PostgreSQL | Support switching | Dev |
 | 1 | Implement Repositories | ISalesRepository, etc. | Dev |
 | 1 | Add Migrations | Database schema | Dev |
 | 1 | COA Seeding | Initial chart of accounts | Dev |
 | 2 | Repository Tests | Integration tests | Dev |
 
 **Deliverables:**
-- [ ] Entity Framework Core with MariaDB
+- [ ] Entity Framework Core with SQL Server 2022 (Primary)
+- [ ] MariaDB 10.x support (optional)
+- [ ] PostgreSQL 16+ support (optional)
 - [ ] All Repository interfaces implemented
 - [ ] Database migrations
 - [ ] COA seeding (200+ accounts)

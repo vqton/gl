@@ -27,25 +27,25 @@ namespace GL.Application.Services
         {
             if (string.IsNullOrEmpty(accountCode))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = "Account code cannot be empty" };
+                return new CoaValidationResult(false, "Account code cannot be empty");
             }
 
             if (accountCode.Length < 3 || accountCode.Length > 4)
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = "Account code must be 3-4 digits" };
+                return new CoaValidationResult(false, "Account code must be 3-4 digits");
             }
 
             if (!accountCode.All(char.IsDigit))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = "Account code must be numeric" };
+                return new CoaValidationResult(false, "Account code must be numeric");
             }
 
             if (accountCode.StartsWith("0"))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = "Account code cannot start with zero" };
+                return new CoaValidationResult(false, "Account code cannot start with zero");
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
 
         /// <summary>
@@ -57,10 +57,10 @@ namespace GL.Application.Services
         {
             if (_coaCache.ContainsKey(accountCode))
             {
-                return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+                return new CoaValidationResult(true, null);
             }
 
-            return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account {accountCode} not found in Chart of Accounts" };
+            return new CoaValidationResult(false, $"Account {accountCode} not found in Chart of Accounts");
         }
 
         /// <summary>
@@ -73,15 +73,15 @@ namespace GL.Application.Services
         {
             if (!_coaCache.TryGetValue(accountCode, out var account))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account {accountCode} not found" };
+                return new CoaValidationResult(false, $"Account {accountCode} not found");
             }
 
             if (account.Type != expectedType)
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account type mismatch: expected {expectedType}, got {account.Type}" };
+                return new CoaValidationResult(false, $"Account type mismatch: expected {expectedType}, got {account.Type}");
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
 
         /// <summary>
@@ -94,15 +94,15 @@ namespace GL.Application.Services
         {
             if (!_coaCache.ContainsKey(parentCode))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Parent account {parentCode} not found" };
+                return new CoaValidationResult(false, $"Parent account {parentCode} not found");
             }
 
             if (!childCode.StartsWith(parentCode))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Child account {childCode} does not belong to parent {parentCode}" };
+                return new CoaValidationResult(false, $"Child account {childCode} does not belong to parent {parentCode}");
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
 
         /// <summary>
@@ -112,18 +112,15 @@ namespace GL.Application.Services
         {
             if (!_coaCache.TryGetValue(accountCode, out var account))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account {accountCode} not found" };
+                return new CoaValidationResult(false, $"Account {accountCode} not found");
             }
 
             if (!account.IsPostable)
             {
-                return new CoaValidationResult { 
-                    IsValid = false, 
-                    ErrorMessage = $"Account {accountCode} ({account.Name}) is not postable. Only level 3-4 accounts can be used for journaling." 
-                };
+                return new CoaValidationResult(false, $"Account {accountCode} ({account.Name}) is not postable. Only level 3-4 accounts can be used for journaling.");
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
 
         /// <summary>
@@ -137,7 +134,7 @@ namespace GL.Application.Services
         {
             if (!_coaCache.TryGetValue(accountCode, out var account))
             {
-                return new CoaValidationResult { IsValid = false, ErrorMessage = $"Account {accountCode} not found" };
+                return new CoaValidationResult(false, $"Account {accountCode} not found");
             }
 
             bool isDebitNormal = account.NormalBalance == "Debit";
@@ -146,18 +143,18 @@ namespace GL.Application.Services
             {
                 if (creditAmount > 0 && debitAmount == 0)
                 {
-                    return new CoaValidationResult { IsValid = false, ErrorMessage = "Cannot credit to debit-normal account" };
+                    return new CoaValidationResult(false, "Cannot credit to debit-normal account");
                 }
             }
             else
             {
                 if (debitAmount > 0 && creditAmount == 0)
                 {
-                    return new CoaValidationResult { IsValid = false, ErrorMessage = "Cannot debit to credit-normal account" };
+                    return new CoaValidationResult(false, "Cannot debit to credit-normal account");
                 }
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
 
         /// <summary>
@@ -185,7 +182,7 @@ namespace GL.Application.Services
                 if (!parentResult.IsValid) return parentResult;
             }
 
-            return new CoaValidationResult { IsValid = true, ErrorMessage = null };
+            return new CoaValidationResult(true, null);
         }
     }
 }

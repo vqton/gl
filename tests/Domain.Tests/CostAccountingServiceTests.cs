@@ -12,15 +12,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01a_AddDirectMaterialCost_BalancedEntry()
         {
-            var request = new DirectMaterialCostRequest
-            {
-                TransactionId = "DM-001",
-                AccountingPeriodId = "2026-04",
-                WorkOrderId = "WO-100",
-                ProductId = "SP-001",
-                MaterialCostVnd = 5000000,
-                InventoryAccount = "152",
-            };
+            var request = new DirectMaterialCostRequest(
+                "DM-001",
+                "2026-04",
+                "WO-100",
+                "SP-001",
+                5000000,
+                "152"
+            );
 
             var result = _service.AddDirectMaterialCost(request);
 
@@ -33,14 +32,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01b_AddDirectLaborCost_BalancedEntry()
         {
-            var request = new DirectLaborCostRequest
-            {
-                TransactionId = "DL-001",
-                AccountingPeriodId = "2026-04",
-                WorkOrderId = "WO-100",
-                LaborCostVnd = 3000000,
-                SalaryAccount = "622",
-            };
+            var request = new DirectLaborCostRequest(
+                "DL-001",
+                "2026-04",
+                "WO-100",
+                3000000,
+                "622"
+            );
 
             var result = _service.AddDirectLaborCost(request);
 
@@ -52,14 +50,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01c_AddManufacturingOverhead_BalancedEntry()
         {
-            var request = new ManufacturingOverheadRequest
-            {
-                TransactionId = "MO-001",
-                AccountingPeriodId = "2026-04",
-                WorkOrderId = "WO-100",
-                OverheadCostVnd = 2000000,
-                OverheadAccount = "627",
-            };
+            var request = new ManufacturingOverheadRequest(
+                "MO-001",
+                "2026-04",
+                "WO-100",
+                2000000,
+                "627"
+            );
 
             var result = _service.AddManufacturingOverhead(request);
 
@@ -70,13 +67,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01d_CloseWorkInProgress_TransferToCOGS()
         {
-            var request = new WIPClosingRequest
-            {
-                TransactionId = "WIP-001",
-                AccountingPeriodId = "2026-04",
-                WorkOrderId = "WO-100",
-                TotalWipCostVnd = 10000000,
-            };
+            var request = new WIPClosingRequest(
+                "WIP-001",
+                "2026-04",
+                "WO-100",
+                10000000
+            );
 
             var result = _service.CloseWorkInProgress(request);
 
@@ -89,14 +85,13 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01e_CalculateUnitCost_AverageMethod()
         {
-            var request = new UnitCostCalculationRequest
-            {
-                ProductId = "SP-001",
-                AccountingPeriodId = "2026-04",
-                TotalCostVnd = 100000000,
-                TotalQuantity = 100,
-                Method = "AVERAGE",
-            };
+            var request = new UnitCostCalculationRequest(
+                "SP-001",
+                "2026-04",
+                100000000,
+                100,
+                "AVERAGE"
+            );
 
             var result = _service.CalculateUnitCost(request);
 
@@ -106,13 +101,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void C01f_AllocateOverhead_ToProducts()
         {
-            var request = new OverheadAllocationRequest
-            {
-                TransactionId = "OA-001",
-                AccountingPeriodId = "2026-04",
-                TotalOverheadVnd = 5000000,
-                AllocationBase = "DIRECTLabor",
-            };
+            var request = new OverheadAllocationRequest(
+                "OA-001",
+                "2026-04",
+                5000000,
+                "DIRECTLabor"
+            );
 
             var result = _service.AllocateOverhead(request);
 

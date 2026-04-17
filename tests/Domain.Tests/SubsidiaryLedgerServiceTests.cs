@@ -13,15 +13,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void S01a_CreateAREntry_BalancedEntry()
         {
-            var request = new CreateAREntryRequest
-            {
-                TransactionId = "AR-001",
-                TransactionDate = DateTime.Today,
-                CustomerId = "KH001",
-                AmountVnd = 110000,
-                NetAmountVnd = 100000,
-                VatAmountVnd = 10000,
-            };
+            var request = new CreateAREntryRequest(
+                "AR-001",
+                DateTime.Today,
+                "KH001",
+                110000,
+                100000,
+                10000
+            );
 
             var result = _service.CreateAREntry(request);
 
@@ -33,13 +32,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void S01b_UpdateARPayment_BalancedEntry()
         {
-            var request = new UpdateARPaymentRequest
-            {
-                TransactionId = "PAY-001",
-                PaymentDate = DateTime.Today,
-                CustomerId = "KH001",
-                PaymentAmountVnd = 110000,
-            };
+            var request = new UpdateARPaymentRequest(
+                "PAY-001",
+                DateTime.Today,
+                "KH001",
+                110000
+            );
 
             var result = _service.UpdateARPayment(request);
 
@@ -60,12 +58,11 @@ namespace GL.Domain.Tests
         [Fact]
         public void S01e_CreateBadDebtProvision_BalancedEntry()
         {
-            var request = new CreateBadDebtProvisionRequest
-            {
-                TransactionId = "BDP-001",
-                ProvisionDate = DateTime.Today,
-                ProvisionAmountVnd = 5000000,
-            };
+            var request = new CreateBadDebtProvisionRequest(
+                "BDP-001",
+                DateTime.Today,
+                5000000
+            );
 
             var result = _service.CreateBadDebtProvision(request);
 
@@ -77,15 +74,14 @@ namespace GL.Domain.Tests
         [Fact]
         public void S02a_CreateAPEntry_BalancedEntry()
         {
-            var request = new CreateAPEntryRequest
-            {
-                TransactionId = "AP-001",
-                TransactionDate = DateTime.Today,
-                SupplierId = "NCC001",
-                AmountVnd = 100000,
-                VatAmountVnd = 10000,
-                TotalAmountVnd = 110000,
-            };
+            var request = new CreateAPEntryRequest(
+                "AP-001",
+                DateTime.Today,
+                "NCC001",
+                100000,
+                10000,
+                110000
+            );
 
             var result = _service.CreateAPEntry(request);
 
@@ -97,13 +93,12 @@ namespace GL.Domain.Tests
         [Fact]
         public void S02b_UpdateAPPayment_BalancedEntry()
         {
-            var request = new UpdateAPPaymentRequest
-            {
-                TransactionId = "PAY-002",
-                PaymentDate = DateTime.Today,
-                SupplierId = "NCC001",
-                PaymentAmountVnd = 110000,
-            };
+            var request = new UpdateAPPaymentRequest(
+                "PAY-002",
+                DateTime.Today,
+                "NCC001",
+                110000
+            );
 
             var result = _service.UpdateAPPayment(request);
 
@@ -114,16 +109,15 @@ namespace GL.Domain.Tests
         [Fact]
         public void S03a_UpdateInventoryCard_CreatesCard()
         {
-            var request = new UpdateInventoryCardRequest
-            {
-                TransactionId = "IC-001",
-                TransactionDate = DateTime.Today,
-                ProductId = "SP001",
-                ProductName = "Sản phẩm A",
-                TransactionType = "RECEIPT",
-                Quantity = 100,
-                UnitCostVnd = 50000,
-            };
+            var request = new UpdateInventoryCardRequest(
+                "IC-001",
+                DateTime.Today,
+                "SP001",
+                "Sản phẩm A",
+                "RECEIPT",
+                100,
+                50000
+            );
 
             var result = _service.UpdateInventoryCard(request);
 
@@ -134,11 +128,7 @@ namespace GL.Domain.Tests
         [Fact]
         public void S03b_CalculateIssueCost_FIFO()
         {
-            var request = new CalculateIssueCostRequest
-            {
-                ProductId = "SP001",
-                Method = "FIFO",
-            };
+            var request = new CalculateIssueCostRequest("SP001", "FIFO");
 
             var result = _service.CalculateIssueCost(request);
 

@@ -249,7 +249,7 @@ src/
 
 | Priority | Task | Owner | Deadline |
 |----------|------|-------|-----------|
-| P0 | Implement EF Core with MariaDB | Dev Team | Week 2 |
+| P0 | Implement EF Core with SQL Server (Primary) | Dev Team | Week 2 |
 | P0 | Implement Audit Trail | Dev Team | Week 3 |
 | P1 | Add Period Locking | Dev Team | Week 3 |
 | P1 | Add COA Validation | Dev Team | Week 3 |
