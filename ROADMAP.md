@@ -87,6 +87,20 @@ To provide a comprehensive, compliant accounting system that fully implements th
 
 ### Tests: 127 passing ✅
 
+## Use Case Documents Reference
+
+| Document | Location |
+|----------|----------|
+| Master UCs | `docs/GL_USE_CASES_MASTER.md` |
+| Consolidated | `docs/GL_USE_CASES_CONSOLIDATED.md` |
+| Index | `docs/USE_CASES_INDEX.md` |
+| Sales | `docs/use_cases/sales_use_cases.md` |
+| Cash | `docs/use_cases/cash_use_cases.md` |
+| Bank | `docs/use_cases/bank_use_cases.md` |
+| Inventory | `docs/use_cases/inventory_use_cases.md` |
+| Payroll | `docs/use_cases/laodong_tienluong.md` |
+| Tax | `docs/TAX_USE_CASES.md` |
+
 ## Success Metrics
 - 100% coverage of 22 core use cases
 - Ability to generate complete BCĐKT and BCKQHĐKD statements

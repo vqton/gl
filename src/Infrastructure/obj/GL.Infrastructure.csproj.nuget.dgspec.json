@@ -749,6 +749,10 @@
               "target": "Package",
               "version": "[10.0.0, )"
             },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            },
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.5.0, )"

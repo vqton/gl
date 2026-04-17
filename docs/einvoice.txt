@@ -11,7 +11,7 @@ NGUYÊN TẮC BẮT BUỘC:
 
 Hãy thực hiện quy trình trích xuất Use Case với URL cha sau:
 
-🔗 URL CHA: https://ketoanthienung.net/cach-lap-cac-loai-hoa-don-dien-tu.htm
+🔗 URL CHA: https://ketoanthienung.net/he-thong-bao-cao-ke-toan-doanh-nghiep.htm
 
 🔄 QUY TRÌNH BẮT BUỘC:
 [BƯỚC 1] Truy cập URL cha. Trích xuất Use Case có trong trang (tổng quan/điều hướng).

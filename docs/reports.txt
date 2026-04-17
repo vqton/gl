@@ -15,7 +15,7 @@ Hãy thực hiện quy trình trích xuất Use Case với URL cha sau:
 
 🔄 QUY TRÌNH BẮT BUỘC:
 [BƯỚC 1] Truy cập URL cha. Trích xuất Use Case có trong trang (tổng quan/điều hướng).
-[BƯỚC 2] Quét trang cha, xác định các URL con nội bộ hợp lệ (cùng domain, chứa từ khóa nghiệp vụ/tính năng). Chọn từng gói 5 URL con xử lý, tuần tự cho đến hết toàn bộ url con liên quan.
+[BƯỚC 2] Quét trang cha, xác định các URL con nội bộ hợp lệ (cùng domain, chứa từ khóa nghiệp vụ/tính năng). Xử lý tuần tự one by one cho đến hết toàn bộ url con liên quan.
 [BƯỚC 3] Truy cập lần lượt các URL con (Cấp 2). Trích xuất Use Case chi tiết. Dừng ngay sau cấp 2.
 [BƯỚC 4] Tổng hợp, khử trùng, gắn nguồn, xử lý mâu thuẫn, và định dạng kết quả theo template dưới đây.
 
@@ -76,6 +76,8 @@ Hãy thực hiện quy trình trích xuất Use Case với URL cha sau:
 ☑️ Không có nội dung bịa đặt/hallucination?
 ☑️ Định dạng Markdown chuẩn, sẵn sàng lưu file?
 
-"Consolidate fragmented documentation and complete missing use cases 
- through systematic gap analysis and stakeholder alignment."
+
+Standardize,Consolidate fragmented documentation and complete missing use casesthrough systematic gap analysis and stakeholder alignment.
+Rationalize and polish the use case repository
+Consolidate, organize, and finalize all current use case documents
 Nếu tất cả đạt → Xuất kết quả ngay. Nếu URL không truy cập được → Trả về báo lỗi ngắn gọn theo định dạng Markdown và dừng.

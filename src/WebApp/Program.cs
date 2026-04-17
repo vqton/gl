@@ -9,18 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var dbProvider = builder.Configuration.GetValue<string>("DatabaseProvider", "SqlServer");
+var connectionString = dbProvider switch
+{
+    "MariaDB" => builder.Configuration.GetConnectionString("DefaultConnection"),
+    "PostgreSQL" => builder.Configuration.GetConnectionString("PostgreSQL"),
+    "Sqlite" => builder.Configuration.GetConnectionString("Sqlite") ?? "Data Source=gl.db",
+    "SqlServer" => builder.Configuration.GetConnectionString("SqlServer"),
+    _ => builder.Configuration.GetConnectionString("DefaultConnection")
+};
 
-// Configure Identity - supports MariaDB, PostgreSQL, SqlServer
+// Configure Identity - supports MariaDB, PostgreSQL, SqlServer, SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    var connectionString = dbProvider switch
-    {
-        "MariaDB" => builder.Configuration.GetConnectionString("DefaultConnection"),
-        "PostgreSQL" => builder.Configuration.GetConnectionString("PostgreSQL"),
-        "SqlServer" => builder.Configuration.GetConnectionString("SqlServer"),
-        _ => builder.Configuration.GetConnectionString("DefaultConnection")
-    };
-    
     switch (dbProvider)
     {
         case "MariaDB":
@@ -28,6 +28,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
             break;
         case "PostgreSQL":
             options.UseNpgsql(connectionString);
+            break;
+        case "Sqlite":
+            options.UseSqlite(connectionString);
             break;
         case "SqlServer":
         default:
